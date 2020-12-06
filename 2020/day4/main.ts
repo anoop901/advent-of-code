@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import * as readline from "readline";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
-// type Passport = string[];
+
 interface Passport {
   byr?: string;
   iyr?: string;
