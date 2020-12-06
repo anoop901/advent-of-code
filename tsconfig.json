@@ -1,3 +1,6 @@
 {
-  "compilerOptions": { "strict": true }
+  "compilerOptions": {
+    "strict": true,
+    "target": "es6"
+  }
 }
