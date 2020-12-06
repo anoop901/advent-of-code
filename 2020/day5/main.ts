@@ -68,7 +68,7 @@ async function main() {
   const boardingPasses = (await loadBoardingPasses());
 
   const seatIds = boardingPasses.map(boardingPassToSeatId)
-  console.log(seatIds.reduce((acc, x) => x > acc ? x : acc, 0));
+  console.log(Math.max(...seatIds));
   console.log(findHole(seatIds));
 }
 
