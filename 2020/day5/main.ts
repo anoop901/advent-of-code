@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import * as readline from 'readline';
-import { isMainThread } from "worker_threads";
 
 async function loadBoardingPasses(): Promise<string[]> {
   const rl = readline.createInterface(fs.createReadStream('input.txt'))
