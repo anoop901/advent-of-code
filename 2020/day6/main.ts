@@ -1,5 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
+import { splitIterable } from "../util/iterators";
+import * as wu from "wu";
 
 type Question = string; // 'a', 'b', ...
 type CustomsForm = Set<string>
@@ -9,31 +11,14 @@ async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
     input: fs.createReadStream("input.txt"),
   });
 
-  const customsFormsData: CustomsForm[][] = [];
-  let currentGroupCustomsForms: CustomsForm[] | null = null;
-
-  function pushCurrent() {
-    if (currentGroupCustomsForms !== null) {
-      customsFormsData.push(currentGroupCustomsForms);
-      currentGroupCustomsForms = null;
-    }
-  }
-
-
+  const lines = [] as string[];
   for await (const line of rl) {
-    if (line === "") {
-      pushCurrent();
-    } else {
-      if (currentGroupCustomsForms === null) {
-        currentGroupCustomsForms = [];
-      }
-      const customsForm = new Set(line);
-      currentGroupCustomsForms = [...currentGroupCustomsForms, customsForm]
-    }
+    lines.push(line);
   }
-  pushCurrent();
 
-  return customsFormsData;
+  return wu(splitIterable(lines, ''))
+    .map(chunk => chunk.map(customsFormString => new Set(customsFormString)))
+    .toArray();
 }
 
 function union<T>(sets: Set<T>[]): Set<T> {

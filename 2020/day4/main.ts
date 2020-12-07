@@ -1,5 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
+import { splitIterable } from "../util/iterators";
+import * as wu from "wu";
 
 interface Passport {
   byr?: string;
@@ -10,6 +12,7 @@ interface Passport {
   ecl?: string;
   pid?: string;
   cid?: string;
+  [key: string]: string | undefined;
 }
 
 async function loadPassportData(): Promise<Passport[]> {
@@ -17,32 +20,22 @@ async function loadPassportData(): Promise<Passport[]> {
     input: fs.createReadStream("input.txt"),
   });
 
-  const passports: Passport[] = [];
-  let currentPassport: Passport | null = null;
-
-  function pushCurrentPassport() {
-    if (currentPassport !== null) {
-      passports.push(currentPassport);
-      currentPassport = null;
-    }
-  }
-
+  const lines = [] as string[];
   for await (const line of rl) {
-    if (line === "") {
-      pushCurrentPassport();
-    } else {
-      if (currentPassport === null) {
-        currentPassport = {};
-      }
-      for (const entry of line.split(" ")) {
-        const [fieldName, value] = entry.split(":");
-        currentPassport = { ...currentPassport, [fieldName]: value };
-      }
-    }
+    lines.push(line);
   }
-  pushCurrentPassport();
 
-  return passports;
+  return (wu(splitIterable(lines, ''))
+    .map(passportLines =>
+      passportLines.flatMap(passportLine => passportLine.split(' '))
+    ).map(passportFieldsStrings => {
+      const passport: Passport = {};
+      for (const passportFieldString of passportFieldsStrings) {
+        const [key, value] = passportFieldString.split(':');
+        passport[key] = value;
+      }
+      return passport;
+    }).toArray())
 }
 
 function isPassportValidPart1(passport: Passport): boolean {
