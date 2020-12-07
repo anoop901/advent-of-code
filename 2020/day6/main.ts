@@ -36,23 +36,18 @@ async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
   return customsFormsData;
 }
 
-function union<T>(setA: Set<T>, setB: Set<T>): Set<T> {
-  const result = new Set(setA)
-  for (const elem of setB) {
-    result.add(elem)
+function union<T>(sets: Set<T>[]): Set<T> {
+  const result = new Set<T>()
+  for (const set of sets) {
+    for (const elem of set) {
+      result.add(elem)
+    }
   }
   return result;
 }
 
-// [set1, set2, set3, set4, set5].reduce(union)
-// union(union(union(union(set1, set2), set3), set4), set5)
-
-function unionAll<T>(sets: Set<T>[]): Set<T> {
-  return sets.reduce(union);
-}
-
 function countQuestionsWhereAnyAnsweredYes(customsForms: CustomsForm[]): number {
-  return unionAll(customsForms).size;
+  return union(customsForms).size;
 }
 
 function getAnswer(customsFormsData: CustomsForm[][]): number {
