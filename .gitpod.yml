@@ -1,0 +1,5 @@
+tasks:
+  - command: npm install
+vscode:
+  extensions:
+    - esbenp.prettier-vscode@5.8.0:cd2Jz796EPVnD5zeCyctPw==
