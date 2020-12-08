@@ -1,5 +1,5 @@
 module.exports = {
-  "transform": {
-    "^.+\\.(ts|tsx)?$": "ts-jest"
-  }
-}
+  transform: {
+    "^.+\\.(ts|tsx)?$": "ts-jest",
+  },
+};

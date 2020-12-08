@@ -4,7 +4,7 @@ import { splitIterable } from "../util/iterators";
 import * as wu from "wu";
 
 type Question = string; // 'a', 'b', ...
-type CustomsForm = Set<string>
+type CustomsForm = Set<string>;
 
 async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
   const rl = readline.createInterface({
@@ -16,16 +16,18 @@ async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
     lines.push(line);
   }
 
-  return wu(splitIterable(lines, ''))
-    .map(chunk => chunk.map(customsFormString => new Set(customsFormString)))
+  return wu(splitIterable(lines, ""))
+    .map((chunk) =>
+      chunk.map((customsFormString) => new Set(customsFormString))
+    )
     .toArray();
 }
 
 function union<T>(sets: Set<T>[]): Set<T> {
-  const result = new Set<T>()
+  const result = new Set<T>();
   for (const set of sets) {
     for (const elem of set) {
-      result.add(elem)
+      result.add(elem);
     }
   }
   return result;
@@ -49,7 +51,9 @@ function intersection<T>(sets: Set<T>[]): Set<T> {
   return result;
 }
 
-function countQuestionsWhereAnyAnsweredYes(customsForms: CustomsForm[]): number {
+function countQuestionsWhereAnyAnsweredYes(
+  customsForms: CustomsForm[]
+): number {
   return union(customsForms).size;
 }
 
@@ -59,7 +63,9 @@ function getAnswerPart1(customsFormsData: CustomsForm[][]): number {
     .reduce((a, b) => a + b, 0);
 }
 
-function countQuestionsWhereAllAnsweredYes(customsForms: CustomsForm[]): number {
+function countQuestionsWhereAllAnsweredYes(
+  customsForms: CustomsForm[]
+): number {
   return intersection(customsForms).size;
 }
 

@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import * as readline from 'readline';
+import * as readline from "readline";
 
 async function loadBoardingPasses(): Promise<string[]> {
-  const rl = readline.createInterface(fs.createReadStream('input.txt'))
+  const rl = readline.createInterface(fs.createReadStream("input.txt"));
   const ret = [];
   for await (const line of rl) {
     ret.push(line);
@@ -10,7 +10,11 @@ async function loadBoardingPasses(): Promise<string[]> {
   return ret;
 }
 
-function binarySpacePartitioningToNumber(bsp: string, lowerHalfChar: string, upperHalfChar: string) {
+function binarySpacePartitioningToNumber(
+  bsp: string,
+  lowerHalfChar: string,
+  upperHalfChar: string
+) {
   // 'BBFFFBF'
   // '' -> 0
   // 'B' -> 1
@@ -33,8 +37,8 @@ function boardingPassToSeatId(boardingPass: string): number {
   const rowPart = boardingPass.slice(0, 7);
   const columnPart = boardingPass.slice(7);
 
-  const rowIndex = binarySpacePartitioningToNumber(rowPart, 'F', 'B');
-  const columnIndex = binarySpacePartitioningToNumber(columnPart, 'L', 'R');
+  const rowIndex = binarySpacePartitioningToNumber(rowPart, "F", "B");
+  const columnIndex = binarySpacePartitioningToNumber(columnPart, "L", "R");
 
   const seatId = rowIndex * 8 + columnIndex;
   return seatId;
@@ -42,7 +46,7 @@ function boardingPassToSeatId(boardingPass: string): number {
 
 function findHoleInefficient(nums: number[]): number {
   // [5, 6, 7, 9, 10] -> 8
-  const sortedNums = [...nums].sort((a, b) => a - b)
+  const sortedNums = [...nums].sort((a, b) => a - b);
   for (let i = 0; i < sortedNums.length - 1; i++) {
     const val1 = sortedNums[i];
     const val2 = sortedNums[i + 1];
@@ -50,7 +54,7 @@ function findHoleInefficient(nums: number[]): number {
       return val1 + 1;
     }
   }
-  throw new Error('no hole in array');
+  throw new Error("no hole in array");
 }
 
 function findHole(nums: number[]): number {
@@ -60,13 +64,13 @@ function findHole(nums: number[]): number {
       return num + 1;
     }
   }
-  throw new Error('no hole in array');
+  throw new Error("no hole in array");
 }
 
 async function main() {
-  const boardingPasses = (await loadBoardingPasses());
+  const boardingPasses = await loadBoardingPasses();
 
-  const seatIds = boardingPasses.map(boardingPassToSeatId)
+  const seatIds = boardingPasses.map(boardingPassToSeatId);
   console.log(Math.max(...seatIds));
   console.log(findHole(seatIds));
 }

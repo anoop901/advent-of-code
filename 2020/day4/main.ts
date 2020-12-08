@@ -25,17 +25,19 @@ async function loadPassportData(): Promise<Passport[]> {
     lines.push(line);
   }
 
-  return (wu(splitIterable(lines, ''))
-    .map(passportLines =>
-      passportLines.flatMap(passportLine => passportLine.split(' '))
-    ).map(passportFieldsStrings => {
+  return wu(splitIterable(lines, ""))
+    .map((passportLines) =>
+      passportLines.flatMap((passportLine) => passportLine.split(" "))
+    )
+    .map((passportFieldsStrings) => {
       const passport: Passport = {};
       for (const passportFieldString of passportFieldsStrings) {
-        const [key, value] = passportFieldString.split(':');
+        const [key, value] = passportFieldString.split(":");
         passport[key] = value;
       }
       return passport;
-    }).toArray())
+    })
+    .toArray();
 }
 
 function isPassportValidPart1(passport: Passport): boolean {
