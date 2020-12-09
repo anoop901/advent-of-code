@@ -55,18 +55,17 @@ function searchForContainableBags(
   startingBagType: BagType,
   containableBagsMap: Map<BagTypeString, BagType[]>
 ): BagType[] {
-  const stack = [startingBagType];
-  const result = [];
+  const stack = [] as BagType[];
+  const result = [] as BagType[];
 
-  let current = stack.pop();
+  let current: BagType | undefined = startingBagType;
   while (current !== undefined) {
-    result.push(current);
-
     const directlyContainableBags =
       containableBagsMap.get(JSON.stringify(current)) ?? [];
 
     for (const otherBagType of directlyContainableBags) {
       if (!result.includes(otherBagType)) {
+        result.push(otherBagType);
         stack.push(otherBagType);
       }
     }
@@ -86,7 +85,7 @@ async function main() {
     },
     containableBagsMap
   );
-  console.log(containableBags.length - 1);
+  console.log(containableBags.length);
 }
 
 main();
