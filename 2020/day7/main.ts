@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as readline from "readline";
+import { sumNumberArray } from "../util/numbers";
 import { parse as parseLuggageRule } from "./luggage_rule";
 
 type BagTypeString = string;
@@ -51,6 +52,18 @@ function generateContainableBagsMap(
   return result;
 }
 
+function luggageRulesToMap(
+  luggageRules: LuggageRule[]
+): Map<BagTypeString, Condition[]> {
+  const result = new Map<BagTypeString, Condition[]>();
+  for (const luggageRule of luggageRules) {
+    const containingBag = luggageRule.bagType;
+    const key = JSON.stringify(containingBag);
+    result.set(key, luggageRule.conditions);
+  }
+  return result;
+}
+
 function searchForContainableBags(
   startingBagType: BagType,
   containableBagsMap: Map<BagTypeString, BagType[]>
@@ -75,17 +88,40 @@ function searchForContainableBags(
   return result;
 }
 
+function numberOfBagsContainedInBagType(
+  bagType: BagType,
+  luggageRulesMap: Map<BagTypeString, Condition[]>
+): number {
+  const conditions = luggageRulesMap.get(JSON.stringify(bagType)) ?? [];
+
+  return sumNumberArray(
+    conditions.map(
+      (condition) =>
+        condition.expectedNumber *
+        (1 + numberOfBagsContainedInBagType(condition.bagType, luggageRulesMap))
+    )
+  );
+}
+
 async function main() {
+  const myBagType = {
+    adjective: "shiny",
+    color: "gold",
+  };
   const luggageRules = await loadLuggageRules();
   const containableBagsMap = generateContainableBagsMap(luggageRules);
   const containableBags = searchForContainableBags(
-    {
-      adjective: "shiny",
-      color: "gold",
-    },
+    myBagType,
     containableBagsMap
   );
   console.log(containableBags.length);
+
+  const luggageRulesMap = luggageRulesToMap(luggageRules);
+  const numberOfBagsContained = numberOfBagsContainedInBagType(
+    myBagType,
+    luggageRulesMap
+  );
+  console.log(numberOfBagsContained);
 }
 
 main();
