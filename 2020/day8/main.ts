@@ -35,6 +35,8 @@ function* interpretBootCode(
 
     if (instructionIndex === bootCode.length) {
       break;
+    } else if (instructionIndex > bootCode.length || instructionIndex < 0) {
+      throw new Error("instruction index out of bounds");
     }
 
     const instruction = bootCode[instructionIndex];
@@ -121,7 +123,7 @@ function accumulatorValueOnFixedBootCodeTermination(
       }
     }
   }
-  throw new Error("unable to fix boot code");
+  throw new Error("unable to fix program");
 }
 
 async function main() {
