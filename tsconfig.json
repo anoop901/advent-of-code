@@ -2,6 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "target": "es2019",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "node"
   }
 }

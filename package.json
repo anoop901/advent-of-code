@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.17.20",
     "pegjs": "^0.10.0",
     "ts-node": "^9.1.0",
     "ts-pegjs": "^0.2.7",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.16",
+    "@types/lodash": "^4.14.165",
     "@types/node": "^14.14.10",
     "@types/wu": "^2.1.42",
     "jest": "^26.6.3",
