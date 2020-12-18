@@ -1,3 +1,5 @@
-export function sumNumberArray(arr: number[]): number {
-  return arr.reduce((a, b) => a + b, 0);
+import wu from "wu";
+
+export function sumNumbers(arr: Iterable<number>): number {
+  return wu(arr).reduce((a, b) => a + b, 0);
 }

@@ -1,7 +1,7 @@
-import { sumNumberArray } from "./numbers";
+import { sumNumbers } from "./numbers";
 
 describe("sumNumberArray", () => {
   test("basic", () => {
-    expect(sumNumberArray([5, 2, 9])).toBe(5 + 2 + 9);
+    expect(sumNumbers([5, 2, 9])).toBe(5 + 2 + 9);
   });
 });

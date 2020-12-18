@@ -1,5 +1,5 @@
 import wu from "wu";
-import { sumNumberArray } from "../util/numbers";
+import { sumNumbers } from "../util/numbers";
 
 export function numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(
   adapters: number[]
@@ -33,7 +33,7 @@ export function numberOfWaysToConnectChartingOutletToDevice(
       compatibleAdapters.shift();
     }
 
-    const pathsFromCurrentAdapterToDevice = sumNumberArray(
+    const pathsFromCurrentAdapterToDevice = sumNumbers(
       compatibleAdapters.map(
         (adapter) => pathsFromAdapterToDevice.get(adapter) ?? 1
       )

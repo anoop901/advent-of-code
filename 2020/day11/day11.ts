@@ -1,6 +1,6 @@
 import wu from "wu";
 import * as _ from "lodash";
-import { sumNumberArray } from "../util/numbers";
+import { sumNumbers } from "../util/numbers";
 
 export type SeatState = "empty" | "occupied" | "floor";
 
@@ -67,7 +67,7 @@ export function runRound(waitingAreaState: WaitingAreaState): WaitingAreaState {
 }
 
 function countOccupiedSeats(waitingAreaState: WaitingAreaState): number {
-  return sumNumberArray(
+  return sumNumbers(
     waitingAreaState.seatStates.map(
       (row) => row.filter((seatState) => seatState === "occupied").length
     )

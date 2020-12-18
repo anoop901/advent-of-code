@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as readline from "readline";
-import { sumNumberArray } from "../util/numbers";
+import { sumNumbers } from "../util/numbers";
 import { parse as parseLuggageRule } from "./luggage_rule";
 
 type BagTypeString = string;
@@ -94,7 +94,7 @@ function numberOfBagsContainedInBagType(
 ): number {
   const conditions = luggageRulesMap.get(JSON.stringify(bagType)) ?? [];
 
-  return sumNumberArray(
+  return sumNumbers(
     conditions.map(
       (condition) =>
         condition.expectedNumber *
