@@ -1,5 +1,6 @@
-import * as fs from "fs";
-import * as readline from "readline";
+import wu from "wu";
+import { countMatching } from "../util/iterators";
+import loadInputLines from "../util/loadInputLines";
 
 interface PasswordPolicy {
   character: string;
@@ -7,39 +8,32 @@ interface PasswordPolicy {
   max: number;
 }
 
-async function loadInput(): Promise<
+async function loadPasswordsAndPolicies(): Promise<
   { password: string; policy: PasswordPolicy }[]
 > {
-  const rl = readline.createInterface({
-    input: fs.createReadStream("input.txt"),
-  });
-  const ret = [];
-  for await (const line of rl) {
-    const pattern = /^(?<minOccurrences>\d+)-(?<maxOccurrences>\d+) (?<character>.): (?<password>.*)$/;
+  return (await loadInputLines()).map((line) => {
+    const pattern = /^(?<min>\d+)-(?<max>\d+) (?<character>.): (?<password>.*)$/;
     const match = pattern.exec(line);
     if (match != null && match.groups != null) {
-      ret.push({
+      return {
         password: match.groups["password"],
         policy: {
           character: match.groups["character"],
-          min: parseInt(match.groups["minOccurrences"]),
-          max: parseInt(match.groups["maxOccurrences"]),
+          min: Number(match.groups["min"]),
+          max: Number(match.groups["max"]),
         },
-      });
+      };
     } else {
       throw new Error(`malformed input line "${line}"`);
     }
-  }
-  return ret;
+  });
 }
 
 function isPasswordValidPart1(
   password: string,
   policy: PasswordPolicy
 ): boolean {
-  const numOccurrences = Array.from(password)
-    .map((c) => c === policy.character)
-    .reduce((acc, x) => (x ? acc + 1 : acc), 0);
+  const numOccurrences = countMatching(password, (c) => c === policy.character);
   return policy.min <= numOccurrences && numOccurrences <= policy.max;
 }
 
@@ -57,13 +51,13 @@ function countValidPasswords(
   passwordsAndPolicies: { password: string; policy: PasswordPolicy }[],
   isPasswordValid: (password: string, policy: PasswordPolicy) => boolean
 ) {
-  return passwordsAndPolicies
-    .map(({ password, policy }) => isPasswordValid(password, policy))
-    .reduce((acc, x) => (x ? acc + 1 : acc), 0);
+  return countMatching(passwordsAndPolicies, ({ password, policy }) =>
+    isPasswordValid(password, policy)
+  );
 }
 
 async function main() {
-  const passwordsAndPolicies = await loadInput();
+  const passwordsAndPolicies = await loadPasswordsAndPolicies();
   console.log(countValidPasswords(passwordsAndPolicies, isPasswordValidPart1));
   console.log(countValidPasswords(passwordsAndPolicies, isPasswordValidPart2));
 }
