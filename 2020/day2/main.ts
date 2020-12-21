@@ -1,12 +1,10 @@
-import wu from "wu";
-import { countMatching } from "../util/iterators";
 import loadInputLines from "../util/loadInputLines";
-
-interface PasswordPolicy {
-  character: string;
-  min: number;
-  max: number;
-}
+import {
+  PasswordPolicy,
+  countValidPasswords,
+  isPasswordValidPart1,
+  isPasswordValidPart2,
+} from "./day2";
 
 async function loadPasswordsAndPolicies(): Promise<
   { password: string; policy: PasswordPolicy }[]
@@ -27,34 +25,6 @@ async function loadPasswordsAndPolicies(): Promise<
       throw new Error(`malformed input line "${line}"`);
     }
   });
-}
-
-function isPasswordValidPart1(
-  password: string,
-  policy: PasswordPolicy
-): boolean {
-  const numOccurrences = countMatching(password, (c) => c === policy.character);
-  return policy.min <= numOccurrences && numOccurrences <= policy.max;
-}
-
-function isPasswordValidPart2(
-  password: string,
-  policy: PasswordPolicy
-): boolean {
-  const numOccurrences = countMatching(
-    [password[policy.min - 1], password[policy.max - 1]],
-    (c) => c === policy.character
-  );
-  return numOccurrences === 1;
-}
-
-function countValidPasswords(
-  passwordsAndPolicies: { password: string; policy: PasswordPolicy }[],
-  isPasswordValid: (password: string, policy: PasswordPolicy) => boolean
-) {
-  return countMatching(passwordsAndPolicies, ({ password, policy }) =>
-    isPasswordValid(password, policy)
-  );
 }
 
 async function main() {
