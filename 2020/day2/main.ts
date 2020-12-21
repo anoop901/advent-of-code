@@ -41,9 +41,10 @@ function isPasswordValidPart2(
   password: string,
   policy: PasswordPolicy
 ): boolean {
-  const numOccurrences = [password[policy.min - 1], password[policy.max - 1]]
-    .map((c) => c === policy.character)
-    .reduce((acc, x) => (x ? acc + 1 : acc), 0);
+  const numOccurrences = countMatching(
+    [password[policy.min - 1], password[policy.max - 1]],
+    (c) => c === policy.character
+  );
   return numOccurrences === 1;
 }
 
