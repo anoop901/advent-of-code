@@ -1,5 +1,4 @@
-import * as fs from "fs";
-import * as readline from "readline";
+import loadInputLines from "../util/loadInputLines";
 
 type Operation = "acc" | "jmp" | "nop";
 
@@ -9,13 +8,7 @@ interface Instruction {
 }
 
 async function loadBootCode(): Promise<Instruction[]> {
-  const rl = readline.createInterface(fs.createReadStream("input.txt"));
-  const lines = [] as string[];
-  for await (const line of rl) {
-    lines.push(line);
-  }
-
-  return lines.map((line) => {
+  return (await loadInputLines()).map((line) => {
     const [operation, argumentString] = line.split(" ");
     const argument = parseInt(argumentString, 10);
     return { operation: operation as Operation, argument };
@@ -30,7 +23,6 @@ function* interpretBootCode(
   let accumulator = 0;
   let instructionIndex = 0;
   while (true) {
-    console.log({ instructionIndex, accumulator });
     yield { instructionIndex, accumulator };
 
     if (instructionIndex === bootCode.length) {
@@ -92,11 +84,6 @@ function patchBootCode(
     currentInstruction.operation === "jmp"
   ) {
     const patchedBootCode = [...bootCode];
-    console.log(
-      `at index ${instructionIndex}, flipped ${JSON.stringify(
-        currentInstruction
-      )} to ${JSON.stringify(newInstruction)}`
-    );
     patchedBootCode[instructionIndex] = newInstruction;
     return patchedBootCode;
   } else {

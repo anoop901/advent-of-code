@@ -1,15 +1,9 @@
-import * as fs from "fs";
-import * as readline from "readline";
+import loadInputLines from "../util/loadInputLines";
 
 async function loadMap(): Promise<boolean[][]> {
-  const rl = readline.createInterface({
-    input: fs.createReadStream("input.txt"),
-  });
-  const ret = [];
-  for await (const line of rl) {
-    ret.push(Array.from(line, (c) => c === "#"));
-  }
-  return ret;
+  return (await loadInputLines()).map((line) =>
+    Array.from(line, (c) => c === "#")
+  );
 }
 
 function countTreesInPath(
@@ -17,7 +11,6 @@ function countTreesInPath(
   slope: { right: number; down: number }
 ): number {
   let count = 0;
-  let cellsChecked = 0;
   for (
     let cellsChecked = 0;
     cellsChecked * slope.down < map.length;

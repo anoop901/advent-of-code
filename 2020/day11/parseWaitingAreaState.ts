@@ -1,9 +1,8 @@
+import loadInputLines from "../util/loadInputLines";
 import { WaitingAreaState } from "./day11";
 
-export default function parseWaitingAreaState(
-  waitingAreaStateString: string
-): WaitingAreaState {
-  const seatStates = waitingAreaStateString.split("\n").map((rowString) =>
+export default async function loadWaitingAreaState(): Promise<WaitingAreaState> {
+  const seatStates = (await loadInputLines()).map((rowString) =>
     Array.from(rowString).map((seatString) => {
       switch (seatString) {
         case "L":

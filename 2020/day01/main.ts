@@ -1,19 +1,13 @@
-import * as fs from "fs";
-import * as readline from "readline";
+import loadInputLines from "../util/loadInputLines";
 
 async function loadExpenseReport(): Promise<number[]> {
-  const rl = readline.createInterface({
-    input: fs.createReadStream("input.txt"),
-  });
-  const ret = [];
-  for await (const line of rl) {
+  return (await loadInputLines()).map((line) => {
     const expense = parseInt(line);
     if (isNaN(expense)) {
       throw new Error(`malformed input line ${line}`);
     }
-    ret.push(expense);
-  }
-  return ret;
+    return expense;
+  });
 }
 
 function getAnswerPart1(expenseReport: number[]): number {

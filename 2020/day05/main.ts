@@ -1,13 +1,7 @@
-import * as fs from "fs";
-import * as readline from "readline";
+import loadInputLines from "../util/loadInputLines";
 
 async function loadBoardingPasses(): Promise<string[]> {
-  const rl = readline.createInterface(fs.createReadStream("input.txt"));
-  const ret = [];
-  for await (const line of rl) {
-    ret.push(line);
-  }
-  return ret;
+  return loadInputLines();
 }
 
 function binarySpacePartitioningToNumber(

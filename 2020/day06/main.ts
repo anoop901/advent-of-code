@@ -1,20 +1,12 @@
-import * as fs from "fs";
-import * as readline from "readline";
 import { splitIterable } from "../util/iterators";
 import wu from "wu";
+import loadInputLines from "../util/loadInputLines";
 
 type Question = string; // 'a', 'b', ...
 type CustomsForm = Set<string>;
 
 async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
-  const rl = readline.createInterface({
-    input: fs.createReadStream("input.txt"),
-  });
-
-  const lines = [] as string[];
-  for await (const line of rl) {
-    lines.push(line);
-  }
+  const lines = await loadInputLines();
 
   return wu(splitIterable(lines, ""))
     .map((chunk) =>

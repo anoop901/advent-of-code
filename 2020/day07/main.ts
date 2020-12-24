@@ -1,5 +1,4 @@
-import * as fs from "fs";
-import * as readline from "readline";
+import loadInputLines from "../util/loadInputLines";
 import { sumNumbers } from "../util/numbers";
 import { parse as parseLuggageRule } from "./luggage_rule";
 
@@ -21,13 +20,7 @@ interface Condition {
 }
 
 async function loadLuggageRules(): Promise<LuggageRule[]> {
-  const rl = readline.createInterface(fs.createReadStream("input.txt"));
-  const lines = [] as string[];
-  for await (const line of rl) {
-    lines.push(line);
-  }
-
-  return lines.map((line) => parseLuggageRule(line));
+  return (await loadInputLines()).map((line) => parseLuggageRule(line));
 }
 
 function generateContainableBagsMap(

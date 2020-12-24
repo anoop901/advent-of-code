@@ -2,7 +2,7 @@ import loadInputLines from "../util/loadInputLines";
 import { MaskBit, Program, sumMemoryAfterExecuting } from "./day14";
 
 async function parseProgram(): Promise<Program> {
-  const lines = await loadInputLines("input.txt");
+  const lines = await loadInputLines();
   return lines.map((line) => {
     const match1 = /^mask = ([01X]{36})$/.exec(line);
     if (match1 !== null) {

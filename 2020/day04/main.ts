@@ -1,7 +1,6 @@
-import * as fs from "fs";
-import * as readline from "readline";
 import { splitIterable } from "../util/iterators";
 import wu from "wu";
+import loadInputLines from "../util/loadInputLines";
 
 interface Passport {
   byr?: string;
@@ -16,14 +15,7 @@ interface Passport {
 }
 
 async function loadPassportData(): Promise<Passport[]> {
-  const rl = readline.createInterface({
-    input: fs.createReadStream("input.txt"),
-  });
-
-  const lines = [] as string[];
-  for await (const line of rl) {
-    lines.push(line);
-  }
+  const lines = await loadInputLines();
 
   return wu(splitIterable(lines, ""))
     .map((passportLines) =>
