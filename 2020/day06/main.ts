@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 import { splitIterable } from "../util/iterators";
-import * as wu from "wu";
+import wu from "wu";
 
 type Question = string; // 'a', 'b', ...
 type CustomsForm = Set<string>;
