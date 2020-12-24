@@ -1,4 +1,4 @@
-import { findEncryptionWeakness, firstNumberThatBreaksPattern } from "./day9";
+import { findEncryptionWeakness, firstNumberThatBreaksPattern } from "./day09";
 import { loadXmasData } from "./parsing";
 
 async function main() {

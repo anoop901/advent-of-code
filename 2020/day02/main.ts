@@ -4,7 +4,7 @@ import {
   countValidPasswords,
   isPasswordValidPart1,
   isPasswordValidPart2,
-} from "./day2";
+} from "./day02";
 
 async function loadPasswordsAndPolicies(): Promise<
   { password: string; policy: PasswordPolicy }[]

@@ -3,7 +3,7 @@ import {
   anyPairSumToTarget,
   findEncryptionWeakness,
   firstNumberThatBreaksPattern,
-} from "./day9";
+} from "./day09";
 
 describe("anyPairSumToTarget", () => {
   test("basic match", () => {
