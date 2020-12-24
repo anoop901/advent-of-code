@@ -10,13 +10,10 @@ My solutions to [Advent of Code](adventofcode.com).
 
 ## Running a challenge
 
-There is a `main.ts` and `input.txt` inside each of the day subdirectories in
-each year. Each `main.ts` file can be executed from the repository root with
-`npx ts-node`. It accepts the input file on standard input. For example, to run
-the 2020 day 1 challenge:
+`cd` to the repository root. For example, to run 2020 day 14's challenge, run:
 
 ```
-npx ts-node 2020/day01/main.ts < 2020/day01/input.txt
+./run_challenge -y 2020 -d 14
 ```
 
 The program will print two numbers, which are the answers to each part,
