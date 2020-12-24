@@ -5,18 +5,18 @@ describe("numberOfOccupiedSeatsAfterStabilization", () => {
   test("example", () => {
     expect(
       numberOfOccupiedSeatsAfterStabilization(
-        parseWaitingAreaState(
-          "L.LL.LL.LL\n" +
-            "LLLLLLL.LL\n" +
-            "L.L.L..L..\n" +
-            "LLLL.LL.LL\n" +
-            "L.LL.LL.LL\n" +
-            "L.LLLLL.LL\n" +
-            "..L.L.....\n" +
-            "LLLLLLLLLL\n" +
-            "L.LLLLLL.L\n" +
-            "L.LLLLL.LL\n"
-        )
+        parseWaitingAreaState([
+          "L.LL.LL.LL",
+          "LLLLLLL.LL",
+          "L.L.L..L..",
+          "LLLL.LL.LL",
+          "L.LL.LL.LL",
+          "L.LLLLL.LL",
+          "..L.L.....",
+          "LLLLLLLLLL",
+          "L.LLLLLL.L",
+          "L.LLLLL.LL",
+        ])
       )
     ).toBe(37);
   });
@@ -24,58 +24,58 @@ describe("numberOfOccupiedSeatsAfterStabilization", () => {
 
 describe("runRound", () => {
   test("example round 1", () => {
-    const before = parseWaitingAreaState(
-      "L.LL.LL.LL\n" +
-        "LLLLLLL.LL\n" +
-        "L.L.L..L..\n" +
-        "LLLL.LL.LL\n" +
-        "L.LL.LL.LL\n" +
-        "L.LLLLL.LL\n" +
-        "..L.L.....\n" +
-        "LLLLLLLLLL\n" +
-        "L.LLLLLL.L\n" +
-        "L.LLLLL.LL\n"
-    );
-    const after = parseWaitingAreaState(
-      "#.##.##.##\n" +
-        "#######.##\n" +
-        "#.#.#..#..\n" +
-        "####.##.##\n" +
-        "#.##.##.##\n" +
-        "#.#####.##\n" +
-        "..#.#.....\n" +
-        "##########\n" +
-        "#.######.#\n" +
-        "#.#####.##\n"
-    );
+    const before = parseWaitingAreaState([
+      "L.LL.LL.LL",
+      "LLLLLLL.LL",
+      "L.L.L..L..",
+      "LLLL.LL.LL",
+      "L.LL.LL.LL",
+      "L.LLLLL.LL",
+      "..L.L.....",
+      "LLLLLLLLLL",
+      "L.LLLLLL.L",
+      "L.LLLLL.LL",
+    ]);
+    const after = parseWaitingAreaState([
+      "#.##.##.##",
+      "#######.##",
+      "#.#.#..#..",
+      "####.##.##",
+      "#.##.##.##",
+      "#.#####.##",
+      "..#.#.....",
+      "##########",
+      "#.######.#",
+      "#.#####.##",
+    ]);
     expect(runRound(before)).toEqual(after);
   });
 
   test("example round 2", () => {
-    const before = parseWaitingAreaState(
-      "#.##.##.##\n" +
-        "#######.##\n" +
-        "#.#.#..#..\n" +
-        "####.##.##\n" +
-        "#.##.##.##\n" +
-        "#.#####.##\n" +
-        "..#.#.....\n" +
-        "##########\n" +
-        "#.######.#\n" +
-        "#.#####.##\n"
-    );
-    const after = parseWaitingAreaState(
-      "#.LL.L#.##\n" +
-        "#LLLLLL.L#\n" +
-        "L.L.L..L..\n" +
-        "#LLL.LL.L#\n" +
-        "#.LL.LL.LL\n" +
-        "#.LLLL#.##\n" +
-        "..L.L.....\n" +
-        "#LLLLLLLL#\n" +
-        "#.LLLLLL.L\n" +
-        "#.#LLLL.##\n"
-    );
+    const before = parseWaitingAreaState([
+      "#.##.##.##",
+      "#######.##",
+      "#.#.#..#..",
+      "####.##.##",
+      "#.##.##.##",
+      "#.#####.##",
+      "..#.#.....",
+      "##########",
+      "#.######.#",
+      "#.#####.##",
+    ]);
+    const after = parseWaitingAreaState([
+      "#.LL.L#.##",
+      "#LLLLLL.L#",
+      "L.L.L..L..",
+      "#LLL.LL.L#",
+      "#.LL.LL.LL",
+      "#.LLLL#.##",
+      "..L.L.....",
+      "#LLLLLLLL#",
+      "#.LLLLLL.L",
+      "#.#LLLL.##",
+    ]);
     expect(runRound(before)).toEqual(after);
   });
 });

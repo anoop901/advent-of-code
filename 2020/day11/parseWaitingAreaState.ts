@@ -1,8 +1,10 @@
 import loadInputLines from "../util/loadInputLines";
 import { WaitingAreaState } from "./day11";
 
-export default async function loadWaitingAreaState(): Promise<WaitingAreaState> {
-  const seatStates = (await loadInputLines()).map((rowString) =>
+export default function parseWaitingAreaState(
+  waitingAreaLinesStrings: string[]
+): WaitingAreaState {
+  const seatStates = waitingAreaLinesStrings.map((rowString) =>
     Array.from(rowString).map((seatString) => {
       switch (seatString) {
         case "L":
@@ -16,4 +18,8 @@ export default async function loadWaitingAreaState(): Promise<WaitingAreaState> 
     })
   );
   return { seatStates, height: seatStates.length, width: seatStates[0].length };
+}
+
+export async function loadWaitingAreaState(): Promise<WaitingAreaState> {
+  return parseWaitingAreaState(await loadInputLines());
 }
