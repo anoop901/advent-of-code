@@ -14,10 +14,14 @@ interface Location {
   y: number;
 }
 
-function findNeighborLocations(
+type findNeighborLocationsFunction = (
   location: Location,
-  width: number,
-  height: number
+  waitingAreaState: WaitingAreaState
+) => Location[];
+
+export function findNeighborLocationsImmediate(
+  location: Location,
+  waitingAreaState: WaitingAreaState
 ): Location[] {
   return [
     { x: location.x - 1, y: location.y - 1 },
@@ -28,10 +32,19 @@ function findNeighborLocations(
     { x: location.x + 1, y: location.y - 1 },
     { x: location.x + 1, y: location.y },
     { x: location.x + 1, y: location.y + 1 },
-  ].filter(({ x, y }) => x >= 0 && y >= 0 && x < width && y < height);
+  ].filter(
+    ({ x, y }) =>
+      x >= 0 &&
+      y >= 0 &&
+      x < waitingAreaState.width &&
+      y < waitingAreaState.height
+  );
 }
 
-export function runRound(waitingAreaState: WaitingAreaState): WaitingAreaState {
+export function runRound(
+  waitingAreaState: WaitingAreaState,
+  findNeighborLocations: findNeighborLocationsFunction
+): WaitingAreaState {
   return {
     width: waitingAreaState.width,
     height: waitingAreaState.height,
@@ -39,8 +52,7 @@ export function runRound(waitingAreaState: WaitingAreaState): WaitingAreaState {
       row.map((seatState, x) => {
         const neighborLocations = findNeighborLocations(
           { x, y },
-          waitingAreaState.width,
-          waitingAreaState.height
+          waitingAreaState
         );
         const occupiedSeatsNeighbors = neighborLocations.filter(
           ({ x, y }) => waitingAreaState.seatStates[y][x] === "occupied"
@@ -68,11 +80,15 @@ function countOccupiedSeats(waitingAreaState: WaitingAreaState): number {
 }
 
 export function numberOfOccupiedSeatsAfterStabilization(
-  initialWaitingAreaState: WaitingAreaState
+  initialWaitingAreaState: WaitingAreaState,
+  findNeighborLocations: findNeighborLocationsFunction
 ): number {
   let currentWaitingAreaState = initialWaitingAreaState;
   while (true) {
-    const nextWaitingAreaState = runRound(currentWaitingAreaState);
+    const nextWaitingAreaState = runRound(
+      currentWaitingAreaState,
+      findNeighborLocations
+    );
     if (isEqual(currentWaitingAreaState, nextWaitingAreaState)) {
       return countOccupiedSeats(currentWaitingAreaState);
     }
