@@ -1,5 +1,3 @@
-import { Pipe } from "stream";
-
 class Pipeline<T, R> {
   constructor(private readonly fn: (arg: T) => R) {}
   then<S>(nextFn: (arg: R) => S): Pipeline<T, S> {
