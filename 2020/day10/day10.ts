@@ -1,5 +1,6 @@
 import wu from "wu";
-import { sumNumbers } from "../../util/numbers";
+import chain from "../../util/chain";
+import { map, sum } from "../../util/iterators";
 
 export function numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(
   adapters: number[]
@@ -33,11 +34,10 @@ export function numberOfWaysToConnectChartingOutletToDevice(
       compatibleAdapters.shift();
     }
 
-    const pathsFromCurrentAdapterToDevice = sumNumbers(
-      compatibleAdapters.map(
-        (adapter) => pathsFromAdapterToDevice.get(adapter) ?? 1
-      )
-    );
+    const pathsFromCurrentAdapterToDevice = chain(compatibleAdapters)
+      .then(map((adapter) => pathsFromAdapterToDevice.get(adapter) ?? 1))
+      .then(sum)
+      .run();
     pathsFromAdapterToDevice.set(
       currentAdapter,
       pathsFromCurrentAdapterToDevice

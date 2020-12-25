@@ -6,9 +6,9 @@ import {
   filterNonNullish,
   findFirstMatching,
   map,
+  sum,
   takeWhile,
 } from "../../util/iterators";
-import { sumNumbers } from "../../util/numbers";
 
 export type SeatState = "empty" | "occupied" | "floor";
 
@@ -152,11 +152,16 @@ export function runRound(
 }
 
 function countOccupiedSeats(waitingAreaState: WaitingAreaState): number {
-  return sumNumbers(
-    waitingAreaState.seatStates.map(
-      (row) => row.filter((seatState) => seatState === "occupied").length
+  return chain(waitingAreaState.seatStates)
+    .then(
+      map((row) =>
+        chain(row)
+          .then(countMatching((seatState) => seatState === "occupied"))
+          .run()
+      )
     )
-  );
+    .then(sum)
+    .run();
 }
 
 export function numberOfOccupiedSeatsAfterStabilization(

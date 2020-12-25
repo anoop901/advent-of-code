@@ -5,9 +5,11 @@ import {
   filter,
   filterNonNullish,
   findFirstMatching,
+  fold,
   length,
   map,
   splitIterable,
+  sum,
   takeWhile,
 } from "./iterators";
 
@@ -207,5 +209,22 @@ describe("length", () => {
         .then(length)
         .run()
     ).toBe(4);
+  });
+});
+
+describe("fold", () => {
+  test("basic", () => {
+    expect(fold(0, (acc, x: number) => acc + x)([5, 2, 9])).toBe(16);
+  });
+  test("different accumulator type", () => {
+    expect(
+      fold(":", (acc, x: number) => acc + x.toString() + ":")([5, 2, 9])
+    ).toBe(":5:2:9:");
+  });
+});
+
+describe("sum", () => {
+  test("basic", () => {
+    expect(sum([5, 2, 9])).toBe(16);
   });
 });

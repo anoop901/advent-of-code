@@ -1,7 +1,4 @@
-import { maxHeaderSize } from "http";
-import { add } from "lodash";
-import { isReturnStatement } from "typescript";
-import { sumNumbers } from "../../util/numbers";
+import { sum } from "../../util/iterators";
 
 export type Bit = "1" | "0";
 export type MaskBit = "X" | Bit;
@@ -114,5 +111,5 @@ export function sumMemoryAfterExecuting(
   version2 = false
 ): number {
   const finalMemory = executeProgram(program, version2);
-  return sumNumbers(finalMemory.values());
+  return sum(finalMemory.values());
 }

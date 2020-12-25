@@ -93,3 +93,15 @@ export function length<T>(iterable: Iterable<T>): number {
   }
   return result;
 }
+
+export function fold<A, T>(initial: A, fn: (acc: A, x: T) => A) {
+  return (iterable: Iterable<T>): A => {
+    let result = initial;
+    for (const t of iterable) {
+      result = fn(result, t);
+    }
+    return result;
+  };
+}
+
+export const sum = fold(0, (acc, x: number) => acc + x);

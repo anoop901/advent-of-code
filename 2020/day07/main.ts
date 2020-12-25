@@ -1,6 +1,7 @@
 import loadInputLines from "../../util/loadInputLines";
-import { sumNumbers } from "../../util/numbers";
+import { map, sum } from "../../util/iterators";
 import { parse as parseLuggageRule } from "./luggage_rule";
+import chain from "../../util/chain";
 
 type BagTypeString = string;
 
@@ -87,13 +88,17 @@ function numberOfBagsContainedInBagType(
 ): number {
   const conditions = luggageRulesMap.get(JSON.stringify(bagType)) ?? [];
 
-  return sumNumbers(
-    conditions.map(
-      (condition) =>
-        condition.expectedNumber *
-        (1 + numberOfBagsContainedInBagType(condition.bagType, luggageRulesMap))
+  return chain(conditions)
+    .then(
+      map(
+        (condition) =>
+          condition.expectedNumber *
+          (1 +
+            numberOfBagsContainedInBagType(condition.bagType, luggageRulesMap))
+      )
     )
-  );
+    .then(sum)
+    .run();
 }
 
 async function main() {
