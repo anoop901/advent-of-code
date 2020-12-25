@@ -1,5 +1,4 @@
-import wu from "wu";
-import * as _ from "lodash";
+import { isEqual } from "lodash";
 import { sumNumbers } from "../util/numbers";
 
 export type SeatState = "empty" | "occupied" | "floor";
@@ -36,33 +35,27 @@ export function runRound(waitingAreaState: WaitingAreaState): WaitingAreaState {
   return {
     width: waitingAreaState.width,
     height: waitingAreaState.height,
-    seatStates: wu(waitingAreaState.seatStates)
-      .enumerate()
-      .map(([row, y]) =>
-        wu(row)
-          .enumerate()
-          .map(([seatState, x]) => {
-            const neighborLocations = findNeighborLocations(
-              { x, y },
-              waitingAreaState.width,
-              waitingAreaState.height
-            );
-            const occupiedSeatsNeighbors = neighborLocations.filter(
-              ({ x, y }) => waitingAreaState.seatStates[y][x] === "occupied"
-            ).length;
+    seatStates: waitingAreaState.seatStates.map((row, y) =>
+      row.map((seatState, x) => {
+        const neighborLocations = findNeighborLocations(
+          { x, y },
+          waitingAreaState.width,
+          waitingAreaState.height
+        );
+        const occupiedSeatsNeighbors = neighborLocations.filter(
+          ({ x, y }) => waitingAreaState.seatStates[y][x] === "occupied"
+        ).length;
 
-            switch (seatState) {
-              case "empty":
-                return occupiedSeatsNeighbors === 0 ? "occupied" : "empty";
-              case "occupied":
-                return occupiedSeatsNeighbors >= 4 ? "empty" : "occupied";
-              case "floor":
-                return "floor";
-            }
-          })
-          .toArray()
-      )
-      .toArray(),
+        switch (seatState) {
+          case "empty":
+            return occupiedSeatsNeighbors === 0 ? "occupied" : "empty";
+          case "occupied":
+            return occupiedSeatsNeighbors >= 4 ? "empty" : "occupied";
+          case "floor":
+            return "floor";
+        }
+      })
+    ),
   };
 }
 
@@ -80,7 +73,7 @@ export function numberOfOccupiedSeatsAfterStabilization(
   let currentWaitingAreaState = initialWaitingAreaState;
   while (true) {
     const nextWaitingAreaState = runRound(currentWaitingAreaState);
-    if (_.isEqual(currentWaitingAreaState, nextWaitingAreaState)) {
+    if (isEqual(currentWaitingAreaState, nextWaitingAreaState)) {
       return countOccupiedSeats(currentWaitingAreaState);
     }
     currentWaitingAreaState = nextWaitingAreaState;
