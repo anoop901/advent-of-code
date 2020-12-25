@@ -87,7 +87,7 @@ export function* filterNonNullish<T>(iterable: Iterable<T | null | undefined>) {
 
 export function length<T>(iterable: Iterable<T>) {
   let result = 0;
-  for (const t of iterable) {
+  for (const _ of iterable) {
     result++;
   }
   return result;

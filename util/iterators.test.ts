@@ -2,7 +2,10 @@ import chain from "./chain";
 import {
   allIntegersStartingAt,
   countMatching,
+  filter,
+  filterNonNullish,
   findFirstMatching,
+  length,
   map,
   splitIterable,
   takeWhile,
@@ -99,6 +102,11 @@ describe("findFirstMatching", () => {
       findFirstMatching((x: number) => x % 10 === 0)([6, 11, 50, 28, 80])
     ).toBe(50);
   });
+  test("match at beginning", () => {
+    expect(
+      findFirstMatching((x: number) => x % 10 === 0)([40, 6, 11, 50, 28, 80])
+    ).toBe(40);
+  });
   test("no match", () => {
     expect(
       findFirstMatching((x: number) => x % 10 === 0)([6, 11, 28])
@@ -114,10 +122,7 @@ describe("findFirstMatching", () => {
 describe("map", () => {
   test("basic", () => {
     const iter = map((x: number) => x * 10)([2, 5, 3]);
-    expect(iter.next()).toEqual({ value: 20, done: false });
-    expect(iter.next()).toEqual({ value: 50, done: false });
-    expect(iter.next()).toEqual({ value: 30, done: false });
-    expect(iter.next()).toEqual({ done: true });
+    expect(Array.from(iter)).toEqual([20, 50, 30]);
   });
   test("infinite", () => {
     const iter = map((x: number) => x * 10)(allIntegersStartingAt(5));
@@ -129,35 +134,78 @@ describe("map", () => {
   });
   test("change type", () => {
     const iter = map((x: string) => x.length)(["the", "quick", "brown", "fox"]);
-    expect(iter.next()).toEqual({ value: 3, done: false });
-    expect(iter.next()).toEqual({ value: 5, done: false });
-    expect(iter.next()).toEqual({ value: 5, done: false });
-    expect(iter.next()).toEqual({ value: 3, done: false });
-    expect(iter.next()).toEqual({ done: true });
+    expect(Array.from(iter)).toEqual([3, 5, 5, 3]);
   });
 });
 
 describe("takeWhile", () => {
   test("basic", () => {
     const iter = takeWhile((x: number) => x % 10 !== 0)([6, 11, 50, 28, 80]);
-    expect(iter.next()).toEqual({ value: 6, done: false });
-    expect(iter.next()).toEqual({ value: 11, done: false });
-    expect(iter.next()).toEqual({ done: true });
+    expect(Array.from(iter)).toEqual([6, 11]);
   });
-  test("all match", () => {
+  test("take entire iterable", () => {
     const iter = takeWhile((x: number) => x % 10 !== 0)([6, 11, 28]);
-    expect(iter.next()).toEqual({ value: 6, done: false });
-    expect(iter.next()).toEqual({ value: 11, done: false });
-    expect(iter.next()).toEqual({ value: 28, done: false });
-    expect(iter.next()).toEqual({ done: true });
+    expect(Array.from(iter)).toEqual([6, 11, 28]);
   });
   test("infinite", () => {
     const iter = takeWhile((x: number) => x % 10 !== 0)(
       allIntegersStartingAt(127)
     );
-    expect(iter.next()).toEqual({ value: 127, done: false });
-    expect(iter.next()).toEqual({ value: 128, done: false });
-    expect(iter.next()).toEqual({ value: 129, done: false });
-    expect(iter.next()).toEqual({ done: true });
+    expect(Array.from(iter)).toEqual([127, 128, 129]);
+  });
+});
+
+describe("filter", () => {
+  test("basic", () => {
+    const iter = filter((x: number) => x % 10 === 0)([6, 11, 50, 28, 80]);
+    expect(Array.from(iter)).toEqual([50, 80]);
+  });
+  test("all match", () => {
+    const iter = filter((x: number) => x % 10 === 0)([50, 80, 70]);
+    expect(Array.from(iter)).toEqual([50, 80, 70]);
+  });
+  test("none match", () => {
+    const iter = filter((x: number) => x % 10 === 0)([6, 11, 28]);
+    expect(Array.from(iter)).toEqual([]);
+  });
+});
+
+describe("filterNonNullish", () => {
+  test("iterable containing some nulls", () => {
+    const iter = filterNonNullish([6, 11, null, 28, null]);
+    expect(Array.from(iter)).toEqual([6, 11, 28]);
+  });
+  test("iterable containing some undefineds", () => {
+    const iter = filterNonNullish([6, 11, undefined, 28, undefined]);
+    expect(Array.from(iter)).toEqual([6, 11, 28]);
+  });
+  test("iterable containing some nulls and undefineds", () => {
+    const iter = filterNonNullish([6, 11, undefined, 28, null]);
+    expect(Array.from(iter)).toEqual([6, 11, 28]);
+  });
+  test("all not nullish", () => {
+    const iter = filterNonNullish([6, 11, 28]);
+    expect(Array.from(iter)).toEqual([6, 11, 28]);
+  });
+  test("all nullish", () => {
+    const iter = filterNonNullish([null, null, null]);
+    expect(Array.from(iter)).toEqual([]);
+  });
+});
+
+describe("length", () => {
+  test("basic", () => {
+    expect(length([3, 5, 2])).toBe(3);
+  });
+  test("empty", () => {
+    expect(length([])).toBe(0);
+  });
+  test("from generator", () => {
+    expect(
+      chain(allIntegersStartingAt(0))
+        .then(takeWhile((x) => x < 4))
+        .then(length)
+        .run()
+    ).toBe(4);
   });
 });
