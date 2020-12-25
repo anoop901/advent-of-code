@@ -1,4 +1,4 @@
-import loadInputLines from "../util/loadInputLines";
+import loadInputLines from "../../util/loadInputLines";
 import { WaitingAreaState } from "./day11";
 
 export default function parseWaitingAreaState(

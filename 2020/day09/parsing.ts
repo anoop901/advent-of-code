@@ -1,4 +1,4 @@
-import loadInputLines from "../util/loadInputLines";
+import loadInputLines from "../../util/loadInputLines";
 import { XmasData } from "./day09";
 
 export async function loadXmasData(): Promise<XmasData> {

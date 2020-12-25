@@ -1,7 +1,7 @@
 import { maxHeaderSize } from "http";
 import { add } from "lodash";
 import { isReturnStatement } from "typescript";
-import { sumNumbers } from "../util/numbers";
+import { sumNumbers } from "../../util/numbers";
 
 export type Bit = "1" | "0";
 export type MaskBit = "X" | Bit;

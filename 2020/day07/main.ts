@@ -1,5 +1,5 @@
-import loadInputLines from "../util/loadInputLines";
-import { sumNumbers } from "../util/numbers";
+import loadInputLines from "../../util/loadInputLines";
+import { sumNumbers } from "../../util/numbers";
 import { parse as parseLuggageRule } from "./luggage_rule";
 
 type BagTypeString = string;

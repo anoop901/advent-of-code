@@ -1,5 +1,5 @@
 import wu from "wu";
-import { sumNumbers } from "../util/numbers";
+import { sumNumbers } from "../../util/numbers";
 
 export function numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(
   adapters: number[]

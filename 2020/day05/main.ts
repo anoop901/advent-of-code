@@ -1,4 +1,4 @@
-import loadInputLines from "../util/loadInputLines";
+import loadInputLines from "../../util/loadInputLines";
 
 async function loadBoardingPasses(): Promise<string[]> {
   return loadInputLines();

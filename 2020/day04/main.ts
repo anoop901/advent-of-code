@@ -1,6 +1,6 @@
-import { splitIterable } from "../util/iterators";
+import { splitIterable } from "../../util/iterators";
 import wu from "wu";
-import loadInputLines from "../util/loadInputLines";
+import loadInputLines from "../../util/loadInputLines";
 
 interface Passport {
   byr?: string;

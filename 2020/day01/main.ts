@@ -1,4 +1,4 @@
-import loadInputLines from "../util/loadInputLines";
+import loadInputLines from "../../util/loadInputLines";
 
 async function loadExpenseReport(): Promise<number[]> {
   return (await loadInputLines()).map((line) => {

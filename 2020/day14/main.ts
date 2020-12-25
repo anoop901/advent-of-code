@@ -1,4 +1,4 @@
-import loadInputLines from "../util/loadInputLines";
+import loadInputLines from "../../util/loadInputLines";
 import { MaskBit, Program, sumMemoryAfterExecuting } from "./day14";
 
 async function parseProgram(): Promise<Program> {

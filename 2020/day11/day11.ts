@@ -1,5 +1,5 @@
 import { isEqual } from "lodash";
-import chain from "../util/chain";
+import chain from "../../util/chain";
 import {
   allIntegersStartingAt,
   countMatching,
@@ -7,8 +7,8 @@ import {
   findFirstMatching,
   map,
   takeWhile,
-} from "../util/iterators";
-import { sumNumbers } from "../util/numbers";
+} from "../../util/iterators";
+import { sumNumbers } from "../../util/numbers";
 
 export type SeatState = "empty" | "occupied" | "floor";
 

@@ -1,5 +1,5 @@
-import chain from "../util/chain";
-import { countMatching } from "../util/iterators";
+import chain from "../../util/chain";
+import { countMatching } from "../../util/iterators";
 
 export interface PasswordPolicy {
   character: string;

@@ -1,4 +1,4 @@
-import loadInputLines from "../util/loadInputLines";
+import loadInputLines from "../../util/loadInputLines";
 import {
   numberOf1JoltDifferencesTimesNumberOf3JoltDifferences,
   numberOfWaysToConnectChartingOutletToDevice,
