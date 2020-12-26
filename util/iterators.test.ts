@@ -9,6 +9,7 @@ import {
   fold,
   length,
   map,
+  map_filter,
   max,
   maxBy,
   min,
@@ -483,5 +484,21 @@ describe("maxBy", () => {
   });
   test("empty causes error", () => {
     expect(() => maxBy((x: string) => x.length)([])).toThrow();
+  });
+});
+
+describe("map_filter", () => {
+  test("basic", () => {
+    expect(
+      chain([
+        { a: 3, b: "the" },
+        { a: null, b: "quick" },
+        { a: null, b: "brown" },
+        { a: 5, b: "fox" },
+      ])
+        .then(map_filter(({ a }) => a))
+        .then(toArray)
+        .end()
+    ).toEqual([3, 5]);
   });
 });

@@ -1,7 +1,11 @@
 import chain from "../../util/chain";
 import { map, toArray } from "../../util/iterators";
 import loadInputLines from "../../util/loadInputLines";
-import { BusSchedule, earliestBusAvailable } from "./day13";
+import {
+  BusSchedule,
+  earliestBusAvailable,
+  earliestTimestampWhenBusesLineUp,
+} from "./day13";
 
 async function loadCurrentTimestampAndBusSchedule(): Promise<{
   currentTimestamp: number;
@@ -36,4 +40,6 @@ async function loadCurrentTimestampAndBusSchedule(): Promise<{
   );
   const answer1 = busId * waitTime;
   console.log(answer1);
+  const answer2 = earliestTimestampWhenBusesLineUp(busSchedule);
+  console.log(answer2);
 })();

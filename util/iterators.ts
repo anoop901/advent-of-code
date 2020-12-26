@@ -178,3 +178,14 @@ export function maxBy<T, U>(fn: (arg: T) => U): (iterable: Iterable<T>) => T {
 
 export const min = minBy((x) => x);
 export const max = maxBy((x) => x);
+
+export function map_filter<T, U>(fn: (arg: T) => U | null | undefined) {
+  return function* (iterable: Iterable<T>): Iterable<U> {
+    for (const t of iterable) {
+      const u = fn(t);
+      if (u) {
+        yield u;
+      }
+    }
+  };
+}

@@ -1,6 +1,7 @@
 import chain from "../../util/chain";
 import { fold, map, toArray } from "../../util/iterators";
 import loadInputLines from "../../util/loadInputLines";
+import { mod } from "../../util/numbers";
 
 type Direction = "north" | "south" | "east" | "west";
 type Action = "N" | "S" | "E" | "W" | "F" | "L" | "R";
@@ -231,10 +232,7 @@ function rotateDirectionRight(
   const directionOrder: Direction[] = ["north", "east", "south", "west"];
   const initialDirectionIndex = directionOrder.indexOf(initialDirection);
   const rotationSteps = rotationAngleToNumberOfSteps(rotationAngle);
-  const finalDirectionIndex = positiveMod(
-    initialDirectionIndex + rotationSteps,
-    4
-  );
+  const finalDirectionIndex = mod(initialDirectionIndex + rotationSteps, 4);
   const finalDirection = directionOrder[finalDirectionIndex];
   return finalDirection;
 }
@@ -250,7 +248,7 @@ function rotateWaypointRight(
   waypoint: Waypoint,
   rotationAngle: number
 ): Waypoint {
-  const numSteps = positiveMod(rotationAngleToNumberOfSteps(rotationAngle), 4);
+  const numSteps = mod(rotationAngleToNumberOfSteps(rotationAngle), 4);
   let result = { ...waypoint };
   for (let i = 0; i < numSteps; i++) {
     result = { ew: result.ns, ns: -result.ew };
@@ -263,10 +261,6 @@ function rotateWaypointLeft(
   rotationAngle: number
 ): Waypoint {
   return rotateWaypointRight(waypoint, -rotationAngle);
-}
-
-function positiveMod(a: number, b: number): number {
-  return ((a % b) + b) % b;
 }
 
 function rotationAngleToNumberOfSteps(rotationAngle: number): number {
