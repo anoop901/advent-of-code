@@ -1,6 +1,6 @@
-import { splitIterable } from "../../util/iterators";
-import wu from "wu";
+import { map, splitIterable } from "../../util/iterators";
 import loadInputLines from "../../util/loadInputLines";
+import chain from "../../util/chain";
 
 type Question = string; // 'a', 'b', ...
 type CustomsForm = Set<string>;
@@ -8,11 +8,15 @@ type CustomsForm = Set<string>;
 async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
   const lines = await loadInputLines();
 
-  return wu(splitIterable(lines, ""))
-    .map((chunk) =>
-      chunk.map((customsFormString) => new Set(customsFormString))
+  return chain(lines)
+    .then((iter) => splitIterable(iter, ""))
+    .then(
+      map((chunk) =>
+        chunk.map((customsFormString) => new Set(customsFormString))
+      )
     )
-    .toArray();
+    .then((iter) => Array.from(iter))
+    .run();
 }
 
 function union<T>(sets: Set<T>[]): Set<T> {

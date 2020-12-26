@@ -1,5 +1,5 @@
-import { splitIterable } from "../../util/iterators";
-import wu from "wu";
+import chain from "../../util/chain";
+import { map, splitIterable } from "../../util/iterators";
 import loadInputLines from "../../util/loadInputLines";
 
 interface Passport {
@@ -17,19 +17,24 @@ interface Passport {
 async function loadPassportData(): Promise<Passport[]> {
   const lines = await loadInputLines();
 
-  return wu(splitIterable(lines, ""))
-    .map((passportLines) =>
-      passportLines.flatMap((passportLine) => passportLine.split(" "))
+  return chain(lines)
+    .then((iter) => splitIterable(iter, ""))
+    .then(
+      map((passportLines) =>
+        passportLines.flatMap((passportLine) => passportLine.split(" "))
+      )
     )
-    .map((passportFieldsStrings) => {
-      const passport: Passport = {};
-      for (const passportFieldString of passportFieldsStrings) {
-        const [key, value] = passportFieldString.split(":");
-        passport[key] = value;
-      }
-      return passport;
-    })
-    .toArray();
+    .then(
+      map((passportFieldsStrings) => {
+        const passport: Passport = {};
+        for (const passportFieldString of passportFieldsStrings) {
+          const [key, value] = passportFieldString.split(":");
+          passport[key] = value;
+        }
+        return passport;
+      })
+    )
+    .then((iter) => Array.from(iter));
 }
 
 function isPassportValidPart1(passport: Passport): boolean {
