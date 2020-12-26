@@ -1,3 +1,4 @@
+import { toArray } from "lodash";
 import chain from "./chain";
 import {
   allIntegersStartingAt,
@@ -375,5 +376,19 @@ describe("pairs", () => {
   });
   test("one item in iterable", () => {
     expect(Array.from(pairs()(["one"]))).toEqual([]);
+  });
+});
+
+describe("toArray", () => {
+  test("basic", () => {
+    expect(toArray([3, 6, 5])).toEqual([3, 6, 5]);
+  });
+  test("from generator", () => {
+    expect(
+      chain(allIntegersStartingAt(0))
+        .then(takeWhile((x) => x < 4))
+        .then(toArray)
+        .end()
+    ).toEqual([0, 1, 2, 3]);
   });
 });

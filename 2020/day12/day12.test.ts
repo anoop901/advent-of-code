@@ -1,16 +1,21 @@
 import { manhattanDistanceToDestination } from "./day12";
 
 describe("manhattanDistanceToDestination", () => {
-  test("example", () => {
-    const navigationInstructions = [
-      { action: "F", value: 10 },
-      { action: "N", value: 3 },
-      { action: "F", value: 7 },
-      { action: "R", value: 90 },
-      { action: "F", value: 11 },
-      { action: "F", value: 0 },
-    ];
-
-    expect(manhattanDistanceToDestination(navigationInstructions)).toBe(25);
+  const navigationInstructions = [
+    { action: "F" as const, value: 10 },
+    { action: "N" as const, value: 3 },
+    { action: "F" as const, value: 7 },
+    { action: "R" as const, value: 90 },
+    { action: "F" as const, value: 11 },
+  ];
+  test("direction-based example", () => {
+    expect(manhattanDistanceToDestination(navigationInstructions, false)).toBe(
+      25
+    );
+  });
+  test("waypoint-based example", () => {
+    expect(manhattanDistanceToDestination(navigationInstructions, true)).toBe(
+      286
+    );
   });
 });

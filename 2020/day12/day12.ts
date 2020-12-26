@@ -1,11 +1,12 @@
 import chain from "../../util/chain";
-import { fold, map } from "../../util/iterators";
+import { fold, map, toArray } from "../../util/iterators";
 import loadInputLines from "../../util/loadInputLines";
 
 type Direction = "north" | "south" | "east" | "west";
+type Action = "N" | "S" | "E" | "W" | "F" | "L" | "R";
 
 interface NavigationInstruction {
-  action: string;
+  action: Action;
   value: number;
 }
 
@@ -14,7 +15,12 @@ interface Position {
   ns: number;
 }
 
-type NavigationInstructions = Iterable<NavigationInstruction>;
+interface Waypoint {
+  ew: number;
+  ns: number;
+}
+
+type NavigationInstructions = NavigationInstruction[];
 
 export async function loadNavigationInstructions(): Promise<NavigationInstructions> {
   return chain(await loadInputLines())
@@ -24,7 +30,7 @@ export async function loadNavigationInstructions(): Promise<NavigationInstructio
         const match = pattern.exec(line);
         if (match && match.groups) {
           return {
-            action: match.groups["action"],
+            action: match.groups["action"] as Action,
             value: Number(match.groups["value"]),
           };
         } else {
@@ -32,12 +38,13 @@ export async function loadNavigationInstructions(): Promise<NavigationInstructio
         }
       })
     )
+    .then(toArray)
     .end();
 }
 
-export function manhattanDistanceToDestination(
+function findDestinationDirectionBased(
   navigationInstructions: NavigationInstructions
-): number {
+): Position {
   return chain(navigationInstructions)
     .then(
       fold(
@@ -90,12 +97,87 @@ export function manhattanDistanceToDestination(
                 direction,
               };
           }
-          return { position, direction };
         }
       )
     )
-    .then(({ position }) => Math.abs(position.ew) + Math.abs(position.ns))
+    .then(({ position }) => position)
     .end();
+}
+
+function findDestinationWaypointBased(
+  navigationInstructions: NavigationInstructions
+): Position {
+  return chain(navigationInstructions)
+    .then(
+      fold(
+        { position: { ew: 0, ns: 0 }, waypoint: { ew: 10, ns: 1 } },
+        ({ position, waypoint }, navigationInstruction) => {
+          switch (navigationInstruction.action) {
+            case "N":
+              return {
+                position,
+                waypoint: moveNorth(waypoint, navigationInstruction.value),
+              };
+            case "S":
+              return {
+                position,
+                waypoint: moveSouth(waypoint, navigationInstruction.value),
+              };
+            case "E":
+              return {
+                position,
+                waypoint: moveEast(waypoint, navigationInstruction.value),
+              };
+            case "W":
+              return {
+                position,
+                waypoint: moveWest(waypoint, navigationInstruction.value),
+              };
+            case "L":
+              return {
+                position,
+                waypoint: rotateWaypointLeft(
+                  waypoint,
+                  navigationInstruction.value
+                ),
+              };
+            case "R":
+              return {
+                position,
+                waypoint: rotateWaypointRight(
+                  waypoint,
+                  navigationInstruction.value
+                ),
+              };
+            case "F":
+              return {
+                position: moveToWaypoint(
+                  position,
+                  waypoint,
+                  navigationInstruction.value
+                ),
+                waypoint,
+              };
+          }
+        }
+      )
+    )
+    .then(({ position }) => position)
+    .end();
+}
+
+function manhattanDistanceToPosition(position: Position): number {
+  return Math.abs(position.ew) + Math.abs(position.ns);
+}
+
+export function manhattanDistanceToDestination(
+  navigationInstructions: NavigationInstructions,
+  waypointBased: boolean
+): number {
+  const findDestination = waypointBased
+    ? findDestinationWaypointBased
+    : findDestinationDirectionBased;
+  return manhattanDistanceToPosition(findDestination(navigationInstructions));
 }
 
 function moveNorth(initialPosition: Position, distance: number): Position {
@@ -131,13 +213,24 @@ function moveForward(
   }
 }
 
+function moveToWaypoint(
+  position: Position,
+  waypoint: Waypoint,
+  numberOfTimes: number
+): Position {
+  return {
+    ew: position.ew + numberOfTimes * waypoint.ew,
+    ns: position.ns + numberOfTimes * waypoint.ns,
+  };
+}
+
 function rotateDirectionRight(
   initialDirection: Direction,
   rotationAngle: number
 ): Direction {
   const directionOrder: Direction[] = ["north", "east", "south", "west"];
   const initialDirectionIndex = directionOrder.indexOf(initialDirection);
-  const rotationSteps = Math.floor(rotationAngle / 90);
+  const rotationSteps = rotationAngleToNumberOfSteps(rotationAngle);
   const finalDirectionIndex = positiveMod(
     initialDirectionIndex + rotationSteps,
     4
@@ -153,6 +246,29 @@ function rotateDirectionLeft(
   return rotateDirectionRight(initialDirection, -rotationAngle);
 }
 
+function rotateWaypointRight(
+  waypoint: Waypoint,
+  rotationAngle: number
+): Waypoint {
+  const numSteps = positiveMod(rotationAngleToNumberOfSteps(rotationAngle), 4);
+  let result = { ...waypoint };
+  for (let i = 0; i < numSteps; i++) {
+    result = { ew: result.ns, ns: -result.ew };
+  }
+  return result;
+}
+
+function rotateWaypointLeft(
+  waypoint: Waypoint,
+  rotationAngle: number
+): Waypoint {
+  return rotateWaypointRight(waypoint, -rotationAngle);
+}
+
 function positiveMod(a: number, b: number): number {
   return ((a % b) + b) % b;
+}
+
+function rotationAngleToNumberOfSteps(rotationAngle: number): number {
+  return Math.floor(rotationAngle / 90);
 }

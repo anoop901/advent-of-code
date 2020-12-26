@@ -145,3 +145,7 @@ export function pairs<T>(offset = 1) {
   return (iterable: Iterable<T>): Iterable<{ first: T; second: T }> =>
     chain(zip(iterable, slice<T>(offset)(iterable))).end();
 }
+
+export function toArray<T>(iterable: Iterable<T>): T[] {
+  return Array.from(iterable);
+}
