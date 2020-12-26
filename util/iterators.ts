@@ -1,4 +1,3 @@
-import { zipObjectDeep } from "lodash";
 import chain from "./chain";
 
 export function* splitIterable<T>(
