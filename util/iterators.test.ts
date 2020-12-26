@@ -2,15 +2,19 @@ import chain from "./chain";
 import {
   allIntegersStartingAt,
   countMatching,
+  enumerate,
   filter,
   filterNonNullish,
   findFirstMatching,
   fold,
   length,
   map,
+  pairs,
+  slice,
   splitIterable,
   sum,
   takeWhile,
+  zip,
 } from "./iterators";
 
 describe("splitIterable", () => {
@@ -226,5 +230,150 @@ describe("fold", () => {
 describe("sum", () => {
   test("basic", () => {
     expect(sum([5, 2, 9])).toBe(16);
+  });
+});
+
+describe("zip", () => {
+  test("same size", () => {
+    expect(
+      Array.from(
+        zip([111, 22222, 33333, 444], ["the", "quick", "brown", "fox"])
+      )
+    ).toEqual([
+      { first: 111, second: "the" },
+      { first: 22222, second: "quick" },
+      { first: 33333, second: "brown" },
+      { first: 444, second: "fox" },
+    ]);
+  });
+  test("different sizes (bigger, smaller)", () => {
+    expect(
+      Array.from(
+        zip([111, 22222, 33333, 444, 5, 6], ["the", "quick", "brown", "fox"])
+      )
+    ).toEqual([
+      { first: 111, second: "the" },
+      { first: 22222, second: "quick" },
+      { first: 33333, second: "brown" },
+      { first: 444, second: "fox" },
+    ]);
+  });
+  test("different sizes (smaller, bigger)", () => {
+    expect(
+      Array.from(zip([111, 22222], ["the", "quick", "brown", "fox"]))
+    ).toEqual([
+      { first: 111, second: "the" },
+      { first: 22222, second: "quick" },
+    ]);
+  });
+  test("first empty", () => {
+    expect(Array.from(zip([], ["the", "quick", "brown", "fox"]))).toEqual([]);
+  });
+  test("second empty", () => {
+    expect(Array.from(zip([1, 2, 3, 4], []))).toEqual([]);
+  });
+  test("both empty", () => {
+    expect(Array.from(zip([], []))).toEqual([]);
+  });
+  test("one infinite", () => {
+    expect(
+      Array.from(
+        zip(allIntegersStartingAt(0), ["the", "quick", "brown", "fox"])
+      )
+    ).toEqual([
+      { first: 0, second: "the" },
+      { first: 1, second: "quick" },
+      { first: 2, second: "brown" },
+      { first: 3, second: "fox" },
+    ]);
+  });
+});
+
+describe("enumerate", () => {
+  test("basic", () => {
+    expect(Array.from(enumerate(["the", "quick", "brown", "fox"]))).toEqual([
+      { index: 0, value: "the" },
+      { index: 1, value: "quick" },
+      { index: 2, value: "brown" },
+      { index: 3, value: "fox" },
+    ]);
+  });
+});
+
+describe("slice", () => {
+  test("basic", () => {
+    expect(Array.from(slice(2)(["the", "quick", "brown", "fox"]))).toEqual([
+      "brown",
+      "fox",
+    ]);
+  });
+  test("with end", () => {
+    expect(
+      Array.from(slice(2, 5)(["the", "quick", "brown", "fox", "jumps", "over"]))
+    ).toEqual(["brown", "fox", "jumps"]);
+  });
+  test("infinite", () => {
+    const iter = slice(2)(allIntegersStartingAt())[Symbol.iterator]();
+    expect(iter.next()).toEqual({ value: 2, done: false });
+    expect(iter.next()).toEqual({ value: 3, done: false });
+    expect(iter.next()).toEqual({ value: 4, done: false });
+    expect(iter.next()).toEqual({ value: 5, done: false });
+    expect(iter.next()).toEqual({ value: 6, done: false });
+  });
+  test("infinite with end", () => {
+    expect(Array.from(slice(2, 5)(allIntegersStartingAt(10)))).toEqual([
+      12,
+      13,
+      14,
+    ]);
+  });
+  test("end out of bounds", () => {
+    expect(Array.from(slice(2, 5)(["the", "quick", "brown", "fox"]))).toEqual([
+      "brown",
+      "fox",
+    ]);
+  });
+  test("start and end out of bounds", () => {
+    expect(Array.from(slice(5, 7)(["the", "quick", "brown", "fox"]))).toEqual(
+      []
+    );
+  });
+  test("start and end equal", () => {
+    expect(Array.from(slice(2, 2)(["the", "quick", "brown", "fox"]))).toEqual(
+      []
+    );
+  });
+  test("end before start", () => {
+    expect(Array.from(slice(2, 1)(["the", "quick", "brown", "fox"]))).toEqual(
+      []
+    );
+  });
+});
+
+describe("pairs", () => {
+  test("basic", () => {
+    expect(
+      Array.from(pairs()(["the", "quick", "brown", "fox", "jumps"]))
+    ).toEqual([
+      { first: "the", second: "quick" },
+      { first: "quick", second: "brown" },
+      { first: "brown", second: "fox" },
+      { first: "fox", second: "jumps" },
+    ]);
+  });
+  test("offset 2", () => {
+    expect(
+      Array.from(pairs(2)(["the", "quick", "brown", "fox", "jumps"]))
+    ).toEqual([
+      { first: "the", second: "brown" },
+      { first: "quick", second: "fox" },
+      { first: "brown", second: "jumps" },
+    ]);
+  });
+  test("empty iterable", () => {
+    expect(Array.from(pairs()([]))).toEqual([]);
+  });
+  test("one item in iterable", () => {
+    expect(Array.from(pairs()(["one"]))).toEqual([]);
   });
 });

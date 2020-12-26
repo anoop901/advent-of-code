@@ -1,3 +1,4 @@
+import { zipObjectDeep } from "lodash";
 import chain from "./chain";
 
 export function* splitIterable<T>(
@@ -105,3 +106,43 @@ export function fold<A, T>(initial: A, fn: (acc: A, x: T) => A) {
 }
 
 export const sum = fold(0, (acc, x: number) => acc + x);
+
+export function* zip<T, U>(
+  firstIterable: Iterable<T>,
+  secondIterable: Iterable<U>
+): Generator<{ first: T; second: U }> {
+  const firstIterator = firstIterable[Symbol.iterator]();
+  const secondIterator = secondIterable[Symbol.iterator]();
+  while (true) {
+    const { done: firstDone, value: first } = firstIterator.next();
+    const { done: secondDone, value: second } = secondIterator.next();
+    if (!firstDone && !secondDone) {
+      yield { first, second };
+    } else {
+      break;
+    }
+  }
+}
+
+export function enumerate<T>(
+  iterable: Iterable<T>
+): Iterable<{ index: number; value: T }> {
+  return chain(zip(iterable, allIntegersStartingAt()))
+    .then(map(({ first, second }) => ({ index: second, value: first })))
+    .run();
+}
+
+export function slice<T>(start: number, end: number | null = null) {
+  return (iterable: Iterable<T>): Iterable<T> =>
+    chain(iterable)
+      .then(enumerate)
+      .then(filter(({ index }) => index >= start))
+      .then(takeWhile(({ index }) => end == null || index < end))
+      .then(map(({ value }) => value))
+      .run();
+}
+
+export function pairs<T>(offset = 1) {
+  return (iterable: Iterable<T>): Iterable<{ first: T; second: T }> =>
+    chain(zip(iterable, slice<T>(offset)(iterable))).run();
+}
