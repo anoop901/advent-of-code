@@ -98,7 +98,7 @@ function numberOfBagsContainedInBagType(
       )
     )
     .then(sum)
-    .run();
+    .end();
 }
 
 async function main() {

@@ -16,7 +16,7 @@ async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
       )
     )
     .then((iter) => Array.from(iter))
-    .run();
+    .end();
 }
 
 function union<T>(sets: Set<T>[]): Set<T> {

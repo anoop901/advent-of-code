@@ -25,7 +25,7 @@ export function* splitIterable<T>(
 
 export function countMatching<T>(pred: (value: T) => boolean) {
   return function (iterable: Iterable<T>): number {
-    return chain(iterable).then(filter(pred)).then(length).run();
+    return chain(iterable).then(filter(pred)).then(length).end();
   };
 }
 
@@ -128,7 +128,7 @@ export function enumerate<T>(
 ): Iterable<{ index: number; value: T }> {
   return chain(zip(iterable, allIntegersStartingAt()))
     .then(map(({ first, second }) => ({ index: second, value: first })))
-    .run();
+    .end();
 }
 
 export function slice<T>(start: number, end: number | null = null) {
@@ -138,10 +138,10 @@ export function slice<T>(start: number, end: number | null = null) {
       .then(filter(({ index }) => index >= start))
       .then(takeWhile(({ index }) => end == null || index < end))
       .then(map(({ value }) => value))
-      .run();
+      .end();
 }
 
 export function pairs<T>(offset = 1) {
   return (iterable: Iterable<T>): Iterable<{ first: T; second: T }> =>
-    chain(zip(iterable, slice<T>(offset)(iterable))).run();
+    chain(zip(iterable, slice<T>(offset)(iterable))).end();
 }

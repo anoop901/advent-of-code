@@ -57,28 +57,28 @@ describe("countMatching", () => {
     expect(
       chain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
         .then(countMatching((x) => x % 3 === 0))
-        .run()
+        .end()
     ).toBe(3);
   });
   test("none matching", () => {
     expect(
       chain([1, 2, 4, 5, 7, 8, 10, 11])
         .then(countMatching((x) => x % 3 === 0))
-        .run()
+        .end()
     ).toBe(0);
   });
   test("all matching", () => {
     expect(
       chain([3, 6, 9])
         .then(countMatching((x) => x % 3 === 0))
-        .run()
+        .end()
     ).toBe(3);
   });
   test("empty iterable", () => {
     expect(
       chain([])
         .then(countMatching((x) => x % 3 === 0))
-        .run()
+        .end()
     ).toBe(0);
   });
 });
@@ -211,7 +211,7 @@ describe("length", () => {
       chain(allIntegersStartingAt(0))
         .then(takeWhile((x) => x < 4))
         .then(length)
-        .run()
+        .end()
     ).toBe(4);
   });
 });

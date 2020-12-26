@@ -33,7 +33,7 @@ export function firstNumberThatBreaksPattern(xmasData: XmasData): number {
   for (const { value, index } of chain(xmasData.numbers)
     .then(enumerate)
     .then(slice(xmasData.preambleLength))
-    .run()) {
+    .end()) {
     const previousNumbers = xmasData.numbers.slice(
       index - xmasData.preambleLength,
       index
@@ -60,7 +60,7 @@ export function* allContiguousRangeSums(
           initRunningSum: acc.initRunningSum + x,
         }))
       )
-      .run();
+      .end();
 
     let runningSum = initRunningSum;
 
@@ -73,7 +73,7 @@ export function* allContiguousRangeSums(
       for (const { value: endValue, index: endIndex } of chain(arr)
         .then(enumerate)
         .then(slice(startIndex + minLengthOfRange))
-        .run()) {
+        .end()) {
         runningSum += endValue;
         yield { startIndex, endIndex: endIndex + 1, sum: runningSum };
       }
@@ -87,7 +87,7 @@ export function findEncryptionWeakness(
 ): number {
   const sumMetadata = chain(allContiguousRangeSums(xmasData.numbers, 2))
     .then(findFirstMatching(({ sum }) => sum === invalidNumber))
-    .run();
+    .end();
   if (sumMetadata == null) {
     throw new Error("unable to find encryption weakness");
   }

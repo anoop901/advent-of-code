@@ -13,7 +13,7 @@ export function isPasswordValidPart1(
 ): boolean {
   const numOccurrences = chain(password)
     .then(countMatching((c) => c === policy.character))
-    .run();
+    .end();
   return policy.min <= numOccurrences && numOccurrences <= policy.max;
 }
 
@@ -26,7 +26,7 @@ export function isPasswordValidPart2(
     password[policy.max - 1],
   ])
     .then(countMatching((c) => c === policy.character))
-    .run();
+    .end();
   return numOccurrences === 1;
 }
 
@@ -38,5 +38,5 @@ export function countValidPasswords(
     .then(
       countMatching(({ password, policy }) => isPasswordValid(password, policy))
     )
-    .run();
+    .end();
 }

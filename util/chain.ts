@@ -3,7 +3,7 @@ class Chain<T> {
   then<U>(transformFn: (arg: T) => U): Chain<U> {
     return new Chain(transformFn(this.value));
   }
-  run(): T {
+  end(): T {
     return this.value;
   }
 }

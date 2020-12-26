@@ -103,11 +103,11 @@ export function findNeighborLocationsVisible(
                 waitingAreaState.seatStates[location.y][location.x] !== "floor"
             )
           )
-          .run()
+          .end()
       )
     )
     .then(filterNonNullish)
-    .run();
+    .end();
 }
 
 export function runRound(
@@ -129,7 +129,7 @@ export function runRound(
               ({ x, y }) => waitingAreaState.seatStates[y][x] === "occupied"
             )
           )
-          .run();
+          .end();
 
         switch (seatState) {
           case "empty":
@@ -152,11 +152,11 @@ function countOccupiedSeats(waitingAreaState: WaitingAreaState): number {
       map((row) =>
         chain(row)
           .then(countMatching((seatState) => seatState === "occupied"))
-          .run()
+          .end()
       )
     )
     .then(sum)
-    .run();
+    .end();
 }
 
 export function numberOfOccupiedSeatsAfterStabilization(

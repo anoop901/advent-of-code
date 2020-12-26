@@ -10,7 +10,7 @@ export function numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(
     .then(pairs())
     .then(map(({ first: adapter1, second: adapter2 }) => adapter2 - adapter1))
     .then((iter) => Array.from(iter))
-    .run();
+    .end();
 
   const numberOf1JoltDifferences = differences.filter(
     (difference) => difference === 1
@@ -37,7 +37,7 @@ export function numberOfWaysToConnectChartingOutletToDevice(
     const pathsFromCurrentAdapterToDevice = chain(compatibleAdapters)
       .then(map((adapter) => pathsFromAdapterToDevice.get(adapter) ?? 1))
       .then(sum)
-      .run();
+      .end();
     pathsFromAdapterToDevice.set(
       currentAdapter,
       pathsFromCurrentAdapterToDevice
