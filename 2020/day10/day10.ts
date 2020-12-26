@@ -1,16 +1,16 @@
-import wu from "wu";
 import chain from "../../util/chain";
-import { map, sum } from "../../util/iterators";
+import { map, pairs, sum } from "../../util/iterators";
 
 export function numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(
   adapters: number[]
-) {
+): number {
   const sortedAdapters = [0, ...adapters].sort((a, b) => a - b);
 
-  const differences = wu
-    .zip(sortedAdapters, wu(sortedAdapters).slice(1))
-    .map(([adapter1, adapter2]) => adapter2 - adapter1)
-    .toArray();
+  const differences = chain(sortedAdapters)
+    .then(pairs())
+    .then(map(({ first: adapter1, second: adapter2 }) => adapter2 - adapter1))
+    .then((iter) => Array.from(iter))
+    .run();
 
   const numberOf1JoltDifferences = differences.filter(
     (difference) => difference === 1

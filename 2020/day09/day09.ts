@@ -1,4 +1,10 @@
-import wu from "wu";
+import chain from "../../util/chain";
+import {
+  enumerate,
+  findFirstMatching,
+  fold,
+  slice,
+} from "../../util/iterators";
 
 // k = length of preamble
 // n = length of xmas data
@@ -24,9 +30,10 @@ export function anyPairSumToTarget(arr: number[], target: number): boolean {
 
 export function firstNumberThatBreaksPattern(xmasData: XmasData): number {
   // O(k * (n - k))
-  for (const [value, index] of wu(xmasData.numbers)
-    .enumerate()
-    .slice(xmasData.preambleLength)) {
+  for (const { value, index } of chain(xmasData.numbers)
+    .then(enumerate)
+    .then(slice(xmasData.preambleLength))
+    .run()) {
     const previousNumbers = xmasData.numbers.slice(
       index - xmasData.preambleLength,
       index
@@ -44,16 +51,18 @@ export function* allContiguousRangeSums(
 ): Iterable<{ startIndex: number; endIndex: number; sum: number }> {
   //  0   1   2   3
   // [ 15, 25, 47, 40 ]
-  for (const [startValue, startIndex] of wu(arr).enumerate()) {
-    let { length, runningSum } = wu(arr)
-      .slice(startIndex, startIndex + minLengthOfRange)
-      .reduce(
-        (acc, x) => ({
+  for (const { index: startIndex } of enumerate(arr)) {
+    const { length, initRunningSum } = chain(arr)
+      .then(slice(startIndex, startIndex + minLengthOfRange))
+      .then(
+        fold({ length: 0, initRunningSum: 0 }, (acc, x) => ({
           length: acc.length + 1,
-          runningSum: acc.runningSum + x,
-        }),
-        { length: 0, runningSum: 0 }
-      );
+          initRunningSum: acc.initRunningSum + x,
+        }))
+      )
+      .run();
+
+    let runningSum = initRunningSum;
 
     if (length === minLengthOfRange) {
       yield {
@@ -61,9 +70,10 @@ export function* allContiguousRangeSums(
         endIndex: startIndex + minLengthOfRange,
         sum: runningSum,
       };
-      for (const [endValue, endIndex] of wu(arr)
-        .enumerate()
-        .slice(startIndex + minLengthOfRange)) {
+      for (const { value: endValue, index: endIndex } of chain(arr)
+        .then(enumerate)
+        .then(slice(startIndex + minLengthOfRange))
+        .run()) {
         runningSum += endValue;
         yield { startIndex, endIndex: endIndex + 1, sum: runningSum };
       }
@@ -75,9 +85,9 @@ export function findEncryptionWeakness(
   xmasData: XmasData,
   invalidNumber: number
 ): number {
-  const sumMetadata = wu(allContiguousRangeSums(xmasData.numbers, 2)).find(
-    ({ sum }) => sum === invalidNumber
-  );
+  const sumMetadata = chain(allContiguousRangeSums(xmasData.numbers, 2))
+    .then(findFirstMatching(({ sum }) => sum === invalidNumber))
+    .run();
   if (sumMetadata == null) {
     throw new Error("unable to find encryption weakness");
   }
