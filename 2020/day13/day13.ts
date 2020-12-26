@@ -1,4 +1,3 @@
-import { number } from "yargs";
 import chain from "../../util/chain";
 import {
   allIntegersStartingAt,
@@ -9,7 +8,6 @@ import {
   map,
   map_filter,
   minBy,
-  toArray,
 } from "../../util/iterators";
 import { mod } from "../../util/numbers";
 

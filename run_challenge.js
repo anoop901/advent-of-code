@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const yargs = require("yargs/yargs");
 const { spawn } = require("child_process");
-const fs = require("fs");
+const { createReadStream } = require("fs");
 
 try {
   main();
@@ -29,7 +29,7 @@ function runChallengeCommand(args) {
   const subprocess = spawn("npx", ["ts-node", getPathToMainTs(args)], {
     stdio: ["pipe", "inherit", "inherit"],
   });
-  fs.createReadStream(getPathToInputTxt(args)).pipe(subprocess.stdin);
+  createReadStream(getPathToInputTxt(args)).pipe(subprocess.stdin);
   subprocess.on("exit", (code) => {
     process.exit(code);
   });
