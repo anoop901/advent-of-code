@@ -1,4 +1,3 @@
-import { toArray } from "lodash";
 import chain from "./chain";
 import {
   allIntegersStartingAt,
@@ -10,11 +9,17 @@ import {
   fold,
   length,
   map,
+  max,
+  maxBy,
+  min,
+  minBy,
   pairs,
+  reduce,
   slice,
   splitIterable,
   sum,
   takeWhile,
+  toArray,
   zip,
 } from "./iterators";
 
@@ -390,5 +395,93 @@ describe("toArray", () => {
         .then(toArray)
         .end()
     ).toEqual([0, 1, 2, 3]);
+  });
+});
+
+describe("reduce", () => {
+  test("basic", () => {
+    expect(
+      reduce((a, b) => a + ":" + b)(["the", "quick", "brown", "fox"])
+    ).toBe("the:quick:brown:fox");
+  });
+  test("one element", () => {
+    expect(reduce((a, b) => a + ":" + b)(["fox"])).toBe("fox");
+  });
+  test("empty causes error", () => {
+    expect(() => reduce((a, b) => a + ":" + b)([])).toThrowError(
+      "cannot reduce empty iterable"
+    );
+  });
+});
+
+describe("min", () => {
+  test("basic", () => {
+    expect(min([3, 1, 5, 8, 3])).toBe(1);
+  });
+  test("one element", () => {
+    expect(min([5])).toBe(5);
+  });
+  test("empty causes error", () => {
+    expect(() => min([])).toThrow();
+  });
+});
+
+describe("max", () => {
+  test("basic", () => {
+    expect(max([3, 1, 5, 8, 3])).toBe(8);
+  });
+  test("one element", () => {
+    expect(max([5])).toBe(5);
+  });
+  test("empty causes error", () => {
+    expect(() => max([])).toThrow();
+  });
+});
+
+describe("minBy", () => {
+  test("basic", () => {
+    expect(
+      minBy((x: string) => x.length)([
+        "the",
+        "quick",
+        "brown",
+        "fox",
+        "jumps",
+        "over",
+        "an",
+        "amazing",
+        "dog",
+      ])
+    ).toBe("an");
+  });
+  test("one element", () => {
+    expect(minBy((x: string) => x.length)(["fox"])).toBe("fox");
+  });
+  test("empty causes error", () => {
+    expect(() => minBy((x: string) => x.length)([])).toThrow();
+  });
+});
+
+describe("maxBy", () => {
+  test("basic", () => {
+    expect(
+      maxBy((x: string) => x.length)([
+        "the",
+        "quick",
+        "brown",
+        "fox",
+        "jumps",
+        "over",
+        "an",
+        "amazing",
+        "dog",
+      ])
+    ).toBe("amazing");
+  });
+  test("one element", () => {
+    expect(maxBy((x: string) => x.length)(["fox"])).toBe("fox");
+  });
+  test("empty causes error", () => {
+    expect(() => maxBy((x: string) => x.length)([])).toThrow();
   });
 });

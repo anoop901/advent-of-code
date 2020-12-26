@@ -149,3 +149,32 @@ export function pairs<T>(offset = 1) {
 export function toArray<T>(iterable: Iterable<T>): T[] {
   return Array.from(iterable);
 }
+
+export function reduce<T>(fn: (a: T, b: T) => T) {
+  return (iterable: Iterable<T>): T => {
+    const iterator = iterable[Symbol.iterator]();
+    const firstIteratorResult = iterator.next();
+    if (firstIteratorResult.done) {
+      throw new Error("cannot reduce empty iterable");
+    }
+
+    let result = firstIteratorResult.value;
+    let { value, done } = iterator.next();
+    while (!done) {
+      result = fn(result, value);
+      ({ value, done } = iterator.next());
+    }
+    return result;
+  };
+}
+
+export function minBy<T, U>(fn: (arg: T) => U): (iterable: Iterable<T>) => T {
+  return reduce<T>((a, b) => (fn(b) < fn(a) ? b : a));
+}
+
+export function maxBy<T, U>(fn: (arg: T) => U): (iterable: Iterable<T>) => T {
+  return reduce<T>((a, b) => (fn(b) > fn(a) ? b : a));
+}
+
+export const min = minBy((x) => x);
+export const max = maxBy((x) => x);
