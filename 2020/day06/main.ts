@@ -3,7 +3,7 @@ import loadInputLines from "../../util/loadInputLines";
 import chain from "../../util/chain";
 
 type Question = string; // 'a', 'b', ...
-type CustomsForm = Set<string>;
+type CustomsForm = Set<Question>;
 
 async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
   const lines = await loadInputLines();

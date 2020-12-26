@@ -1,7 +1,4 @@
-import {
-  numberOf1JoltDifferencesTimesNumberOf3JoltDifferences,
-  numberOfWaysToConnectChartingOutletToDevice,
-} from "./day10";
+import { numberOfWaysToConnectChartingOutletToDevice } from "./day10";
 
 describe("numberOfWaysToConnectChartingOutletToDevice", () => {
   test("small example", () => {

@@ -23,11 +23,6 @@ interface Location {
   y: number;
 }
 
-type findNeighborLocationsFunction = (
-  location: Location,
-  waitingAreaState: WaitingAreaState
-) => Iterable<Location>;
-
 interface Behavior {
   crowdedThreshold: number;
   findNeighborLocations(
@@ -169,6 +164,8 @@ export function numberOfOccupiedSeatsAfterStabilization(
   behavior: Behavior
 ): number {
   let currentWaitingAreaState = initialWaitingAreaState;
+
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const nextWaitingAreaState = runRound(currentWaitingAreaState, behavior);
     if (isEqual(currentWaitingAreaState, nextWaitingAreaState)) {

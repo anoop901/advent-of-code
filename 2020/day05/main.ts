@@ -38,18 +38,18 @@ function boardingPassToSeatId(boardingPass: string): number {
   return seatId;
 }
 
-function findHoleInefficient(nums: number[]): number {
-  // [5, 6, 7, 9, 10] -> 8
-  const sortedNums = [...nums].sort((a, b) => a - b);
-  for (let i = 0; i < sortedNums.length - 1; i++) {
-    const val1 = sortedNums[i];
-    const val2 = sortedNums[i + 1];
-    if (val2 - val1 !== 1) {
-      return val1 + 1;
-    }
-  }
-  throw new Error("no hole in array");
-}
+// function findHoleInefficient(nums: number[]): number {
+//   // [5, 6, 7, 9, 10] -> 8
+//   const sortedNums = [...nums].sort((a, b) => a - b);
+//   for (let i = 0; i < sortedNums.length - 1; i++) {
+//     const val1 = sortedNums[i];
+//     const val2 = sortedNums[i + 1];
+//     if (val2 - val1 !== 1) {
+//       return val1 + 1;
+//     }
+//   }
+//   throw new Error("no hole in array");
+// }
 
 function findHole(nums: number[]): number {
   const numsSet = new Set(nums);

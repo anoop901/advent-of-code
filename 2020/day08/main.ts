@@ -52,8 +52,8 @@ function accumulatorValueOnTerminationOrLoop(
   bootCode: Instruction[]
 ): { terminated: boolean; finalAccumulator: number } {
   const previouslyExecutedInstructions = new Set<number>();
-  let instructionIndex: number = 0;
-  let accumulator: number = 0;
+  let instructionIndex = 0;
+  let accumulator = 0;
   for ({ instructionIndex, accumulator } of interpretBootCode(bootCode)) {
     if (previouslyExecutedInstructions.has(instructionIndex)) {
       return { terminated: false, finalAccumulator: accumulator };

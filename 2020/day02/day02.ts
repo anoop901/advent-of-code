@@ -33,7 +33,7 @@ export function isPasswordValidPart2(
 export function countValidPasswords(
   passwordsAndPolicies: { password: string; policy: PasswordPolicy }[],
   isPasswordValid: (password: string, policy: PasswordPolicy) => boolean
-) {
+): number {
   return chain(passwordsAndPolicies)
     .then(
       countMatching(({ password, policy }) => isPasswordValid(password, policy))

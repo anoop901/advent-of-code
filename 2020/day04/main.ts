@@ -62,7 +62,7 @@ function isStringAnIntegerInBounds(
 }
 
 function isValidHeight(s: string): boolean {
-  let match = /^(?<value>\d+)(?<unit>cm|in)$/.exec(s);
+  const match = /^(?<value>\d+)(?<unit>cm|in)$/.exec(s);
   if (match !== null && match.groups !== undefined) {
     const valueString = match.groups["value"];
     const unit = match.groups["unit"];
