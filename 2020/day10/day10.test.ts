@@ -1,7 +1,8 @@
 import { numberOfWaysToConnectChartingOutletToDevice } from "./day10";
+import { expect } from "chai";
 
 describe("numberOfWaysToConnectChartingOutletToDevice", () => {
-  test("small example", () => {
+  it("small example", () => {
     expect(
       numberOfWaysToConnectChartingOutletToDevice([
         28,
@@ -36,9 +37,9 @@ describe("numberOfWaysToConnectChartingOutletToDevice", () => {
         10,
         3,
       ])
-    ).toBe(19208);
+    ).to.equal(19208);
   });
-  test("large example", () => {
+  it("large example", () => {
     expect(
       numberOfWaysToConnectChartingOutletToDevice([
         16,
@@ -53,6 +54,6 @@ describe("numberOfWaysToConnectChartingOutletToDevice", () => {
         12,
         4,
       ])
-    ).toBe(8);
+    ).to.equal(8);
   });
 });

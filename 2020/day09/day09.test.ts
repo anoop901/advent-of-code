@@ -4,18 +4,19 @@ import {
   findEncryptionWeakness,
   firstNumberThatBreaksPattern,
 } from "./day09";
+import { expect } from "chai";
 
 describe("anyPairSumToTarget", () => {
-  test("basic match", () => {
-    expect(anyPairSumToTarget([35, 20, 15, 25, 47], 40)).toBeTruthy();
+  it("basic match", () => {
+    expect(anyPairSumToTarget([35, 20, 15, 25, 47], 40)).to.be.true;
   });
-  test("basic mismatch", () => {
-    expect(anyPairSumToTarget([95, 102, 117, 150, 182], 40)).toBeFalsy();
+  it("basic mismatch", () => {
+    expect(anyPairSumToTarget([95, 102, 117, 150, 182], 40)).to.be.false;
   });
 });
 
 describe("firstNumberThatBreaksPattern", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       firstNumberThatBreaksPattern({
         numbers: [
@@ -42,9 +43,9 @@ describe("firstNumberThatBreaksPattern", () => {
         ],
         preambleLength: 5,
       })
-    ).toBe(127);
+    ).to.equal(127);
   });
-  test("breaks pattern immediately", () => {
+  it("breaks pattern immediately", () => {
     expect(
       firstNumberThatBreaksPattern({
         numbers: [
@@ -71,13 +72,15 @@ describe("firstNumberThatBreaksPattern", () => {
         ],
         preambleLength: 5,
       })
-    ).toBe(41);
+    ).to.equal(41);
   });
 });
 
 describe("allContiguousRangeSums", () => {
-  test("basic", () => {
-    expect(Array.from(allContiguousRangeSums([15, 25, 47, 40], 2))).toEqual([
+  it("basic", () => {
+    expect(
+      Array.from(allContiguousRangeSums([15, 25, 47, 40], 2))
+    ).to.deep.equal([
       { sum: 40, startIndex: 0, endIndex: 2 },
       { sum: 87, startIndex: 0, endIndex: 3 },
       { sum: 127, startIndex: 0, endIndex: 4 },
@@ -89,7 +92,7 @@ describe("allContiguousRangeSums", () => {
 });
 
 describe("findEncryptionWeakness", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       findEncryptionWeakness(
         {
@@ -119,6 +122,6 @@ describe("findEncryptionWeakness", () => {
         },
         127
       )
-    ).toBe(62);
+    ).to.equal(62);
   });
 });

@@ -6,6 +6,7 @@ import {
   runRound,
 } from "./day11";
 import parseWaitingAreaState from "./parseWaitingAreaState";
+import { expect } from "chai";
 
 const waitingAreaState = parseWaitingAreaState([
   "L.LL.LL.LL",
@@ -22,17 +23,17 @@ const waitingAreaState = parseWaitingAreaState([
 
 describe("numberOfOccupiedSeatsAfterStabilization", () => {
   describe("based on behavior 1", () => {
-    test("example", () => {
+    it("example", () => {
       expect(
         numberOfOccupiedSeatsAfterStabilization(waitingAreaState, behavior1)
-      ).toBe(37);
+      ).to.equal(37);
     });
   });
   describe("based on behavior 2", () => {
-    test("example", () => {
+    it("example", () => {
       expect(
         numberOfOccupiedSeatsAfterStabilization(waitingAreaState, behavior2)
-      ).toBe(26);
+      ).to.equal(26);
     });
   });
 });
@@ -99,24 +100,34 @@ describe("runRound", () => {
       "#.LLLLLL.L",
       "#.#L#L#.##",
     ]);
-    test("example round 1", () => {
-      expect(runRound(waitingAreaState, behavior1)).toEqual(waitingAreaState1);
+    it("example round 1", () => {
+      expect(runRound(waitingAreaState, behavior1)).to.deep.equal(
+        waitingAreaState1
+      );
     });
 
-    test("example round 2", () => {
-      expect(runRound(waitingAreaState1, behavior1)).toEqual(waitingAreaState2);
+    it("example round 2", () => {
+      expect(runRound(waitingAreaState1, behavior1)).to.deep.equal(
+        waitingAreaState2
+      );
     });
 
-    test("example round 3", () => {
-      expect(runRound(waitingAreaState2, behavior1)).toEqual(waitingAreaState3);
+    it("example round 3", () => {
+      expect(runRound(waitingAreaState2, behavior1)).to.deep.equal(
+        waitingAreaState3
+      );
     });
 
-    test("example round 4", () => {
-      expect(runRound(waitingAreaState3, behavior1)).toEqual(waitingAreaState4);
+    it("example round 4", () => {
+      expect(runRound(waitingAreaState3, behavior1)).to.deep.equal(
+        waitingAreaState4
+      );
     });
 
-    test("example round 5", () => {
-      expect(runRound(waitingAreaState4, behavior1)).toEqual(waitingAreaState5);
+    it("example round 5", () => {
+      expect(runRound(waitingAreaState4, behavior1)).to.deep.equal(
+        waitingAreaState5
+      );
     });
   });
   describe("based on visible neighbors", () => {
@@ -192,29 +203,41 @@ describe("runRound", () => {
       "#.LLLLL#.L",
       "#.L#LL#.L#",
     ]);
-    test("example round 1", () => {
-      expect(runRound(waitingAreaState, behavior2)).toEqual(waitingAreaState1);
+    it("example round 1", () => {
+      expect(runRound(waitingAreaState, behavior2)).to.deep.equal(
+        waitingAreaState1
+      );
     });
-    test("example round 2", () => {
-      expect(runRound(waitingAreaState1, behavior2)).toEqual(waitingAreaState2);
+    it("example round 2", () => {
+      expect(runRound(waitingAreaState1, behavior2)).to.deep.equal(
+        waitingAreaState2
+      );
     });
-    test("example round 3", () => {
-      expect(runRound(waitingAreaState2, behavior2)).toEqual(waitingAreaState3);
+    it("example round 3", () => {
+      expect(runRound(waitingAreaState2, behavior2)).to.deep.equal(
+        waitingAreaState3
+      );
     });
-    test("example round 4", () => {
-      expect(runRound(waitingAreaState3, behavior2)).toEqual(waitingAreaState4);
+    it("example round 4", () => {
+      expect(runRound(waitingAreaState3, behavior2)).to.deep.equal(
+        waitingAreaState4
+      );
     });
-    test("example round 5", () => {
-      expect(runRound(waitingAreaState4, behavior2)).toEqual(waitingAreaState5);
+    it("example round 5", () => {
+      expect(runRound(waitingAreaState4, behavior2)).to.deep.equal(
+        waitingAreaState5
+      );
     });
-    test("example round 6", () => {
-      expect(runRound(waitingAreaState5, behavior2)).toEqual(waitingAreaState6);
+    it("example round 6", () => {
+      expect(runRound(waitingAreaState5, behavior2)).to.deep.equal(
+        waitingAreaState6
+      );
     });
   });
 });
 
 describe("findNeighborLocationsVisible", () => {
-  test("seat visible in all directions", () => {
+  it("seat visible in all directions", () => {
     const waitingAreaState = parseWaitingAreaState([
       ".......#.",
       "...#.....",
@@ -228,7 +251,7 @@ describe("findNeighborLocationsVisible", () => {
     ]);
     expect(
       Array.from(findNeighborLocationsVisible({ x: 3, y: 4 }, waitingAreaState))
-    ).toEqual([
+    ).to.deep.equal([
       { x: 1, y: 2 },
       { x: 2, y: 4 },
       { x: 0, y: 7 },
@@ -239,7 +262,7 @@ describe("findNeighborLocationsVisible", () => {
       { x: 4, y: 5 },
     ]);
   });
-  test("obscured seats", () => {
+  it("obscured seats", () => {
     const waitingAreaState = parseWaitingAreaState([
       ".............",
       ".L.L.#.#.#.#.",
@@ -247,9 +270,9 @@ describe("findNeighborLocationsVisible", () => {
     ]);
     expect(
       Array.from(findNeighborLocationsVisible({ x: 1, y: 1 }, waitingAreaState))
-    ).toEqual([{ x: 3, y: 1 }]);
+    ).to.deep.equal([{ x: 3, y: 1 }]);
   });
-  test("no visible seats", () => {
+  it("no visible seats", () => {
     const waitingAreaState = parseWaitingAreaState([
       ".##.##.",
       "#.#.#.#",
@@ -261,6 +284,6 @@ describe("findNeighborLocationsVisible", () => {
     ]);
     expect(
       Array.from(findNeighborLocationsVisible({ x: 3, y: 3 }, waitingAreaState))
-    ).toEqual([]);
+    ).to.deep.equal([]);
   });
 });

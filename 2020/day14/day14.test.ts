@@ -1,7 +1,8 @@
 import { MaskBit, sumMemoryAfterExecuting } from "./day14";
+import { expect } from "chai";
 
 describe("sumMemoryAfterExecuting", () => {
-  test("example", () => {
+  it("example", () => {
     expect(
       sumMemoryAfterExecuting([
         {
@@ -27,9 +28,9 @@ describe("sumMemoryAfterExecuting", () => {
           value: 0,
         },
       ])
-    ).toBe(165);
+    ).to.equal(165);
   });
-  test("example v2", () => {
+  it("example v2", () => {
     expect(
       sumMemoryAfterExecuting(
         [
@@ -60,6 +61,6 @@ describe("sumMemoryAfterExecuting", () => {
         ],
         true
       )
-    ).toBe(208);
+    ).to.equal(208);
   });
 });

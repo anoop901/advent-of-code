@@ -1,28 +1,29 @@
 import { mod } from "./numbers";
+import { expect } from "chai";
 
 describe("mod", () => {
-  test("positive dividend, positive divisor", () => {
-    expect(mod(12, 5)).toBe(2);
+  it("positive dividend, positive divisor", () => {
+    expect(mod(12, 5)).to.equal(2);
   });
-  test("negative dividend, positive divisor", () => {
-    expect(mod(-12, 5)).toBe(3);
+  it("negative dividend, positive divisor", () => {
+    expect(mod(-12, 5)).to.equal(3);
   });
-  test("positive dividend, negative divisor", () => {
-    expect(mod(12, -5)).toBe(-3);
+  it("positive dividend, negative divisor", () => {
+    expect(mod(12, -5)).to.equal(-3);
   });
-  test("negative dividend, negative divisor", () => {
-    expect(mod(-12, -5)).toBe(-2);
+  it("negative dividend, negative divisor", () => {
+    expect(mod(-12, -5)).to.equal(-2);
   });
-  test("positive dividend, positive divisor, evenly divisible", () => {
-    expect(mod(15, 5)).toBe(0);
+  it("positive dividend, positive divisor, evenly divisible", () => {
+    expect(mod(15, 5)).to.equal(0);
   });
-  test("negative dividend, positive divisor, evenly divisible", () => {
-    expect(mod(-15, 5)).toBe(0);
+  it("negative dividend, positive divisor, evenly divisible", () => {
+    expect(mod(-15, 5)).to.equal(0);
   });
-  test("positive dividend, negative divisor, evenly divisible", () => {
-    expect(mod(15, -5)).toBe(-0);
+  it("positive dividend, negative divisor, evenly divisible", () => {
+    expect(mod(15, -5)).to.equal(-0);
   });
-  test("negative dividend, negative divisor, evenly divisible", () => {
-    expect(mod(-15, -5)).toBe(-0);
+  it("negative dividend, negative divisor, evenly divisible", () => {
+    expect(mod(-15, -5)).to.equal(-0);
   });
 });

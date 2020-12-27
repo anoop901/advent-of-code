@@ -23,271 +23,269 @@ import {
   toArray,
   zip,
 } from "./iterators";
+import { expect } from "chai";
 
 describe("splitIterable", () => {
-  test("basic", () => {
-    expect(Array.from(splitIterable([3, 4, 5, 0, 6, 7, 0, 8], 0))).toEqual([
-      [3, 4, 5],
-      [6, 7],
-      [8],
-    ]);
+  it("basic", () => {
+    expect(
+      Array.from(splitIterable([3, 4, 5, 0, 6, 7, 0, 8], 0))
+    ).to.deep.equal([[3, 4, 5], [6, 7], [8]]);
   });
-  test("multiple consecutive separators", () => {
-    expect(Array.from(splitIterable([3, 4, 5, 0, 0, 6, 7, 0, 8], 0))).toEqual([
-      [3, 4, 5],
-      [6, 7],
-      [8],
-    ]);
+  it("multiple consecutive separators", () => {
+    expect(
+      Array.from(splitIterable([3, 4, 5, 0, 0, 6, 7, 0, 8], 0))
+    ).to.deep.equal([[3, 4, 5], [6, 7], [8]]);
   });
-  test("separators only", () => {
-    expect(Array.from(splitIterable([0, 0, 0], 0))).toEqual([]);
+  it("separators only", () => {
+    expect(Array.from(splitIterable([0, 0, 0], 0))).to.deep.equal([]);
   });
-  test("empty list", () => {
-    expect(Array.from(splitIterable([], 0))).toEqual([]);
+  it("empty list", () => {
+    expect(Array.from(splitIterable([], 0))).to.deep.equal([]);
   });
-  test("only one chunk", () => {
-    expect(Array.from(splitIterable([3, 4], 0))).toEqual([[3, 4]]);
+  it("only one chunk", () => {
+    expect(Array.from(splitIterable([3, 4], 0))).to.deep.equal([[3, 4]]);
   });
-  test("chunks have only one element", () => {
-    expect(Array.from(splitIterable([3, 0, 4], 0))).toEqual([[3], [4]]);
+  it("chunks have only one element", () => {
+    expect(Array.from(splitIterable([3, 0, 4], 0))).to.deep.equal([[3], [4]]);
   });
-  test("separator at beginning", () => {
-    expect(Array.from(splitIterable([0, 3, 4], 0))).toEqual([[3, 4]]);
+  it("separator at beginning", () => {
+    expect(Array.from(splitIterable([0, 3, 4], 0))).to.deep.equal([[3, 4]]);
   });
-  test("separator at end", () => {
-    expect(Array.from(splitIterable([3, 4, 0], 0))).toEqual([[3, 4]]);
+  it("separator at end", () => {
+    expect(Array.from(splitIterable([3, 4, 0], 0))).to.deep.equal([[3, 4]]);
   });
 });
 
 describe("countMatching", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       chain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
         .then(countMatching((x) => x % 3 === 0))
         .end()
-    ).toBe(3);
+    ).to.equal(3);
   });
-  test("none matching", () => {
+  it("none matching", () => {
     expect(
       chain([1, 2, 4, 5, 7, 8, 10, 11])
         .then(countMatching((x) => x % 3 === 0))
         .end()
-    ).toBe(0);
+    ).to.equal(0);
   });
-  test("all matching", () => {
+  it("all matching", () => {
     expect(
       chain([3, 6, 9])
         .then(countMatching((x) => x % 3 === 0))
         .end()
-    ).toBe(3);
+    ).to.equal(3);
   });
-  test("empty iterable", () => {
+  it("empty iterable", () => {
     expect(
       chain([])
         .then(countMatching((x) => x % 3 === 0))
         .end()
-    ).toBe(0);
+    ).to.equal(0);
   });
 });
 
 describe("allIntegersStartingAt", () => {
-  test("start at 0", () => {
+  it("start at 0", () => {
     const iter = allIntegersStartingAt();
-    expect(iter.next()).toEqual({ value: 0, done: false });
-    expect(iter.next()).toEqual({ value: 1, done: false });
-    expect(iter.next()).toEqual({ value: 2, done: false });
-    expect(iter.next()).toEqual({ value: 3, done: false });
-    expect(iter.next()).toEqual({ value: 4, done: false });
+    expect(iter.next()).to.deep.equal({ value: 0, done: false });
+    expect(iter.next()).to.deep.equal({ value: 1, done: false });
+    expect(iter.next()).to.deep.equal({ value: 2, done: false });
+    expect(iter.next()).to.deep.equal({ value: 3, done: false });
+    expect(iter.next()).to.deep.equal({ value: 4, done: false });
   });
-  test("start at 123", () => {
+  it("start at 123", () => {
     const iter = allIntegersStartingAt(123);
-    expect(iter.next()).toEqual({ value: 123, done: false });
-    expect(iter.next()).toEqual({ value: 124, done: false });
-    expect(iter.next()).toEqual({ value: 125, done: false });
-    expect(iter.next()).toEqual({ value: 126, done: false });
-    expect(iter.next()).toEqual({ value: 127, done: false });
+    expect(iter.next()).to.deep.equal({ value: 123, done: false });
+    expect(iter.next()).to.deep.equal({ value: 124, done: false });
+    expect(iter.next()).to.deep.equal({ value: 125, done: false });
+    expect(iter.next()).to.deep.equal({ value: 126, done: false });
+    expect(iter.next()).to.deep.equal({ value: 127, done: false });
   });
 });
 
 describe("findFirstMatching", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       findFirstMatching((x: number) => x % 10 === 0)([6, 11, 50, 28, 80])
-    ).toBe(50);
+    ).to.equal(50);
   });
-  test("match at beginning", () => {
+  it("match at beginning", () => {
     expect(
       findFirstMatching((x: number) => x % 10 === 0)([40, 6, 11, 50, 28, 80])
-    ).toBe(40);
+    ).to.equal(40);
   });
-  test("no match", () => {
-    expect(
-      findFirstMatching((x: number) => x % 10 === 0)([6, 11, 28])
-    ).toBeNull();
+  it("no match", () => {
+    expect(findFirstMatching((x: number) => x % 10 === 0)([6, 11, 28])).to.be
+      .null;
   });
-  test("infinite", () => {
+  it("infinite", () => {
     expect(
       findFirstMatching((x: number) => x % 10 === 0)(allIntegersStartingAt(123))
-    ).toBe(130);
+    ).to.equal(130);
   });
 });
 
 describe("map", () => {
-  test("basic", () => {
+  it("basic", () => {
     const iter = map((x: number) => x * 10)([2, 5, 3]);
-    expect(Array.from(iter)).toEqual([20, 50, 30]);
+    expect(Array.from(iter)).to.deep.equal([20, 50, 30]);
   });
-  test("infinite", () => {
+  it("infinite", () => {
     const iter = map((x: number) => x * 10)(allIntegersStartingAt(5));
-    expect(iter.next()).toEqual({ value: 50, done: false });
-    expect(iter.next()).toEqual({ value: 60, done: false });
-    expect(iter.next()).toEqual({ value: 70, done: false });
-    expect(iter.next()).toEqual({ value: 80, done: false });
-    expect(iter.next()).toEqual({ value: 90, done: false });
+    expect(iter.next()).to.deep.equal({ value: 50, done: false });
+    expect(iter.next()).to.deep.equal({ value: 60, done: false });
+    expect(iter.next()).to.deep.equal({ value: 70, done: false });
+    expect(iter.next()).to.deep.equal({ value: 80, done: false });
+    expect(iter.next()).to.deep.equal({ value: 90, done: false });
   });
-  test("change type", () => {
+  it("change type", () => {
     const iter = map((x: string) => x.length)(["the", "quick", "brown", "fox"]);
-    expect(Array.from(iter)).toEqual([3, 5, 5, 3]);
+    expect(Array.from(iter)).to.deep.equal([3, 5, 5, 3]);
   });
 });
 
 describe("takeWhile", () => {
-  test("basic", () => {
+  it("basic", () => {
     const iter = takeWhile((x: number) => x % 10 !== 0)([6, 11, 50, 28, 80]);
-    expect(Array.from(iter)).toEqual([6, 11]);
+    expect(Array.from(iter)).to.deep.equal([6, 11]);
   });
-  test("take entire iterable", () => {
+  it("take entire iterable", () => {
     const iter = takeWhile((x: number) => x % 10 !== 0)([6, 11, 28]);
-    expect(Array.from(iter)).toEqual([6, 11, 28]);
+    expect(Array.from(iter)).to.deep.equal([6, 11, 28]);
   });
-  test("infinite", () => {
+  it("infinite", () => {
     const iter = takeWhile((x: number) => x % 10 !== 0)(
       allIntegersStartingAt(127)
     );
-    expect(Array.from(iter)).toEqual([127, 128, 129]);
+    expect(Array.from(iter)).to.deep.equal([127, 128, 129]);
   });
 });
 
 describe("filter", () => {
-  test("basic", () => {
+  it("basic", () => {
     const iter = filter((x: number) => x % 10 === 0)([6, 11, 50, 28, 80]);
-    expect(Array.from(iter)).toEqual([50, 80]);
+    expect(Array.from(iter)).to.deep.equal([50, 80]);
   });
-  test("all match", () => {
+  it("all match", () => {
     const iter = filter((x: number) => x % 10 === 0)([50, 80, 70]);
-    expect(Array.from(iter)).toEqual([50, 80, 70]);
+    expect(Array.from(iter)).to.deep.equal([50, 80, 70]);
   });
-  test("none match", () => {
+  it("none match", () => {
     const iter = filter((x: number) => x % 10 === 0)([6, 11, 28]);
-    expect(Array.from(iter)).toEqual([]);
+    expect(Array.from(iter)).to.deep.equal([]);
   });
 });
 
 describe("filterNonNullish", () => {
-  test("iterable containing some nulls", () => {
+  it("iterable containing some nulls", () => {
     const iter = filterNonNullish([6, 11, null, 28, null]);
-    expect(Array.from(iter)).toEqual([6, 11, 28]);
+    expect(Array.from(iter)).to.deep.equal([6, 11, 28]);
   });
-  test("iterable containing some undefineds", () => {
+  it("iterable containing some undefineds", () => {
     const iter = filterNonNullish([6, 11, undefined, 28, undefined]);
-    expect(Array.from(iter)).toEqual([6, 11, 28]);
+    expect(Array.from(iter)).to.deep.equal([6, 11, 28]);
   });
-  test("iterable containing some nulls and undefineds", () => {
+  it("iterable containing some nulls and undefineds", () => {
     const iter = filterNonNullish([6, 11, undefined, 28, null]);
-    expect(Array.from(iter)).toEqual([6, 11, 28]);
+    expect(Array.from(iter)).to.deep.equal([6, 11, 28]);
   });
-  test("all not nullish", () => {
+  it("all not nullish", () => {
     const iter = filterNonNullish([6, 11, 28]);
-    expect(Array.from(iter)).toEqual([6, 11, 28]);
+    expect(Array.from(iter)).to.deep.equal([6, 11, 28]);
   });
-  test("all nullish", () => {
+  it("all nullish", () => {
     const iter = filterNonNullish([null, null, null]);
-    expect(Array.from(iter)).toEqual([]);
+    expect(Array.from(iter)).to.deep.equal([]);
   });
 });
 
 describe("length", () => {
-  test("basic", () => {
-    expect(length([3, 5, 2])).toBe(3);
+  it("basic", () => {
+    expect(length([3, 5, 2])).to.equal(3);
   });
-  test("empty", () => {
-    expect(length([])).toBe(0);
+  it("empty", () => {
+    expect(length([])).to.equal(0);
   });
-  test("from generator", () => {
+  it("from generator", () => {
     expect(
       chain(allIntegersStartingAt(0))
         .then(takeWhile((x) => x < 4))
         .then(length)
         .end()
-    ).toBe(4);
+    ).to.equal(4);
   });
 });
 
 describe("fold", () => {
-  test("basic", () => {
-    expect(fold(0, (acc, x: number) => acc + x)([5, 2, 9])).toBe(16);
+  it("basic", () => {
+    expect(fold(0, (acc, x: number) => acc + x)([5, 2, 9])).to.equal(16);
   });
-  test("different accumulator type", () => {
+  it("different accumulator type", () => {
     expect(
       fold(":", (acc, x: number) => acc + x.toString() + ":")([5, 2, 9])
-    ).toBe(":5:2:9:");
+    ).to.equal(":5:2:9:");
   });
 });
 
 describe("sum", () => {
-  test("basic", () => {
-    expect(sum([5, 2, 9])).toBe(16);
+  it("basic", () => {
+    expect(sum([5, 2, 9])).to.equal(16);
   });
 });
 
 describe("zip", () => {
-  test("same size", () => {
+  it("same size", () => {
     expect(
       Array.from(
         zip([111, 22222, 33333, 444], ["the", "quick", "brown", "fox"])
       )
-    ).toEqual([
+    ).to.deep.equal([
       { first: 111, second: "the" },
       { first: 22222, second: "quick" },
       { first: 33333, second: "brown" },
       { first: 444, second: "fox" },
     ]);
   });
-  test("different sizes (bigger, smaller)", () => {
+  it("different sizes (bigger, smaller)", () => {
     expect(
       Array.from(
         zip([111, 22222, 33333, 444, 5, 6], ["the", "quick", "brown", "fox"])
       )
-    ).toEqual([
+    ).to.deep.equal([
       { first: 111, second: "the" },
       { first: 22222, second: "quick" },
       { first: 33333, second: "brown" },
       { first: 444, second: "fox" },
     ]);
   });
-  test("different sizes (smaller, bigger)", () => {
+  it("different sizes (smaller, bigger)", () => {
     expect(
       Array.from(zip([111, 22222], ["the", "quick", "brown", "fox"]))
-    ).toEqual([
+    ).to.deep.equal([
       { first: 111, second: "the" },
       { first: 22222, second: "quick" },
     ]);
   });
-  test("first empty", () => {
-    expect(Array.from(zip([], ["the", "quick", "brown", "fox"]))).toEqual([]);
+  it("first empty", () => {
+    expect(Array.from(zip([], ["the", "quick", "brown", "fox"]))).to.deep.equal(
+      []
+    );
   });
-  test("second empty", () => {
-    expect(Array.from(zip([1, 2, 3, 4], []))).toEqual([]);
+  it("second empty", () => {
+    expect(Array.from(zip([1, 2, 3, 4], []))).to.deep.equal([]);
   });
-  test("both empty", () => {
-    expect(Array.from(zip([], []))).toEqual([]);
+  it("both empty", () => {
+    expect(Array.from(zip([], []))).to.deep.equal([]);
   });
-  test("one infinite", () => {
+  it("one infinite", () => {
     expect(
       Array.from(
         zip(allIntegersStartingAt(0), ["the", "quick", "brown", "fox"])
       )
-    ).toEqual([
+    ).to.deep.equal([
       { first: 0, second: "the" },
       { first: 1, second: "quick" },
       { first: 2, second: "brown" },
@@ -297,8 +295,10 @@ describe("zip", () => {
 });
 
 describe("enumerate", () => {
-  test("basic", () => {
-    expect(Array.from(enumerate(["the", "quick", "brown", "fox"]))).toEqual([
+  it("basic", () => {
+    expect(
+      Array.from(enumerate(["the", "quick", "brown", "fox"]))
+    ).to.deep.equal([
       { index: 0, value: "the" },
       { index: 1, value: "quick" },
       { index: 2, value: "brown" },
@@ -308,139 +308,135 @@ describe("enumerate", () => {
 });
 
 describe("slice", () => {
-  test("basic", () => {
-    expect(Array.from(slice(2)(["the", "quick", "brown", "fox"]))).toEqual([
-      "brown",
-      "fox",
-    ]);
+  it("basic", () => {
+    expect(
+      Array.from(slice(2)(["the", "quick", "brown", "fox"]))
+    ).to.deep.equal(["brown", "fox"]);
   });
-  test("with end", () => {
+  it("with end", () => {
     expect(
       Array.from(slice(2, 5)(["the", "quick", "brown", "fox", "jumps", "over"]))
-    ).toEqual(["brown", "fox", "jumps"]);
+    ).to.deep.equal(["brown", "fox", "jumps"]);
   });
-  test("infinite", () => {
+  it("infinite", () => {
     const iter = slice(2)(allIntegersStartingAt())[Symbol.iterator]();
-    expect(iter.next()).toEqual({ value: 2, done: false });
-    expect(iter.next()).toEqual({ value: 3, done: false });
-    expect(iter.next()).toEqual({ value: 4, done: false });
-    expect(iter.next()).toEqual({ value: 5, done: false });
-    expect(iter.next()).toEqual({ value: 6, done: false });
+    expect(iter.next()).to.deep.equal({ value: 2, done: false });
+    expect(iter.next()).to.deep.equal({ value: 3, done: false });
+    expect(iter.next()).to.deep.equal({ value: 4, done: false });
+    expect(iter.next()).to.deep.equal({ value: 5, done: false });
+    expect(iter.next()).to.deep.equal({ value: 6, done: false });
   });
-  test("infinite with end", () => {
-    expect(Array.from(slice(2, 5)(allIntegersStartingAt(10)))).toEqual([
+  it("infinite with end", () => {
+    expect(Array.from(slice(2, 5)(allIntegersStartingAt(10)))).to.deep.equal([
       12,
       13,
       14,
     ]);
   });
-  test("end out of bounds", () => {
-    expect(Array.from(slice(2, 5)(["the", "quick", "brown", "fox"]))).toEqual([
-      "brown",
-      "fox",
-    ]);
+  it("end out of bounds", () => {
+    expect(
+      Array.from(slice(2, 5)(["the", "quick", "brown", "fox"]))
+    ).to.deep.equal(["brown", "fox"]);
   });
-  test("start and end out of bounds", () => {
-    expect(Array.from(slice(5, 7)(["the", "quick", "brown", "fox"]))).toEqual(
-      []
-    );
+  it("start and end out of bounds", () => {
+    expect(
+      Array.from(slice(5, 7)(["the", "quick", "brown", "fox"]))
+    ).to.deep.equal([]);
   });
-  test("start and end equal", () => {
-    expect(Array.from(slice(2, 2)(["the", "quick", "brown", "fox"]))).toEqual(
-      []
-    );
+  it("start and end equal", () => {
+    expect(
+      Array.from(slice(2, 2)(["the", "quick", "brown", "fox"]))
+    ).to.deep.equal([]);
   });
-  test("end before start", () => {
-    expect(Array.from(slice(2, 1)(["the", "quick", "brown", "fox"]))).toEqual(
-      []
-    );
+  it("end before start", () => {
+    expect(
+      Array.from(slice(2, 1)(["the", "quick", "brown", "fox"]))
+    ).to.deep.equal([]);
   });
 });
 
 describe("pairs", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       Array.from(pairs()(["the", "quick", "brown", "fox", "jumps"]))
-    ).toEqual([
+    ).to.deep.equal([
       { first: "the", second: "quick" },
       { first: "quick", second: "brown" },
       { first: "brown", second: "fox" },
       { first: "fox", second: "jumps" },
     ]);
   });
-  test("offset 2", () => {
+  it("offset 2", () => {
     expect(
       Array.from(pairs(2)(["the", "quick", "brown", "fox", "jumps"]))
-    ).toEqual([
+    ).to.deep.equal([
       { first: "the", second: "brown" },
       { first: "quick", second: "fox" },
       { first: "brown", second: "jumps" },
     ]);
   });
-  test("empty iterable", () => {
-    expect(Array.from(pairs()([]))).toEqual([]);
+  it("empty iterable", () => {
+    expect(Array.from(pairs()([]))).to.deep.equal([]);
   });
-  test("one item in iterable", () => {
-    expect(Array.from(pairs()(["one"]))).toEqual([]);
+  it("one item in iterable", () => {
+    expect(Array.from(pairs()(["one"]))).to.deep.equal([]);
   });
 });
 
 describe("toArray", () => {
-  test("basic", () => {
-    expect(toArray([3, 6, 5])).toEqual([3, 6, 5]);
+  it("basic", () => {
+    expect(toArray([3, 6, 5])).to.deep.equal([3, 6, 5]);
   });
-  test("from generator", () => {
+  it("from generator", () => {
     expect(
       chain(allIntegersStartingAt(0))
         .then(takeWhile((x) => x < 4))
         .then(toArray)
         .end()
-    ).toEqual([0, 1, 2, 3]);
+    ).to.deep.equal([0, 1, 2, 3]);
   });
 });
 
 describe("reduce", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       reduce((a, b) => a + ":" + b)(["the", "quick", "brown", "fox"])
-    ).toBe("the:quick:brown:fox");
+    ).to.equal("the:quick:brown:fox");
   });
-  test("one element", () => {
-    expect(reduce((a, b) => a + ":" + b)(["fox"])).toBe("fox");
+  it("one element", () => {
+    expect(reduce((a, b) => a + ":" + b)(["fox"])).to.equal("fox");
   });
-  test("empty causes error", () => {
-    expect(() => reduce((a, b) => a + ":" + b)([])).toThrowError(
-      "cannot reduce empty iterable"
-    );
+  it("empty causes error", () => {
+    expect(() => reduce((a, b) => a + ":" + b)([])).to.throw();
   });
 });
 
 describe("min", () => {
-  test("basic", () => {
-    expect(min([3, 1, 5, 8, 3])).toBe(1);
+  it("basic", () => {
+    expect(min([3, 1, 5, 8, 3])).to.equal(1);
   });
-  test("one element", () => {
-    expect(min([5])).toBe(5);
+  it("one element", () => {
+    expect(min([5])).to.equal(5);
   });
-  test("empty causes error", () => {
-    expect(() => min([])).toThrow();
+  it("empty causes error", () => {
+    expect(() => min([])).to.throw();
   });
 });
 
 describe("max", () => {
-  test("basic", () => {
-    expect(max([3, 1, 5, 8, 3])).toBe(8);
+  it("basic", () => {
+    expect(max([3, 1, 5, 8, 3])).to.equal(8);
   });
-  test("one element", () => {
-    expect(max([5])).toBe(5);
+  it("one element", () => {
+    expect(max([5])).to.equal(5);
   });
-  test("empty causes error", () => {
-    expect(() => max([])).toThrow();
+  it("empty causes error", () => {
+    expect(() => max([])).to.throw();
   });
 });
 
 describe("minBy", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       minBy((x: string) => x.length)([
         "the",
@@ -453,18 +449,18 @@ describe("minBy", () => {
         "amazing",
         "dog",
       ])
-    ).toBe("an");
+    ).to.equal("an");
   });
-  test("one element", () => {
-    expect(minBy((x: string) => x.length)(["fox"])).toBe("fox");
+  it("one element", () => {
+    expect(minBy((x: string) => x.length)(["fox"])).to.equal("fox");
   });
-  test("empty causes error", () => {
-    expect(() => minBy((x: string) => x.length)([])).toThrow();
+  it("empty causes error", () => {
+    expect(() => minBy((x: string) => x.length)([])).to.throw();
   });
 });
 
 describe("maxBy", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       maxBy((x: string) => x.length)([
         "the",
@@ -477,18 +473,18 @@ describe("maxBy", () => {
         "amazing",
         "dog",
       ])
-    ).toBe("amazing");
+    ).to.equal("amazing");
   });
-  test("one element", () => {
-    expect(maxBy((x: string) => x.length)(["fox"])).toBe("fox");
+  it("one element", () => {
+    expect(maxBy((x: string) => x.length)(["fox"])).to.equal("fox");
   });
-  test("empty causes error", () => {
-    expect(() => maxBy((x: string) => x.length)([])).toThrow();
+  it("empty causes error", () => {
+    expect(() => maxBy((x: string) => x.length)([])).to.throw();
   });
 });
 
 describe("map_filter", () => {
-  test("basic", () => {
+  it("basic", () => {
     expect(
       chain([
         { a: 3, b: "the" },
@@ -499,6 +495,6 @@ describe("map_filter", () => {
         .then(map_filter(({ a }) => a))
         .then(toArray)
         .end()
-    ).toEqual([3, 5]);
+    ).to.deep.equal([3, 5]);
   });
 });

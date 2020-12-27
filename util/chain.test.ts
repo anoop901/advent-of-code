@@ -1,36 +1,39 @@
 import chain from "./chain";
+import { expect } from "chai";
 
-test("single transformation", () => {
-  expect(
-    chain(5)
-      .then((x) => x * 2)
-      .end()
-  ).toBe(10);
-});
+describe("chain", () => {
+  it("single transformation", () => {
+    expect(
+      chain(5)
+        .then((x) => x * 2)
+        .end()
+    ).to.equal(10);
+  });
 
-test("multiple transformation", () => {
-  expect(
-    chain(5)
-      .then((x) => x * 2)
-      .then((x) => x + 8)
-      .then((x) => x * 10)
-      .end()
-  ).toBe(180);
-});
+  it("multiple transformation", () => {
+    expect(
+      chain(5)
+        .then((x) => x * 2)
+        .then((x) => x + 8)
+        .then((x) => x * 10)
+        .end()
+    ).to.equal(180);
+  });
 
-test("transformation into different type", () => {
-  expect(
-    chain("hello")
-      .then((x) => x.length)
-      .end()
-  ).toBe(5);
-});
+  it("transformation into different type", () => {
+    expect(
+      chain("hello")
+        .then((x) => x.length)
+        .end()
+    ).to.equal(5);
+  });
 
-test("multiple transformations into different types", () => {
-  expect(
-    chain("hello")
-      .then((x) => x.length)
-      .then((x) => `there are ${x} letters`)
-      .end()
-  ).toBe("there are 5 letters");
+  it("multiple transformations into different types", () => {
+    expect(
+      chain("hello")
+        .then((x) => x.length)
+        .then((x) => `there are ${x} letters`)
+        .end()
+    ).to.equal("there are 5 letters");
+  });
 });

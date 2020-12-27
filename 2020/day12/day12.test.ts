@@ -1,4 +1,5 @@
 import { manhattanDistanceToDestination } from "./day12";
+import { expect } from "chai";
 
 describe("manhattanDistanceToDestination", () => {
   const navigationInstructions = [
@@ -8,14 +9,14 @@ describe("manhattanDistanceToDestination", () => {
     { action: "R" as const, value: 90 },
     { action: "F" as const, value: 11 },
   ];
-  test("direction-based example", () => {
-    expect(manhattanDistanceToDestination(navigationInstructions, false)).toBe(
-      25
-    );
+  it("direction-based example", () => {
+    expect(
+      manhattanDistanceToDestination(navigationInstructions, false)
+    ).to.equal(25);
   });
-  test("waypoint-based example", () => {
-    expect(manhattanDistanceToDestination(navigationInstructions, true)).toBe(
-      286
-    );
+  it("waypoint-based example", () => {
+    expect(
+      manhattanDistanceToDestination(navigationInstructions, true)
+    ).to.equal(286);
   });
 });
