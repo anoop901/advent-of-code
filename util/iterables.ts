@@ -1,7 +1,7 @@
 import chain from "./chain";
 
 export function split<T>(separator: T) {
-  return function* (iterable: Iterable<T>): Iterable<T[]> {
+  return function* (iterable: Iterable<T>): Generator<T[]> {
     let currentChunk: T[] | null = null;
     for (const value of iterable) {
       if (value === separator) {
@@ -177,7 +177,7 @@ export const min = minBy((x) => x);
 export const max = maxBy((x) => x);
 
 export function mapFilter<T, U>(fn: (arg: T) => U | null | undefined) {
-  return function* (iterable: Iterable<T>): Iterable<U> {
+  return function* (iterable: Iterable<T>): Generator<U> {
     for (const t of iterable) {
       const u = fn(t);
       if (u) {
@@ -188,17 +188,21 @@ export function mapFilter<T, U>(fn: (arg: T) => U | null | undefined) {
 }
 
 export function drop<T>(n: number) {
-  return function* (iterable: Iterable<T>): Iterable<T> {
+  return function* (iterable: Iterable<T>): Generator<T> {
     const iter = iterable[Symbol.iterator]();
     for (let i = 0; i < n; i++) {
       iter.next();
     }
-    yield* { [Symbol.iterator]: () => iter };
+    let { value, done } = iter.next();
+    while (!done) {
+      yield value;
+      ({ value, done } = iter.next());
+    }
   };
 }
 
 export function take<T>(n: number) {
-  return function* (iterable: Iterable<T>): Iterable<T> {
+  return function* (iterable: Iterable<T>): Generator<T> {
     const iter = iterable[Symbol.iterator]();
     for (let i = 0; i < n; i++) {
       const iterResult = iter.next();
