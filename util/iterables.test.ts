@@ -8,6 +8,7 @@ import {
   filterNonNullish,
   findFirstMatching,
   fold,
+  itemAtIndex,
   length,
   map,
   map_filter,
@@ -596,6 +597,28 @@ describe("iterables", () => {
       expect(
         chain(allIntegersStartingAt(0)).then(take(3)).then(toArray).end()
       ).to.deep.equal([0, 1, 2]);
+    });
+  });
+  describe("itemAtIndex", () => {
+    it("basic", () => {
+      expect(
+        itemAtIndex(2)(["the", "quick", "brown", "fox", "jumps", "over"])
+      ).to.equal("brown");
+    });
+    it("index 0", () => {
+      expect(
+        itemAtIndex(0)(["the", "quick", "brown", "fox", "jumps", "over"])
+      ).to.equal("the");
+    });
+    it("last index", () => {
+      expect(
+        itemAtIndex(5)(["the", "quick", "brown", "fox", "jumps", "over"])
+      ).to.equal("over");
+    });
+    it("out of bounds", () => {
+      expect(
+        itemAtIndex(8)(["the", "quick", "brown", "fox", "jumps", "over"])
+      ).to.equal(null);
     });
   });
 });
