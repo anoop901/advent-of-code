@@ -131,19 +131,17 @@ export function enumerate<T>(
     .end();
 }
 
-export function slice<T>(start: number, end: number | null = null) {
+export function slice<T>(start: number, end: number) {
   return (iterable: Iterable<T>): Iterable<T> =>
     chain(iterable)
-      .then(enumerate)
-      .then(filter(({ index }) => index >= start))
-      .then(takeWhile(({ index }) => end == null || index < end))
-      .then(map(({ value }) => value))
+      .then(drop(start))
+      .then(take(end - start))
       .end();
 }
 
 export function pairs<T>(offset = 1) {
   return (iterable: Iterable<T>): Iterable<{ first: T; second: T }> =>
-    chain(zip(iterable, slice<T>(offset)(iterable))).end();
+    chain(zip(iterable, drop<T>(offset)(iterable))).end();
 }
 
 export function toArray<T>(iterable: Iterable<T>): T[] {
@@ -186,6 +184,29 @@ export function map_filter<T, U>(fn: (arg: T) => U | null | undefined) {
       if (u) {
         yield u;
       }
+    }
+  };
+}
+
+export function drop<T>(n: number) {
+  return function* (iterable: Iterable<T>): Iterable<T> {
+    const iter = iterable[Symbol.iterator]();
+    for (let i = 0; i < n; i++) {
+      iter.next();
+    }
+    yield* { [Symbol.iterator]: () => iter };
+  };
+}
+
+export function take<T>(n: number) {
+  return function* (iterable: Iterable<T>): Iterable<T> {
+    const iter = iterable[Symbol.iterator]();
+    for (let i = 0; i < n; i++) {
+      const iterResult = iter.next();
+      if (iterResult.done) {
+        break;
+      }
+      yield iterResult.value;
     }
   };
 }

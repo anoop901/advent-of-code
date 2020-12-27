@@ -1,5 +1,6 @@
 import chain from "../../util/chain";
 import {
+  drop,
   enumerate,
   findFirstMatching,
   fold,
@@ -32,7 +33,7 @@ export function firstNumberThatBreaksPattern(xmasData: XmasData): number {
   // O(k * (n - k))
   for (const { value, index } of chain(xmasData.numbers)
     .then(enumerate)
-    .then(slice(xmasData.preambleLength))
+    .then(drop(xmasData.preambleLength))
     .end()) {
     const previousNumbers = xmasData.numbers.slice(
       index - xmasData.preambleLength,
@@ -72,7 +73,7 @@ export function* allContiguousRangeSums(
       };
       for (const { value: endValue, index: endIndex } of chain(arr)
         .then(enumerate)
-        .then(slice(startIndex + minLengthOfRange))
+        .then(drop(startIndex + minLengthOfRange))
         .end()) {
         runningSum += endValue;
         yield { startIndex, endIndex: endIndex + 1, sum: runningSum };

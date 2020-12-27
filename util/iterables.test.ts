@@ -2,6 +2,7 @@ import chain from "./chain";
 import {
   allIntegersStartingAt,
   countMatching,
+  drop,
   enumerate,
   filter,
   filterNonNullish,
@@ -19,6 +20,7 @@ import {
   slice,
   splitIterable,
   sum,
+  take,
   takeWhile,
   toArray,
   zip,
@@ -310,23 +312,10 @@ describe("enumerate", () => {
 describe("slice", () => {
   it("basic", () => {
     expect(
-      Array.from(slice(2)(["the", "quick", "brown", "fox"]))
-    ).to.deep.equal(["brown", "fox"]);
-  });
-  it("with end", () => {
-    expect(
       Array.from(slice(2, 5)(["the", "quick", "brown", "fox", "jumps", "over"]))
     ).to.deep.equal(["brown", "fox", "jumps"]);
   });
   it("infinite", () => {
-    const iter = slice(2)(allIntegersStartingAt())[Symbol.iterator]();
-    expect(iter.next()).to.deep.equal({ value: 2, done: false });
-    expect(iter.next()).to.deep.equal({ value: 3, done: false });
-    expect(iter.next()).to.deep.equal({ value: 4, done: false });
-    expect(iter.next()).to.deep.equal({ value: 5, done: false });
-    expect(iter.next()).to.deep.equal({ value: 6, done: false });
-  });
-  it("infinite with end", () => {
     expect(Array.from(slice(2, 5)(allIntegersStartingAt(10)))).to.deep.equal([
       12,
       13,
@@ -496,5 +485,102 @@ describe("map_filter", () => {
         .then(toArray)
         .end()
     ).to.deep.equal([3, 5]);
+  });
+});
+
+describe("drop", () => {
+  it("basic", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(drop(2))
+        .then(toArray)
+        .end()
+    ).to.deep.equal(["brown", "fox", "jumped"]);
+  });
+  it("drop no elements", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(drop(0))
+        .then(toArray)
+        .end()
+    ).to.deep.equal(["the", "quick", "brown", "fox", "jumped"]);
+  });
+  it("drop one element", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(drop(1))
+        .then(toArray)
+        .end()
+    ).to.deep.equal(["quick", "brown", "fox", "jumped"]);
+  });
+  it("drop all elements", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(drop(5))
+        .then(toArray)
+        .end()
+    ).to.deep.equal([]);
+  });
+  it("drop more than all elements", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(drop(7))
+        .then(toArray)
+        .end()
+    ).to.deep.equal([]);
+  });
+  it("infinite", () => {
+    const iter = drop(3)(allIntegersStartingAt(0))[Symbol.iterator]();
+    expect(iter.next()).to.deep.equal({ value: 3, done: false });
+    expect(iter.next()).to.deep.equal({ value: 4, done: false });
+    expect(iter.next()).to.deep.equal({ value: 5, done: false });
+  });
+});
+
+describe("take", () => {
+  it("basic", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(take(2))
+        .then(toArray)
+        .end()
+    ).to.deep.equal(["the", "quick"]);
+  });
+  it("take no elements", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(take(0))
+        .then(toArray)
+        .end()
+    ).to.deep.equal([]);
+  });
+  it("take one element", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(take(1))
+        .then(toArray)
+        .end()
+    ).to.deep.equal(["the"]);
+  });
+  it("take all elements", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(take(5))
+        .then(toArray)
+        .end()
+    ).to.deep.equal(["the", "quick", "brown", "fox", "jumped"]);
+  });
+  it("take more than all elements", () => {
+    expect(
+      chain(["the", "quick", "brown", "fox", "jumped"])
+        .then(take(7))
+        .then(toArray)
+        .end()
+    ).to.deep.equal(["the", "quick", "brown", "fox", "jumped"]);
+  });
+  it("infinite", () => {
+    expect(
+      chain(allIntegersStartingAt(0)).then(take(3)).then(toArray).end()
+    ).to.deep.equal([0, 1, 2]);
   });
 });
