@@ -1,5 +1,5 @@
 import chain from "../../util/chain";
-import { map, splitIterable } from "../../util/iterables";
+import { map, split } from "../../util/iterables";
 import loadInputLines from "../../util/loadInputLines";
 
 interface Passport {
@@ -18,7 +18,7 @@ async function loadPassportData(): Promise<Passport[]> {
   const lines = await loadInputLines();
 
   return chain(lines)
-    .then((iter) => splitIterable(iter, ""))
+    .then(split(""))
     .then(
       map((passportLines) =>
         passportLines.flatMap((passportLine) => passportLine.split(" "))

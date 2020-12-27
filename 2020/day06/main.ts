@@ -1,4 +1,4 @@
-import { map, splitIterable } from "../../util/iterables";
+import { map, split } from "../../util/iterables";
 import loadInputLines from "../../util/loadInputLines";
 import chain from "../../util/chain";
 
@@ -9,7 +9,7 @@ async function loadCustomsFormsData(): Promise<CustomsForm[][]> {
   const lines = await loadInputLines();
 
   return chain(lines)
-    .then((iter) => splitIterable(iter, ""))
+    .then(split(""))
     .then(
       map((chunk) =>
         chunk.map((customsFormString) => new Set(customsFormString))

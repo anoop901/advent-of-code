@@ -1,59 +1,61 @@
 import { numberOfWaysToConnectChartingOutletToDevice } from "./day10";
 import { expect } from "chai";
 
-describe("numberOfWaysToConnectChartingOutletToDevice", () => {
-  it("small example", () => {
-    expect(
-      numberOfWaysToConnectChartingOutletToDevice([
-        28,
-        33,
-        18,
-        42,
-        31,
-        14,
-        46,
-        20,
-        48,
-        47,
-        24,
-        23,
-        49,
-        45,
-        19,
-        38,
-        39,
-        11,
-        1,
-        32,
-        25,
-        35,
-        8,
-        17,
-        7,
-        9,
-        4,
-        2,
-        34,
-        10,
-        3,
-      ])
-    ).to.equal(19208);
-  });
-  it("large example", () => {
-    expect(
-      numberOfWaysToConnectChartingOutletToDevice([
-        16,
-        10,
-        15,
-        5,
-        1,
-        11,
-        7,
-        19,
-        6,
-        12,
-        4,
-      ])
-    ).to.equal(8);
+describe("day10", () => {
+  describe("numberOfWaysToConnectChartingOutletToDevice", () => {
+    it("small example", () => {
+      expect(
+        numberOfWaysToConnectChartingOutletToDevice([
+          28,
+          33,
+          18,
+          42,
+          31,
+          14,
+          46,
+          20,
+          48,
+          47,
+          24,
+          23,
+          49,
+          45,
+          19,
+          38,
+          39,
+          11,
+          1,
+          32,
+          25,
+          35,
+          8,
+          17,
+          7,
+          9,
+          4,
+          2,
+          34,
+          10,
+          3,
+        ])
+      ).to.equal(19208);
+    });
+    it("large example", () => {
+      expect(
+        numberOfWaysToConnectChartingOutletToDevice([
+          16,
+          10,
+          15,
+          5,
+          1,
+          11,
+          7,
+          19,
+          6,
+          12,
+          4,
+        ])
+      ).to.equal(8);
+    });
   });
 });
