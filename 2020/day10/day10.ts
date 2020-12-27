@@ -1,5 +1,5 @@
 import chain from "../../util/chain";
-import { map, pairs, sum } from "../../util/iterators";
+import { map, pairs, sum } from "../../util/iterables";
 
 export function numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(
   adapters: number[]

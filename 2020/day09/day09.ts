@@ -4,7 +4,7 @@ import {
   findFirstMatching,
   fold,
   slice,
-} from "../../util/iterators";
+} from "../../util/iterables";
 
 // k = length of preamble
 // n = length of xmas data

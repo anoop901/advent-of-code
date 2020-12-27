@@ -8,7 +8,7 @@ import {
   map,
   sum,
   takeWhile,
-} from "../../util/iterators";
+} from "../../util/iterables";
 
 export type SeatState = "empty" | "occupied" | "floor";
 

@@ -1,4 +1,4 @@
-import { map, splitIterable } from "../../util/iterators";
+import { map, splitIterable } from "../../util/iterables";
 import loadInputLines from "../../util/loadInputLines";
 import chain from "../../util/chain";
 

@@ -1,5 +1,5 @@
 import chain from "../../util/chain";
-import { map, toArray } from "../../util/iterators";
+import { map, toArray } from "../../util/iterables";
 import loadInputLines from "../../util/loadInputLines";
 import {
   BusSchedule,

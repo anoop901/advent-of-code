@@ -1,5 +1,5 @@
 import chain from "../../util/chain";
-import { map, splitIterable } from "../../util/iterators";
+import { map, splitIterable } from "../../util/iterables";
 import loadInputLines from "../../util/loadInputLines";
 
 interface Passport {

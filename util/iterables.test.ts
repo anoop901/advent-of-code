@@ -22,7 +22,7 @@ import {
   takeWhile,
   toArray,
   zip,
-} from "./iterators";
+} from "./iterables";
 import { expect } from "chai";
 
 describe("splitIterable", () => {

@@ -1,5 +1,5 @@
 import loadInputLines from "../../util/loadInputLines";
-import { map, sum } from "../../util/iterators";
+import { map, sum } from "../../util/iterables";
 import { parse as parseLuggageRule } from "./luggage_rule";
 import chain from "../../util/chain";
 

@@ -1,5 +1,5 @@
 import chain from "../../util/chain";
-import { fold, map, toArray } from "../../util/iterators";
+import { fold, map, toArray } from "../../util/iterables";
 import loadInputLines from "../../util/loadInputLines";
 import { mod } from "../../util/numbers";
 

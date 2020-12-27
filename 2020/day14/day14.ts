@@ -1,4 +1,4 @@
-import { sum } from "../../util/iterators";
+import { sum } from "../../util/iterables";
 
 export type Bit = "1" | "0";
 export type MaskBit = "X" | Bit;
