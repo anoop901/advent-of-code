@@ -6,7 +6,7 @@ import {
   findFirstMatching,
   fold,
   map,
-  map_filter,
+  mapFilter,
   minBy,
 } from "../../util/iterables";
 import { mod } from "../../util/numbers";
@@ -47,7 +47,7 @@ export function earliestTimestampWhenBusesLineUp(
   return chain(busSchedule)
     .then(enumerate)
     .then(
-      map_filter(({ index, value }) =>
+      mapFilter(({ index, value }) =>
         value == null ? null : { busId: value, offset: index }
       )
     )

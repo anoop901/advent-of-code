@@ -11,7 +11,7 @@ import {
   itemAtIndex,
   length,
   map,
-  map_filter,
+  mapFilter,
   max,
   maxBy,
   min,
@@ -487,7 +487,7 @@ describe("iterables", () => {
     });
   });
 
-  describe("map_filter", () => {
+  describe("mapFilter", () => {
     it("basic", () => {
       expect(
         chain([
@@ -496,7 +496,7 @@ describe("iterables", () => {
           { a: null, b: "brown" },
           { a: 5, b: "fox" },
         ])
-          .then(map_filter(({ a }) => a))
+          .then(mapFilter(({ a }) => a))
           .then(toArray)
           .end()
       ).to.deep.equal([3, 5]);
