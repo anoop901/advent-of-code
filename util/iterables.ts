@@ -226,3 +226,20 @@ export function itemAtIndex<T>(index: number) {
     return null;
   };
 }
+
+export function allMatch<T>(pred: (t: T) => boolean) {
+  return (iterable: Iterable<T>): boolean => {
+    return chain(iterable)
+      .then(map(pred))
+      .then(fold(true, (a, b) => a && b))
+      .end();
+  };
+}
+export function anyMatch<T>(pred: (t: T) => boolean) {
+  return (iterable: Iterable<T>): boolean => {
+    return chain(iterable)
+      .then(map(pred))
+      .then(fold(false, (a, b) => a || b))
+      .end();
+  };
+}
