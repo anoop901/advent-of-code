@@ -1,5 +1,5 @@
 import chain from "../../util/chain";
-import { map, split } from "../../util/iterables";
+import { map, split, toArray } from "../../util/iterables";
 import loadInputLines from "../../util/loadInputLines";
 
 interface Passport {
@@ -34,7 +34,7 @@ async function loadPassportData(): Promise<Passport[]> {
         return passport;
       })
     )
-    .then((iter) => Array.from(iter));
+    .then(toArray);
 }
 
 function isPassportValidPart1(passport: Passport): boolean {
