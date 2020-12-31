@@ -61,5 +61,3 @@ export function get30000000thNumber(startingNumbers: number[]): number {
   }
   return result;
 }
-
-console.debug("hi");
