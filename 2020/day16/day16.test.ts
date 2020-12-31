@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import deduceFieldOrder, { getTicketScanningErrorRate } from "./day16";
+import { deduceFieldOrder, getTicketScanningErrorRate } from "./day16";
 
 describe("day16", () => {
   describe("getTicketScanningErrorRate", () => {
@@ -45,30 +45,29 @@ describe("day16", () => {
           {
             name: "class",
             validRanges: [
-              { min: 1, max: 3 },
-              { min: 5, max: 7 },
+              { min: 0, max: 1 },
+              { min: 4, max: 19 },
             ],
           },
           {
             name: "row",
             validRanges: [
-              { min: 6, max: 11 },
-              { min: 33, max: 44 },
+              { min: 0, max: 5 },
+              { min: 8, max: 19 },
             ],
           },
           {
             name: "seat",
             validRanges: [
-              { min: 13, max: 40 },
-              { min: 45, max: 50 },
+              { min: 0, max: 13 },
+              { min: 16, max: 19 },
             ],
           },
         ],
         [
-          [7, 3, 47],
-          [40, 4, 50],
-          [55, 2, 20],
-          [38, 6, 12],
+          [3, 9, 18],
+          [15, 1, 5],
+          [5, 14, 9],
         ]
       );
       expect(fieldOrder).to.deep.equal(["row", "class", "seat"]);
