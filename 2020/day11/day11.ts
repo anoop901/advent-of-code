@@ -1,11 +1,14 @@
 import { isEqual } from "lodash";
 import chain from "../../util/chain";
+import { assertNotNullish } from "../../util/errors";
 import {
   allIntegersStartingAt,
   countMatching,
   filterNonNullish,
   findFirstMatching,
   map,
+  pairs,
+  repeatedlyApply,
   sum,
   takeWhile,
 } from "../../util/iterables";
@@ -163,14 +166,14 @@ export function numberOfOccupiedSeatsAfterStabilization(
   initialWaitingAreaState: WaitingAreaState,
   behavior: Behavior
 ): number {
-  let currentWaitingAreaState = initialWaitingAreaState;
-
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const nextWaitingAreaState = runRound(currentWaitingAreaState, behavior);
-    if (isEqual(currentWaitingAreaState, nextWaitingAreaState)) {
-      return countOccupiedSeats(currentWaitingAreaState);
-    }
-    currentWaitingAreaState = nextWaitingAreaState;
-  }
+  const runRoundC = (waitingAreaState: WaitingAreaState) =>
+    runRound(waitingAreaState, behavior);
+  return chain(initialWaitingAreaState)
+    .then(repeatedlyApply(runRoundC))
+    .then(pairs())
+    .then(findFirstMatching(({ first, second }) => isEqual(first, second)))
+    .then(assertNotNullish)
+    .then(({ first }) => first)
+    .then(countOccupiedSeats)
+    .end();
 }

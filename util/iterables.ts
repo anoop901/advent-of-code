@@ -306,3 +306,28 @@ export function splitAt<T>(splitIndex: number) {
     return { before, after };
   };
 }
+
+export function repeatedlyApply<T>(fn: (arg: T) => T) {
+  return function* (initialValue: T): Generator<T, void, undefined> {
+    let currentValue = initialValue;
+    while (true) {
+      yield currentValue;
+      currentValue = fn(currentValue);
+    }
+  };
+}
+
+export function first<T>(iterable: Iterable<T>): T | null {
+  for (const value of iterable) {
+    return value;
+  }
+  return null;
+}
+
+export function last<T>(iterable: Iterable<T>): T | null {
+  let result: T | null = null;
+  for (const value of iterable) {
+    result = value;
+  }
+  return result;
+}

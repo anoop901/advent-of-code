@@ -9,8 +9,10 @@ import {
   filter,
   filterNonNullish,
   findFirstMatching,
+  first,
   fold,
   itemAtIndex,
+  last,
   length,
   map,
   mapFilter,
@@ -21,6 +23,7 @@ import {
   pairs,
   reduce,
   repeat,
+  repeatedlyApply,
   slice,
   split,
   splitAt,
@@ -755,6 +758,51 @@ describe("iterables", () => {
       expect(after.next()).to.deep.equal({ value: undefined, done: true });
       expect(before.next()).to.deep.equal({ value: "brown", done: false });
       expect(before.next()).to.deep.equal({ value: undefined, done: true });
+    });
+  });
+
+  describe("repeatedlyApply", () => {
+    it("basic", () => {
+      const iterator = chain(10)
+        .then(repeatedlyApply((x) => x * 2))
+        .end();
+      expect(iterator.next()).to.deep.equal({ value: 10, done: false });
+      expect(iterator.next()).to.deep.equal({ value: 20, done: false });
+      expect(iterator.next()).to.deep.equal({ value: 40, done: false });
+      expect(iterator.next()).to.deep.equal({ value: 80, done: false });
+      expect(iterator.next()).to.deep.equal({ value: 160, done: false });
+    });
+    it("times 0", () => {
+      const iterator = chain(10)
+        .then(repeatedlyApply((x) => x * 0))
+        .end();
+      expect(iterator.next()).to.deep.equal({ value: 10, done: false });
+      expect(iterator.next()).to.deep.equal({ value: 0, done: false });
+      expect(iterator.next()).to.deep.equal({ value: 0, done: false });
+      expect(iterator.next()).to.deep.equal({ value: 0, done: false });
+      expect(iterator.next()).to.deep.equal({ value: 0, done: false });
+    });
+  });
+  describe("first", () => {
+    it("basic", () => {
+      expect(first([11, 12, 13])).to.equal(11);
+    });
+    it("single element", () => {
+      expect(first([11])).to.equal(11);
+    });
+    it("empty", () => {
+      expect(first([])).to.equal(null);
+    });
+  });
+  describe("last", () => {
+    it("basic", () => {
+      expect(last([11, 12, 13])).to.equal(13);
+    });
+    it("single element", () => {
+      expect(last([11])).to.equal(11);
+    });
+    it("empty", () => {
+      expect(last([])).to.equal(null);
     });
   });
 });
