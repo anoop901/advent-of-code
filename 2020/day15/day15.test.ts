@@ -1,6 +1,7 @@
+import chain from "@anoop901/js-util/chain";
+import take from "@anoop901/js-util/iterables/take";
+import toArray from "@anoop901/js-util/iterables/toArray";
 import { expect } from "chai";
-import chain from "../../util/chain";
-import { take, toArray } from "../../util/iterables";
 import { get2020thNumber, get30000000thNumber, playGame } from "./day15";
 
 describe("day15", () => {

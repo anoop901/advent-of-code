@@ -1,7 +1,8 @@
+import chain from "@anoop901/js-util/chain";
+import map from "@anoop901/js-util/iterables/map";
+import sum from "@anoop901/js-util/iterables/sum";
 import loadInputLines from "../../util/loadInputLines";
-import { map, sum } from "../../util/iterables";
 import { parse as parseLuggageRule } from "./luggage_rule";
-import chain from "../../util/chain";
 
 type BagTypeString = string;
 

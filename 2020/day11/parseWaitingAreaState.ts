@@ -1,5 +1,6 @@
-import chain from "../../util/chain";
-import { map, toArray } from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import map from "@anoop901/js-util/iterables/map";
+import toArray from "@anoop901/js-util/iterables/toArray";
 import loadInputLines from "../../util/loadInputLines";
 import { WaitingAreaState } from "./day11";
 

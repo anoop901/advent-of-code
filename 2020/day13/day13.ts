@@ -1,15 +1,13 @@
-import chain from "../../util/chain";
-import {
-  allIntegersStartingAt,
-  enumerate,
-  filterNonNullish,
-  findFirstMatching,
-  fold,
-  map,
-  mapFilter,
-  minBy,
-} from "../../util/iterables";
-import { mod } from "../../util/numbers";
+import chain from "@anoop901/js-util/chain";
+import allIntegersStartingAt from "@anoop901/js-util/iterables/allIntegersStartingAt";
+import enumerate from "@anoop901/js-util/iterables/enumerate";
+import filterNonNullish from "@anoop901/js-util/iterables/filterNonNullish";
+import findFirstMatching from "@anoop901/js-util/iterables/findFirstMatching";
+import fold from "@anoop901/js-util/iterables/fold";
+import map from "@anoop901/js-util/iterables/map";
+import mapFilter from "@anoop901/js-util/iterables/mapFilter";
+import minBy from "@anoop901/js-util/iterables/minBy";
+import mod from "@anoop901/js-util/numbers/mod";
 
 type BusId = number;
 export type BusSchedule = (BusId | null)[];

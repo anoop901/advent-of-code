@@ -1,5 +1,9 @@
-import chain from "../../util/chain";
-import { drop, map, reduce, split, toArray } from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import drop from "@anoop901/js-util/iterables/drop";
+import map from "@anoop901/js-util/iterables/map";
+import reduce from "@anoop901/js-util/iterables/reduce";
+import split from "@anoop901/js-util/iterables/split";
+import toArray from "@anoop901/js-util/iterables/toArray";
 import Coordinates, { coordinatesToString } from "./Coordinates";
 
 type CoordinatesString = string;

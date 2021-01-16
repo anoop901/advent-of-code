@@ -1,13 +1,11 @@
-import chain from "../../util/chain";
-import {
-  anyMatch,
-  enumerate,
-  filter,
-  fold,
-  map,
-  sum,
-  toArray,
-} from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import anyMatch from "@anoop901/js-util/iterables/anyMatch";
+import enumerate from "@anoop901/js-util/iterables/enumerate";
+import filter from "@anoop901/js-util/iterables/filter";
+import fold from "@anoop901/js-util/iterables/fold";
+import map from "@anoop901/js-util/iterables/map";
+import sum from "@anoop901/js-util/iterables/sum";
+import toArray from "@anoop901/js-util/iterables/toArray";
 
 export interface Range {
   min: number;

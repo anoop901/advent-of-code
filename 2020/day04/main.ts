@@ -1,5 +1,7 @@
-import chain from "../../util/chain";
-import { map, split, toArray } from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import map from "@anoop901/js-util/iterables/map";
+import split from "@anoop901/js-util/iterables/split";
+import toArray from "@anoop901/js-util/iterables/toArray";
 import loadInputLines from "../../util/loadInputLines";
 
 interface Passport {

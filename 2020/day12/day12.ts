@@ -1,7 +1,9 @@
-import chain from "../../util/chain";
-import { fold, map, toArray } from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import toArray from "@anoop901/js-util/iterables/toArray";
+import map from "@anoop901/js-util/iterables/map";
 import loadInputLines from "../../util/loadInputLines";
-import { mod } from "../../util/numbers";
+import fold from "@anoop901/js-util/iterables/fold";
+import mod from "@anoop901/js-util/numbers/mod";
 
 type Direction = "north" | "south" | "east" | "west";
 type Action = "N" | "S" | "E" | "W" | "F" | "L" | "R";

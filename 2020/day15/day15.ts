@@ -1,5 +1,5 @@
-import chain from "../../util/chain";
-import { itemAtIndex } from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import itemAtIndex from "@anoop901/js-util/iterables/itemAtIndex";
 
 export function* playGame(
   startingNumbers: number[]

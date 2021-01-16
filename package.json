@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@anoop901/js-util": "^1.1.0",
     "lodash": "^4.17.20",
     "nyc": "^15.1.0",
     "pegjs": "^0.10.0",

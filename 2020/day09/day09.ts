@@ -1,11 +1,9 @@
-import chain from "../../util/chain";
-import {
-  drop,
-  enumerate,
-  findFirstMatching,
-  fold,
-  slice,
-} from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import drop from "@anoop901/js-util/iterables/drop";
+import enumerate from "@anoop901/js-util/iterables/enumerate";
+import findFirstMatching from "@anoop901/js-util/iterables/findFirstMatching";
+import fold from "@anoop901/js-util/iterables/fold";
+import slice from "@anoop901/js-util/iterables/slice";
 
 // k = length of preamble
 // n = length of xmas data

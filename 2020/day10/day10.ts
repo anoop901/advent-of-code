@@ -1,5 +1,7 @@
-import chain from "../../util/chain";
-import { map, pairs, sum } from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import map from "@anoop901/js-util/iterables/map";
+import pairs from "@anoop901/js-util/iterables/pairs";
+import sum from "@anoop901/js-util/iterables/sum";
 
 export function numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(
   adapters: number[]

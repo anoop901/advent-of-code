@@ -1,6 +1,7 @@
-import { map, split } from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import map from "@anoop901/js-util/iterables/map";
+import split from "@anoop901/js-util/iterables/split";
 import loadInputLines from "../../util/loadInputLines";
-import chain from "../../util/chain";
 
 type Question = string; // 'a', 'b', ...
 type CustomsForm = Set<Question>;

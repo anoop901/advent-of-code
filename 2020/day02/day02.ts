@@ -1,5 +1,5 @@
-import chain from "../../util/chain";
-import { countMatching } from "../../util/iterables";
+import chain from "@anoop901/js-util/chain";
+import countMatching from "@anoop901/js-util/iterables/countMatching";
 
 export interface PasswordPolicy {
   character: string;

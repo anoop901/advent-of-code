@@ -1,17 +1,15 @@
+import chain from "@anoop901/js-util/chain";
+import assertNotNullish from "@anoop901/js-util/errors/assertNotNullish";
+import allIntegersStartingAt from "@anoop901/js-util/iterables/allIntegersStartingAt";
+import countMatching from "@anoop901/js-util/iterables/countMatching";
+import filterNonNullish from "@anoop901/js-util/iterables/filterNonNullish";
+import findFirstMatching from "@anoop901/js-util/iterables/findFirstMatching";
+import map from "@anoop901/js-util/iterables/map";
+import pairs from "@anoop901/js-util/iterables/pairs";
+import repeatedlyApply from "@anoop901/js-util/iterables/repeatedlyApply";
+import sum from "@anoop901/js-util/iterables/sum";
+import takeWhile from "@anoop901/js-util/iterables/takeWhile";
 import { isEqual } from "lodash";
-import chain from "../../util/chain";
-import { assertNotNullish } from "../../util/errors";
-import {
-  allIntegersStartingAt,
-  countMatching,
-  filterNonNullish,
-  findFirstMatching,
-  map,
-  pairs,
-  repeatedlyApply,
-  sum,
-  takeWhile,
-} from "../../util/iterables";
 
 export type SeatState = "empty" | "occupied" | "floor";
 

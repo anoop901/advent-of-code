@@ -1,4 +1,4 @@
-import { sum } from "../../util/iterables";
+import sum from "@anoop901/js-util/iterables/sum";
 
 export type Bit = "1" | "0";
 export type MaskBit = "X" | Bit;
