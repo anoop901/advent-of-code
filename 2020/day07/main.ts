@@ -2,7 +2,8 @@ import chain from "@anoop901/js-util/chain";
 import map from "@anoop901/js-util/iterables/map";
 import sum from "@anoop901/js-util/iterables/sum";
 import loadInputLines from "../../util/loadInputLines";
-import { parse as parseLuggageRule } from "./luggage_rule";
+import peg from "pegjs";
+import { promises as fsp } from "fs";
 
 type BagTypeString = string;
 
@@ -22,7 +23,10 @@ interface Condition {
 }
 
 async function loadLuggageRules(): Promise<LuggageRule[]> {
-  return (await loadInputLines()).map((line) => parseLuggageRule(line));
+  const luggageRuleParser = peg.generate(
+    await fsp.readFile("2020/day07/luggage_rule.pegjs", "utf8")
+  );
+  return (await loadInputLines()).map((line) => luggageRuleParser.parse(line));
 }
 
 function generateContainableBagsMap(
