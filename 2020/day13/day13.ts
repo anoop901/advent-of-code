@@ -1,5 +1,4 @@
 import chain from "@anoop901/js-util/chain";
-import allIntegersStartingAt from "@anoop901/js-util/iterables/allIntegersStartingAt";
 import enumerate from "@anoop901/js-util/iterables/enumerate";
 import filterNonNullish from "@anoop901/js-util/iterables/filterNonNullish";
 import findFirstMatching from "@anoop901/js-util/iterables/findFirstMatching";
@@ -8,6 +7,8 @@ import map from "@anoop901/js-util/iterables/map";
 import mapFilter from "@anoop901/js-util/iterables/mapFilter";
 import minBy from "@anoop901/js-util/iterables/minBy";
 import mod from "@anoop901/js-util/numbers/mod";
+import repeatedlyApply from "@anoop901/js-util/iterables/repeatedlyApply";
+import assertNotNullish from "@anoop901/js-util/errors/assertNotNullish";
 
 type BusId = number;
 export type BusSchedule = (BusId | null)[];
@@ -25,15 +26,10 @@ function intersectionOfModClasses(
   { divisor: divisor2, mod: mod2 }: { divisor: number; mod: number }
 ): { divisor: number; mod: number } {
   return {
-    mod: chain(allIntegersStartingAt(0))
-      .then(map((i) => mod1 + i * divisor1))
+    mod: chain(mod1)
+      .then(repeatedlyApply((x) => x + divisor1))
       .then(findFirstMatching((x) => mod(x, divisor2) === mod2))
-      .then((x) => {
-        if (x == null) {
-          throw new Error("unreachable");
-        }
-        return x;
-      })
+      .then(assertNotNullish)
       .end(),
     divisor: divisor1 * divisor2,
   };
