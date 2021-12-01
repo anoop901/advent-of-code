@@ -3,7 +3,6 @@ import countMatching from "@anoop901/js-util/iterables/countMatching";
 import map from "@anoop901/js-util/iterables/map";
 import pairs from "@anoop901/js-util/iterables/pairs";
 import sum from "@anoop901/js-util/iterables/sum";
-import toArray from "@anoop901/js-util/iterables/toArray";
 import loadInputLines from "../../util/loadInputLines";
 
 function* windows<T>(array: T[], windowSize: number) {
