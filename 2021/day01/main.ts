@@ -24,7 +24,6 @@ function countNumIncreases(nums: Iterable<number>) {
   const depths = lines.map(Number);
   const part1Answer = countNumIncreases(depths);
 
-  console.log("part 2");
   const part2Answer = chain(windows(depths, 3))
     .then(map(sum))
     .then(countNumIncreases)
