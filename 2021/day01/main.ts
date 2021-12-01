@@ -27,7 +27,6 @@ function countNumIncreases(nums: Iterable<number>) {
   console.log("part 2");
   const part2Answer = chain(windows(depths, 3))
     .then(map(sum))
-    .then(toArray) // TODO: remove this once https://github.com/anoop901/js-util/issues/1 is fixed
     .then(countNumIncreases)
     .end();
   console.log(part1Answer);
