@@ -85,27 +85,15 @@ function numMessagesValidWithRuleSet(
       return false;
     }
   };
-  return chain(messages)
-    .then(
-      map((message) => {
-        if (messageIsValid(message)) {
-          console.log(`VALID   ${message}`);
-        } else {
-          console.log(`INVALID ${message}`);
-        }
-        return message;
-      })
-    )
-    .then(countMatching(messageIsValid))
-    .end();
+  return chain(messages).then(countMatching(messageIsValid)).end();
 }
 
 (async () => {
   const { ruleSet, messages } = await parseInput();
-  // const part1Answer = numMessagesValidWithRuleSet(ruleSet, messages);
+  const part1Answer = numMessagesValidWithRuleSet(ruleSet, messages);
   updateRuleSet(ruleSet);
   const part2Answer = numMessagesValidWithRuleSet(ruleSet, messages);
 
-  // console.log(part1Answer);
+  console.log(part1Answer);
   console.log(part2Answer);
 })();
