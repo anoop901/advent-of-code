@@ -27,7 +27,7 @@ async function loadCommands(): Promise<Command[]> {
     .end();
 }
 
-function positionAfterFollowingCommands(commands: Command[]) {
+function positionAfterFollowingCommands(commands: Command[]): Position {
   const position = { horizontal: 0, depth: 0 };
   for (const command of commands) {
     switch (command.direction) {
