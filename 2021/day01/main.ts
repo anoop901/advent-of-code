@@ -5,10 +5,12 @@ import pairs from "@anoop901/js-util/iterables/pairs";
 import sum from "@anoop901/js-util/iterables/sum";
 import loadInputLines from "../../util/loadInputLines";
 
-function* windows<T>(array: T[], windowSize: number) {
-  for (let i = 0; i + windowSize <= array.length; i++) {
-    yield array.slice(i, i + windowSize);
-  }
+function windows<T>(windowSize: number) {
+  return function* (array: T[]) {
+    for (let i = 0; i + windowSize <= array.length; i++) {
+      yield array.slice(i, i + windowSize);
+    }
+  };
 }
 
 function countNumIncreases(nums: Iterable<number>) {
@@ -23,7 +25,8 @@ function countNumIncreases(nums: Iterable<number>) {
   const depths = lines.map(Number);
   const part1Answer = countNumIncreases(depths);
 
-  const part2Answer = chain(windows(depths, 3))
+  const part2Answer = chain(depths)
+    .then(windows(3))
     .then(map(sum))
     .then(countNumIncreases)
     .end();
