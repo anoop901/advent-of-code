@@ -6,9 +6,16 @@ import sum from "@anoop901/js-util/iterables/sum";
 import loadInputLines from "../../util/loadInputLines";
 
 function windows<T>(windowSize: number) {
-  return function* (array: T[]) {
-    for (let i = 0; i + windowSize <= array.length; i++) {
-      yield array.slice(i, i + windowSize);
+  return function* (iterable: Iterable<T>) {
+    const currentWindow = [];
+    for (const t of iterable) {
+      currentWindow.push(t);
+      if (currentWindow.length > windowSize) {
+        currentWindow.shift();
+      }
+      if (currentWindow.length === windowSize) {
+        yield currentWindow.slice();
+      }
     }
   };
 }
@@ -24,12 +31,12 @@ function countNumIncreases(nums: Iterable<number>) {
   const lines = await loadInputLines();
   const depths = lines.map(Number);
   const part1Answer = countNumIncreases(depths);
+  console.log(part1Answer);
 
   const part2Answer = chain(depths)
     .then(windows(3))
     .then(map(sum))
     .then(countNumIncreases)
     .end();
-  console.log(part1Answer);
   console.log(part2Answer);
 })();
