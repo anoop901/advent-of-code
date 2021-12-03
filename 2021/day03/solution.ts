@@ -7,11 +7,22 @@ import {
   map,
   toArray,
 } from "@anoop901/js-util/iterables";
-import loadInputLines from "../../util/loadInputLines";
+import { parseInputLines } from "../../util/parseInputLines";
 
-async function loadDiagnosticReport(): Promise<boolean[][]> {
-  const lines = await loadInputLines();
-  return chain(lines)
+export function solution(input: string): {
+  part1Answer: number;
+  part2Answer: number;
+} {
+  const diagnosticReport = parseDiagnosticReport(input);
+  return {
+    part1Answer: findPowerConsumption(diagnosticReport),
+    part2Answer: findLifeSupportRating(diagnosticReport),
+  };
+}
+
+function parseDiagnosticReport(input: string): boolean[][] {
+  return chain(input)
+    .then(parseInputLines)
     .then(map(map((c) => c == "1")))
     .then(map(toArray))
     .then(toArray)
@@ -99,11 +110,3 @@ function findLifeSupportRating(diagnosticReport: boolean[][]): number {
     findCO2ScrubberRating(diagnosticReport)
   );
 }
-
-(async () => {
-  const diagnosticReport = await loadDiagnosticReport();
-  const part1Answer = findPowerConsumption(diagnosticReport);
-  console.log(part1Answer);
-  const part2Answer = findLifeSupportRating(diagnosticReport);
-  console.log(part2Answer);
-})();
