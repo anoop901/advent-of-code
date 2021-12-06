@@ -19,7 +19,9 @@ async function main() {
 
 async function runChallenge(args: any) {
   const input = await readFile(getPathToInputTxt(args), "utf8");
-  const solutionModule = await import("./2021/day03/solution");
+  const solutionModule = await import(
+    `./${getPathToChallengeDirectory(args)}/solution`
+  );
   const { part1Answer, part2Answer } = solutionModule.solution(input);
   console.log(`part 1 answer: ${part1Answer}`);
   console.log(`part 2 answer: ${part2Answer}`);
