@@ -1,7 +1,9 @@
 package day02
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"strings"
 )
 
@@ -16,13 +18,17 @@ type Solution struct {
 	strategyGuide StrategyGuide
 }
 
-func (s *Solution) Init(input string) error {
+func (s *Solution) Init(inputReader io.Reader) error {
 	s.strategyGuide = make(StrategyGuide, 0)
-	lines := strings.Split(strings.Trim(input, "\n"), "\n")
-	for _, line := range lines {
+	scanner := bufio.NewScanner(inputReader)
+	for scanner.Scan() {
+		line := scanner.Text()
 		words := strings.Split(line, " ")
 		round := StrategyGuideRound{firstColumn: words[0], secondColumn: words[1]}
 		s.strategyGuide = append(s.strategyGuide, round)
+	}
+	if scanner.Err() != nil {
+		return fmt.Errorf("failed to scan input file: %v", scanner.Err())
 	}
 	return nil
 }
@@ -63,29 +69,29 @@ var shapeToScore = map[string]int{
 	"scissors": 3,
 }
 
-func outcome(myShape string, opponentShape string) string {
+func outcome(myShape string, opponentShape string) (string, error) {
 	switch myShape {
 	case winStrategy[opponentShape]:
-		return "win"
+		return "win", nil
 	case loseStrategy[opponentShape]:
-		return "loss"
+		return "loss", nil
 	case opponentShape:
-		return "draw"
+		return "draw", nil
 	default:
-		panic(fmt.Sprintf("unexpected shapes %v %v", myShape, opponentShape))
+		return "", fmt.Errorf("unexpected shapes %v %v", myShape, opponentShape)
 	}
 }
 
-func shapeForDesiredOutcome(opponentShape string, desiredOutcome string) string {
+func shapeForDesiredOutcome(opponentShape string, desiredOutcome string) (string, error) {
 	switch desiredOutcome {
 	case "draw":
-		return opponentShape
+		return opponentShape, nil
 	case "win":
-		return winStrategy[opponentShape]
+		return winStrategy[opponentShape], nil
 	case "loss":
-		return loseStrategy[opponentShape]
+		return loseStrategy[opponentShape], nil
 	default:
-		panic(fmt.Sprintf("unknown outcome %v", desiredOutcome))
+		return "", fmt.Errorf("unknown outcome %v", desiredOutcome)
 	}
 }
 
@@ -95,54 +101,69 @@ var outcomeToScore = map[string]int{
 	"loss": 0,
 }
 
-func (s *Solution) Part1() int {
+func (s *Solution) Part1() (int, error) {
 	totalScore := 0
 	for _, round := range s.strategyGuide {
 		opponentShape, ok := firstColumnToShape[round.firstColumn]
 		if !ok {
-			panic(fmt.Sprintf("unexpected firstColumn %v", round.firstColumn))
+			return 0, fmt.Errorf("unexpected firstColumn %v", round.firstColumn)
 		}
 		myShape, ok := secondColumnToShape[round.secondColumn]
 		if !ok {
-			panic(fmt.Sprintf("unexpected secondColumn %v", round.secondColumn))
+			return 0, fmt.Errorf("unexpected secondColumn %v", round.secondColumn)
 		}
 		shapeScore, ok := shapeToScore[myShape]
 		if !ok {
-			panic(fmt.Sprintf("unexpected shape %v", myShape))
+			return 0, fmt.Errorf("unexpected shape %v", myShape)
 		}
-		outcome := outcome(myShape, opponentShape)
+		outcome, err := outcome(myShape, opponentShape)
+		if err != nil {
+			return 0, fmt.Errorf(
+				"failed to compute outcome between %v and %v: %v",
+				myShape,
+				opponentShape,
+				err)
+		}
 		outcomeScore, ok := outcomeToScore[outcome]
 		if !ok {
-			panic(fmt.Sprintf("unexpected outcome %v", outcome))
+			return 0, fmt.Errorf("unexpected outcome %v", outcome)
 		}
 		roundScore := shapeScore + outcomeScore
 		totalScore += roundScore
 	}
-	return totalScore
+	return totalScore, nil
 }
 
-func (s *Solution) Part2() int {
+func (s *Solution) Part2() (int, error) {
 	totalScore := 0
 	for _, round := range s.strategyGuide {
 		opponentShape, ok := firstColumnToShape[round.firstColumn]
 		if !ok {
-			panic(fmt.Sprintf("unexpected firstColumn %v", round.firstColumn))
+			return 0, fmt.Errorf("unexpected firstColumn %v", round.firstColumn)
 		}
 		desiredOutcome, ok := secondColumnToOutcome[round.secondColumn]
 		if !ok {
-			panic(fmt.Sprintf("unexpected secondColumn %v", round.secondColumn))
+			return 0, fmt.Errorf("unexpected secondColumn %v", round.secondColumn)
 		}
-		myShape := shapeForDesiredOutcome(opponentShape, desiredOutcome)
+		myShape, err := shapeForDesiredOutcome(opponentShape, desiredOutcome)
+		if err != nil {
+			return 0, fmt.Errorf(
+				"failed to compute shape to play when opponent plays %v for desired "+
+					"outcome %v: %v",
+				opponentShape,
+				desiredOutcome,
+				err)
+		}
 		shapeScore, ok := shapeToScore[myShape]
 		if !ok {
-			panic(fmt.Sprintf("unexpected shape %v", myShape))
+			return 0, fmt.Errorf("unexpected shape %v", myShape)
 		}
 		outcomeScore, ok := outcomeToScore[desiredOutcome]
 		if !ok {
-			panic(fmt.Sprintf("unexpected outcome %v", desiredOutcome))
+			return 0, fmt.Errorf("unexpected outcome %v", desiredOutcome)
 		}
 		roundScore := shapeScore + outcomeScore
 		totalScore += roundScore
 	}
-	return totalScore
+	return totalScore, nil
 }

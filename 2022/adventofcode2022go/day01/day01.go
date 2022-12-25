@@ -1,6 +1,8 @@
 package day01
 
 import (
+	"fmt"
+	"io"
 	"sort"
 	"strconv"
 	"strings"
@@ -11,7 +13,13 @@ type Solution struct {
 	calorieTotals []int
 }
 
-func (s *Solution) Init(input string) error {
+func (s *Solution) Init(inputReader io.Reader) error {
+	inputBuf := new(strings.Builder)
+	_, err := io.Copy(inputBuf, inputReader)
+	if err != nil {
+		return fmt.Errorf("failed to read input")
+	}
+	input := inputBuf.String()
 	inputSections := strings.Split(strings.Trim(input, "\n"), "\n\n")
 	calories := make([][]int, len(inputSections))
 	for sectionIndex, inputSection := range inputSections {
@@ -36,19 +44,19 @@ func (s *Solution) Init(input string) error {
 	return nil
 }
 
-func (s *Solution) Part1() int {
+func (s *Solution) Part1() (int, error) {
 	result, err := max(s.calorieTotals)
 	if err != nil {
-		panic(err)
+		return 0, err
 	}
-	return result
+	return result, nil
 }
 
-func (s *Solution) Part2() int {
+func (s *Solution) Part2() (int, error) {
 	sortedCalorieTotals := make([]int, len(s.calorieTotals))
 	copy(sortedCalorieTotals, s.calorieTotals)
 	sort.Slice(sortedCalorieTotals, func(i, j int) bool { return sortedCalorieTotals[i] > sortedCalorieTotals[j] })
-	return sum(sortedCalorieTotals[:3])
+	return sum(sortedCalorieTotals[:3]), nil
 }
 
 type maxError struct{}
