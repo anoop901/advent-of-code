@@ -1,8 +1,9 @@
 package day03
 
 import (
+	"bufio"
 	"fmt"
-	"strings"
+	"io"
 )
 
 type rucksack struct {
@@ -15,20 +16,11 @@ type Solution struct {
 	rucksacks []rucksack
 }
 
-func (s *Solution) Init(input string) error {
+func (s *Solution) Init(inputReader io.Reader) error {
 
-	linesCh := make(chan string)
-	go func() {
-		lines := strings.Split(input, "\n")
-		for _, line := range lines {
-			if line != "" {
-				linesCh <- line
-			}
-		}
-		close(linesCh)
-	}()
-
-	for line := range linesCh {
+	scanner := bufio.NewScanner(inputReader)
+	for scanner.Scan() {
+		line := scanner.Text()
 		items := []rune(line)
 		numItems := len(items)
 		if numItems%2 != 0 {
@@ -41,6 +33,10 @@ func (s *Solution) Init(input string) error {
 			compartment2Items: compartment2Items,
 			items:             items,
 		})
+	}
+
+	if scanner.Err() != nil {
+		return fmt.Errorf("failed to scan input file: %v", scanner.Err())
 	}
 
 	return nil

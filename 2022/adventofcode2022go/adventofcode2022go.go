@@ -12,13 +12,12 @@ const inputFilename = "day03/input.txt"
 func main() {
 	solution := day.Solution{}
 
-	inputBytes, err := os.ReadFile(inputFilename)
+	f, err := os.Open(inputFilename)
 	if err != nil {
-		panic(fmt.Errorf("failed to read input file: %v", err))
+		panic(fmt.Errorf("failed to open input file: %v", err))
 	}
-	input := string(inputBytes)
 
-	err = solution.Init(input)
+	err = solution.Init(f)
 	if err != nil {
 		panic(fmt.Errorf("failed to initialize solution: %v", err))
 	}
@@ -35,4 +34,9 @@ func main() {
 
 	fmt.Printf("part 1 answer: %v\n", part1)
 	fmt.Printf("part 2 answer: %v\n", part2)
+
+	err = f.Close()
+	if err != nil {
+		panic(fmt.Errorf("failed to close input file: %v", err))
+	}
 }
