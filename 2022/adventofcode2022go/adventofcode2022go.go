@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	day "github.com/anoop901/adventofcode/2022/adventofcode2022go/day03"
+	day "github.com/anoop901/adventofcode/2022/adventofcode2022go/day04"
 )
 
-const inputFilename = "day03/input.txt"
+const inputFilename = "day04/input.txt"
 
 func main() {
 	solution := day.Solution{}
