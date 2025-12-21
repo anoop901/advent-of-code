@@ -1,5 +1,5 @@
+import sys
 from collections.abc import Iterator
-from pathlib import Path
 
 
 def parseRange(rangeStr: str) -> tuple[int, int]:
@@ -17,10 +17,6 @@ def parseRange(rangeStr: str) -> tuple[int, int]:
     """
     startStr, endStr = rangeStr.split("-")
     return (int(startStr), int(endStr))
-
-
-input = open(Path(__file__).parent / "input.txt").read()
-idRanges = [parseRange(r) for r in input.strip().split(",")]
 
 
 def digitCountsInRange(rang: tuple[int, int]) -> list[int]:
@@ -162,7 +158,7 @@ def invalidIdsInRange2(rang: tuple[int, int]) -> Iterator[int]:
                 yield from invalidIdsInRangeWithNDigitsKRep(rang, digitCount, k)
 
 
-def part1() -> int:
+def part1(idRanges: list[tuple[int, int]]) -> int:
     """Solve part 1 of the puzzle.
 
     Calculates the sum of all invalid IDs across all input ranges,
@@ -178,7 +174,7 @@ def part1() -> int:
     return result
 
 
-def part2() -> int:
+def part2(idRanges: list[tuple[int, int]]) -> int:
     """Solve part 2 of the puzzle.
 
     Calculates the sum of all invalid IDs across all input ranges,
@@ -190,8 +186,12 @@ def part2() -> int:
     result = 0
     for rang in idRanges:
         ids = set(invalidIdsInRange2(rang))
+        print(rang, sorted(list(ids)))
         result += sum(ids)
     return result
 
 
-print(part1(), part2())
+if __name__ == "__main__":
+    input_text = sys.stdin.read()
+    idRanges = [parseRange(r) for r in input_text.strip().split(",")]
+    print(part1(idRanges), part2(idRanges))

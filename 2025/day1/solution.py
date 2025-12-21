@@ -1,42 +1,61 @@
+import sys
 from enum import Enum
-
-instructions = open("example.txt").readlines()
-position = 50
-password = 0
-password2 = 0
 
 
 class Direction(Enum):
     LEFT = "L"
     RIGHT = "R"
 
-for instruction in instructions:
-    instruction = instruction.strip()
-    direction = Direction(instruction[:1])
-    amount = int(instruction[1:])
 
-    # update password2
-    if position == 0:
-        password2 += amount // 100
-    else:
-        rotation_to_next_zero = (
-            position if direction == Direction.LEFT else 100 - position
-        )
-        if amount >= rotation_to_next_zero:
-            password2 += (amount - rotation_to_next_zero) // 100 + 1
+def parse_instructions(input_text: str) -> list[tuple[Direction, int]]:
+    lines = input_text.strip().splitlines()
+    return [(Direction(line[0]), int(line[1:])) for line in lines]
 
-    # update position
-    match direction:
-        case Direction.LEFT:
-            position -= amount
-        case Direction.RIGHT:
-            position += amount
-        case _:
-            raise ValueError()
-    position %= 100
 
-    # update password
-    if position == 0:
-        password += 1
+def part1(input_text: str) -> int:
+    instructions = parse_instructions(input_text)
+    position = 50
+    password = 0
 
-print(password, password2)
+    for direction, amount in instructions:
+        match direction:
+            case Direction.LEFT:
+                position -= amount
+            case Direction.RIGHT:
+                position += amount
+        position %= 100
+
+        if position == 0:
+            password += 1
+
+    return password
+
+
+def part2(input_text: str) -> int:
+    instructions = parse_instructions(input_text)
+    position = 50
+    password = 0
+
+    for direction, amount in instructions:
+        if position == 0:
+            password += amount // 100
+        else:
+            rotation_to_next_zero = (
+                position if direction == Direction.LEFT else 100 - position
+            )
+            if amount >= rotation_to_next_zero:
+                password += (amount - rotation_to_next_zero) // 100 + 1
+
+        match direction:
+            case Direction.LEFT:
+                position -= amount
+            case Direction.RIGHT:
+                position += amount
+        position %= 100
+
+    return password
+
+
+if __name__ == "__main__":
+    input_text = sys.stdin.read()
+    print(part1(input_text), part2(input_text))
