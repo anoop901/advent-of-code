@@ -8,7 +8,6 @@ def part1():
     grid = np.array([line.split() for line in input_text.splitlines()])
     operators = grid[-1]
     grid_numbers = grid[:-1].astype("int")
-    print(grid.shape, operators.shape, grid_numbers.shape)
     result = 0
     for operator, column in zip(operators, grid_numbers.T):
         match operator:

@@ -1,9 +1,10 @@
-package day05
+package main
 
 import (
 	"bufio"
 	"fmt"
 	"io"
+	"os"
 	"regexp"
 	"sort"
 	"strconv"
@@ -151,4 +152,22 @@ func (s *Solution) Part2() (string, error) {
 		moveCratesTogether(stacks, inst.numCrates, inst.sourceStack, inst.destinationStack)
 	}
 	return string(getTopItems(stacks)), nil
+}
+
+func main() {
+	solution := Solution{}
+	err := solution.Init(os.Stdin)
+	if err != nil {
+		panic(fmt.Errorf("failed to initialize solution: %v", err))
+	}
+	part1, err := solution.Part1()
+	if err != nil {
+		panic(fmt.Errorf("failed to run part 1: %v", err))
+	}
+
+	part2, err := solution.Part2()
+	if err != nil {
+		panic(fmt.Errorf("failed to run part 2: %v", err))
+	}
+	fmt.Printf("%v %v\n", part1, part2)
 }

@@ -1,9 +1,10 @@
-package day06
+package main
 
 import (
 	"bufio"
 	"fmt"
 	"io"
+	"os"
 )
 
 type Solution struct {
@@ -63,4 +64,22 @@ func (s *Solution) Part2() (int, error) {
 		}
 	}
 	return 0, fmt.Errorf("no marker present in input")
+}
+
+func main() {
+	solution := Solution{}
+	err := solution.Init(os.Stdin)
+	if err != nil {
+		panic(fmt.Errorf("failed to initialize solution: %v", err))
+	}
+	part1, err := solution.Part1()
+	if err != nil {
+		panic(fmt.Errorf("failed to run part 1: %v", err))
+	}
+
+	part2, err := solution.Part2()
+	if err != nil {
+		panic(fmt.Errorf("failed to run part 2: %v", err))
+	}
+	fmt.Printf("%v %v\n", part1, part2)
 }
