@@ -48,9 +48,10 @@ function* interpretBootCode(
   }
 }
 
-function accumulatorValueOnTerminationOrLoop(
-  bootCode: Instruction[]
-): { terminated: boolean; finalAccumulator: number } {
+function accumulatorValueOnTerminationOrLoop(bootCode: Instruction[]): {
+  terminated: boolean;
+  finalAccumulator: number;
+} {
   const previouslyExecutedInstructions = new Set<number>();
   let instructionIndex = 0;
   let accumulator = 0;
@@ -101,10 +102,8 @@ function accumulatorValueOnFixedBootCodeTermination(
   ) {
     const potentialFixedBootCode = patchBootCode(bootCode, instructionIndex);
     if (potentialFixedBootCode !== null) {
-      const {
-        finalAccumulator,
-        terminated,
-      } = accumulatorValueOnTerminationOrLoop(potentialFixedBootCode);
+      const { finalAccumulator, terminated } =
+        accumulatorValueOnTerminationOrLoop(potentialFixedBootCode);
       if (terminated) {
         return finalAccumulator;
       }
@@ -115,12 +114,10 @@ function accumulatorValueOnFixedBootCodeTermination(
 
 async function main() {
   const bootCode = await loadBootCode();
-  const answerPart1 = accumulatorValueOnTerminationOrLoop(bootCode)
-    .finalAccumulator;
-  console.log(answerPart1);
-
+  const answerPart1 =
+    accumulatorValueOnTerminationOrLoop(bootCode).finalAccumulator;
   const answerPart2 = accumulatorValueOnFixedBootCodeTermination(bootCode);
-  console.log(answerPart2);
+  console.log(answerPart1, answerPart2);
 }
 
 main();

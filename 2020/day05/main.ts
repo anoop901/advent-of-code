@@ -65,8 +65,7 @@ async function main() {
   const boardingPasses = await loadBoardingPasses();
 
   const seatIds = boardingPasses.map(boardingPassToSeatId);
-  console.log(Math.max(...seatIds));
-  console.log(findHole(seatIds));
+  console.log(Math.max(...seatIds), findHole(seatIds));
 }
 
 main();

@@ -95,9 +95,13 @@ body {
 
 .control-row {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-direction: row;
+  gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.control-row .select {
+  flex: 1;
 }
 
 .control-row label {

@@ -38,5 +38,5 @@ function countNumIncreases(nums: Iterable<number>) {
     .then(map(sum))
     .then(countNumIncreases)
     .end();
-  console.log(part2Answer);
+  console.log(part1Answer, part2Answer);
 })();

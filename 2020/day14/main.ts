@@ -30,5 +30,5 @@ async function parseProgram(): Promise<Program> {
   const answer1 = sumMemoryAfterExecuting(program);
   console.log(answer1);
   const answer2 = sumMemoryAfterExecuting(program, true);
-  console.log(answer2);
+  console.log(answer1, answer2);
 })();

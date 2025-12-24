@@ -31,16 +31,13 @@ async function loadCurrentTimestampAndBusSchedule(): Promise<{
 }
 
 (async () => {
-  const {
-    currentTimestamp,
-    busSchedule,
-  } = await loadCurrentTimestampAndBusSchedule();
+  const { currentTimestamp, busSchedule } =
+    await loadCurrentTimestampAndBusSchedule();
   const { busId, waitTime } = earliestBusAvailable(
     currentTimestamp,
     busSchedule
   );
   const answer1 = busId * waitTime;
-  console.log(answer1);
   const answer2 = earliestTimestampWhenBusesLineUp(busSchedule);
-  console.log(answer2);
+  console.log(answer1, answer2);
 })();

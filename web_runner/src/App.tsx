@@ -21,6 +21,8 @@ type InputSource = "uploaded" | "custom";
 const API_URL = "";
 
 function App() {
+  const [years, setYears] = useState<number[]>([]);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [days, setDays] = useState<Day[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>("");
   const [inputSource, setInputSource] = useState<InputSource>("custom");
@@ -31,13 +33,14 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>("");
 
+  // Fetch available years on mount
   useEffect(() => {
-    fetch(`${API_URL}/api/days`)
+    fetch(`${API_URL}/api/years`)
       .then((res) => res.json())
-      .then((data: Day[]) => {
-        setDays(data);
+      .then((data: number[]) => {
+        setYears(data);
         if (data.length > 0) {
-          setSelectedDay(data[0].name);
+          setSelectedYear(data[0]);
         }
       })
       .catch(() =>
@@ -46,6 +49,22 @@ function App() {
         )
       );
   }, []);
+
+  // Fetch days when year changes
+  useEffect(() => {
+    if (!selectedYear) return;
+    fetch(`${API_URL}/api/days/${selectedYear}`)
+      .then((res) => res.json())
+      .then((data: Day[]) => {
+        setDays(data);
+        if (data.length > 0) {
+          setSelectedDay(data[0].name);
+        } else {
+          setSelectedDay("");
+        }
+      })
+      .catch(() => setError("Failed to fetch days for selected year."));
+  }, [selectedYear]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -79,6 +98,7 @@ function App() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          year: selectedYear,
           day: selectedDay,
           input: currentInput,
         }),
@@ -104,6 +124,19 @@ function App() {
         </header>
 
         <div className="control-row">
+          <select
+            id="year-select"
+            value={selectedYear ?? ""}
+            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+            className="select"
+          >
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+
           <select
             id="day-select"
             value={selectedDay}

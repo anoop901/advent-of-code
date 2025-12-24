@@ -11,12 +11,11 @@ async function main() {
     initialWaitingAreaState,
     behavior1
   );
-  console.log(answer1);
   const answer2 = numberOfOccupiedSeatsAfterStabilization(
     initialWaitingAreaState,
     behavior2
   );
-  console.log(answer2);
+  console.log(answer1, answer2);
 }
 
 main();

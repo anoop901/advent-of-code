@@ -74,8 +74,10 @@ function getAnswerPart2(customsFormsData: CustomsForm[][]): number {
 
 async function main() {
   const customsFormsData = await loadCustomsFormsData();
-  console.log(getAnswerPart1(customsFormsData));
-  console.log(getAnswerPart2(customsFormsData));
+  console.log(
+    getAnswerPart1(customsFormsData),
+    getAnswerPart2(customsFormsData)
+  );
 }
 
 main();

@@ -15,10 +15,27 @@ const PYTHON = existsSync(venvPython) ? venvPython : "python3";
 const app = express();
 app.use(express.json({ limit: "10mb" }));
 
-// Get list of available days
-app.get("/api/days", async (req, res) => {
+// Get list of available years
+app.get("/api/years", async (req, res) => {
   try {
     const entries = await readdir(SOLUTIONS_DIR, { withFileTypes: true });
+    const years = entries
+      .filter((entry) => entry.isDirectory() && entry.name.match(/^\d{4}$/))
+      .map((entry) => parseInt(entry.name))
+      .sort((a, b) => b - a); // newest first
+    res.json(years);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to list years" });
+  }
+});
+
+// Get list of available days for a year
+app.get("/api/days/:year", async (req, res) => {
+  const { year } = req.params;
+  const yearDir = join(SOLUTIONS_DIR, year);
+
+  try {
+    const entries = await readdir(yearDir, { withFileTypes: true });
     const days = entries
       .filter((entry) => entry.isDirectory() && entry.name.match(/^day\d+$/))
       .map((entry) => {
@@ -33,9 +50,9 @@ app.get("/api/days", async (req, res) => {
 });
 
 // Get input file contents for a day
-app.get("/api/input/:day", async (req, res) => {
-  const { day } = req.params;
-  const inputPath = join(SOLUTIONS_DIR, day, "input.txt");
+app.get("/api/input/:year/:day", async (req, res) => {
+  const { year, day } = req.params;
+  const inputPath = join(SOLUTIONS_DIR, year, day, "input.txt");
 
   try {
     const content = await readFile(inputPath, "utf-8");
@@ -47,39 +64,60 @@ app.get("/api/input/:day", async (req, res) => {
 
 // Run a solution with provided input
 app.post("/api/run", async (req, res) => {
-  const { day, input } = req.body;
+  const { year, day, input } = req.body;
 
-  if (!day || !input) {
-    return res.status(400).json({ error: "Missing day or input" });
+  if (!year || !day || !input) {
+    return res.status(400).json({ error: "Missing year, day, or input" });
   }
 
-  const dayDir = join(SOLUTIONS_DIR, day);
-  const solutionPath = join(dayDir, "solution.py");
+  const dayDir = join(SOLUTIONS_DIR, String(year), day);
+
+  // Detect solution type
+  let command, args;
+  if (existsSync(join(dayDir, "solution.py"))) {
+    command = PYTHON;
+    args = [join(dayDir, "solution.py")];
+  } else if (existsSync(join(dayDir, "main.go"))) {
+    command = "go";
+    args = ["run", join(dayDir, "main.go")];
+  } else if (existsSync(join(dayDir, "main.ts"))) {
+    command = "npx";
+    args = ["ts-node", join(dayDir, "main.ts")];
+  } else {
+    return res.status(404).json({
+      error: "No solution file found (solution.py, main.go, or main.ts)",
+    });
+  }
 
   try {
     const startTime = Date.now();
 
-    const python = spawn(PYTHON, [solutionPath], {
+    const proc = spawn(command, args, {
       cwd: dayDir,
       timeout: 30000, // 30 second timeout
     });
 
+    // Handle stdin errors (e.g., process exits before we can write)
+    proc.stdin.on("error", () => {
+      // Ignore EPIPE errors - the process will report via stderr
+    });
+
     // Write input to stdin and close it
-    python.stdin.write(input);
-    python.stdin.end();
+    proc.stdin.write(input);
+    proc.stdin.end();
 
     let stdout = "";
     let stderr = "";
 
-    python.stdout.on("data", (data) => {
+    proc.stdout.on("data", (data) => {
       stdout += data.toString();
     });
 
-    python.stderr.on("data", (data) => {
+    proc.stderr.on("data", (data) => {
       stderr += data.toString();
     });
 
-    python.on("close", (code) => {
+    proc.on("close", (code) => {
       const executionTime = Date.now() - startTime;
 
       if (code === 0) {
@@ -105,7 +143,7 @@ app.post("/api/run", async (req, res) => {
       }
     });
 
-    python.on("error", (err) => {
+    proc.on("error", (err) => {
       res.status(500).json({ error: `Failed to run solution: ${err.message}` });
     });
   } catch (error) {

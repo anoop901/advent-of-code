@@ -29,9 +29,8 @@ function countTreesInPath(
 
 async function main() {
   const map = await loadMap();
-  console.log(countTreesInPath(map, { right: 3, down: 1 }));
-
   console.log(
+    countTreesInPath(map, { right: 3, down: 1 }),
     countTreesInPath(map, { right: 1, down: 1 }) *
       countTreesInPath(map, { right: 3, down: 1 }) *
       countTreesInPath(map, { right: 5, down: 1 }) *

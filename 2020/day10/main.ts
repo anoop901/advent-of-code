@@ -10,12 +10,10 @@ async function loadAdaptersList(): Promise<number[]> {
 
 async function main() {
   const adaptersList = await loadAdaptersList();
-  const answerPart1 = numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(
-    adaptersList
-  );
-  console.log(answerPart1);
+  const answerPart1 =
+    numberOf1JoltDifferencesTimesNumberOf3JoltDifferences(adaptersList);
   const answerPart2 = numberOfWaysToConnectChartingOutletToDevice(adaptersList);
-  console.log(answerPart2);
+  console.log(answerPart1, answerPart2);
 }
 
 main();

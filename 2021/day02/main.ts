@@ -73,5 +73,5 @@ function positionAfterFollowingCommandsComplicated(commands: Command[]) {
 
   const finalPosition2 = positionAfterFollowingCommandsComplicated(commands);
   const part2Answer = finalPosition2.horizontal * finalPosition2.depth;
-  console.log(part2Answer);
+  console.log(part1Answer, part2Answer);
 })();

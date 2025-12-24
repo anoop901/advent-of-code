@@ -117,8 +117,10 @@ function countValidPassports(
 
 async function main() {
   const passportData = await loadPassportData();
-  console.log(countValidPassports(passportData, isPassportValidPart1));
-  console.log(countValidPassports(passportData, isPassportValidPart2));
+  console.log(
+    countValidPassports(passportData, isPassportValidPart1),
+    countValidPassports(passportData, isPassportValidPart2)
+  );
 }
 
 main();

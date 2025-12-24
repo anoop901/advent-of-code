@@ -41,8 +41,7 @@ function getAnswerPart2(expenseReport: number[]): number {
 
 async function main() {
   const expenseReport = await loadExpenseReport();
-  console.log(getAnswerPart1(expenseReport));
-  console.log(getAnswerPart2(expenseReport));
+  console.log(getAnswerPart1(expenseReport), getAnswerPart2(expenseReport));
 }
 
 main();

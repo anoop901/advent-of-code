@@ -14,10 +14,9 @@ async function loadFieldsAndTickets() {
 (async () => {
   const { fields, myTicket, nearbyTickets } = await loadFieldsAndTickets();
   const answer1 = getTicketScanningErrorRate(fields, nearbyTickets);
-  console.log(answer1);
   const answer2 = productOfDepartureFields(
     myTicket,
     deduceFieldOrder(fields, nearbyTickets)
   );
-  console.log(answer2);
+  console.log(answer1, answer2);
 })();

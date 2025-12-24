@@ -117,14 +117,12 @@ async function main() {
     myBagType,
     containableBagsMap
   );
-  console.log(containableBags.length);
-
   const luggageRulesMap = luggageRulesToMap(luggageRules);
   const numberOfBagsContained = numberOfBagsContainedInBagType(
     myBagType,
     luggageRulesMap
   );
-  console.log(numberOfBagsContained);
+  console.log(containableBags.length, numberOfBagsContained);
 }
 
 main();

@@ -94,6 +94,5 @@ function numMessagesValidWithRuleSet(
   updateRuleSet(ruleSet);
   const part2Answer = numMessagesValidWithRuleSet(ruleSet, messages);
 
-  console.log(part1Answer);
-  console.log(part2Answer);
+  console.log(part1Answer, part2Answer);
 })();

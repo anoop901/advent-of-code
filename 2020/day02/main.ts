@@ -10,7 +10,8 @@ async function loadPasswordsAndPolicies(): Promise<
   { password: string; policy: PasswordPolicy }[]
 > {
   return (await loadInputLines()).map((line) => {
-    const pattern = /^(?<min>\d+)-(?<max>\d+) (?<character>.): (?<password>.*)$/;
+    const pattern =
+      /^(?<min>\d+)-(?<max>\d+) (?<character>.): (?<password>.*)$/;
     const match = pattern.exec(line);
     if (match != null && match.groups != null) {
       return {
@@ -29,8 +30,10 @@ async function loadPasswordsAndPolicies(): Promise<
 
 async function main() {
   const passwordsAndPolicies = await loadPasswordsAndPolicies();
-  console.log(countValidPasswords(passwordsAndPolicies, isPasswordValidPart1));
-  console.log(countValidPasswords(passwordsAndPolicies, isPasswordValidPart2));
+  console.log(
+    countValidPasswords(passwordsAndPolicies, isPasswordValidPart1),
+    countValidPasswords(passwordsAndPolicies, isPasswordValidPart2)
+  );
 }
 
 main();
