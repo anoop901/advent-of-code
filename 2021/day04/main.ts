@@ -7,6 +7,7 @@ import {
   map,
   sum,
 } from "@anoop901/js-util/iterables";
+import loadInputLines from "../../util/loadInputLines";
 
 type BingoBoard = BingoSquare[][];
 
@@ -89,3 +90,9 @@ function isWinningBingoBoard(bingoBoard: BingoBoard): boolean {
     .then(anyMatch(allMatch((x) => x.marked)))
     .end();
 }
+
+(async () => {
+  const input = (await loadInputLines()).join("\n");
+  const { part1Answer, part2Answer } = solution(input);
+  console.log(part1Answer, part2Answer);
+})();

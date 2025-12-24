@@ -59,7 +59,7 @@ class LsCommand(Command):
 
 
 def terminal_output_to_unparsed_commands(terminal_output: str) -> list[UnparsedCommand]:
-    lines = input.splitlines()
+    lines = terminal_output.splitlines()
     result = []
     current_command: Optional[UnparsedCommand] = None
 
@@ -186,5 +186,4 @@ class Solution:
 if __name__ == "__main__":
     input_text = sys.stdin.read()
     solution = Solution(input_text)
-    print(f"part 1 answer: {solution.part1()}")
-    print(f"part 2 answer: {solution.part2()}")
+    print(f"{solution.part1()} {solution.part2()}")

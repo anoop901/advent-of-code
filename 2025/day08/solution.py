@@ -1,6 +1,5 @@
 from collections import Counter
 import sys
-from pprint import pprint
 import numpy as np
 
 input = sys.stdin.read()

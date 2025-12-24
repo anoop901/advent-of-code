@@ -8,6 +8,7 @@ import {
   toArray,
 } from "@anoop901/js-util/iterables";
 import { parseInputLines } from "../../util/parseInputLines";
+import loadInputLines from "../../util/loadInputLines";
 
 export function solution(input: string): {
   part1Answer: number;
@@ -110,3 +111,9 @@ function findLifeSupportRating(diagnosticReport: boolean[][]): number {
     findCO2ScrubberRating(diagnosticReport)
   );
 }
+
+(async () => {
+  const input = (await loadInputLines()).join("\n");
+  const { part1Answer, part2Answer } = solution(input);
+  console.log(part1Answer, part2Answer);
+})();
