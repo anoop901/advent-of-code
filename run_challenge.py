@@ -58,7 +58,10 @@ def detect_solution_type(year: int, day: int) -> tuple[SolutionType, Path]:
 def get_input_path(challenge_dir: Path, custom_input: Optional[str]) -> Path:
     """Get the path to the input file."""
     if custom_input:
-        return Path(custom_input).resolve()
+        path = Path(custom_input).resolve()
+        if path.exists():
+            return path
+        return challenge_dir / custom_input
     return challenge_dir / "input.txt"
 
 
