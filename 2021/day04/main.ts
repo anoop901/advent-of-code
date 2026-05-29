@@ -8,7 +8,6 @@ import {
   sum,
 } from "@anoop901/js-util/iterables";
 import loadInputLines from "../../util/loadInputLines";
-
 type BingoBoard = BingoSquare[][];
 
 interface BingoSquare {
@@ -28,8 +27,8 @@ function parseInput(input: string): {
         .trim()
         .split(/\s+/)
         .map(Number)
-        .map((number) => ({ number, marked: false }))
-    )
+        .map((number) => ({ number, marked: false })),
+    ),
   );
   return { calledNumbers, bingoBoards };
 }
@@ -39,10 +38,12 @@ export function solution(input: string): {
   part2Answer: number;
 } {
   const { calledNumbers, bingoBoards } = parseInput(input);
+  JSON.stringify;
 
   const part1Answer = playBingo(calledNumbers, bingoBoards);
+  const part2Answer = playBingoToLose(calledNumbers, bingoBoards);
 
-  return { part1Answer, part2Answer: 0 };
+  return { part1Answer, part2Answer };
 }
 
 function playBingo(calledNumbers: number[], bingoBoards: BingoBoard[]): number {
@@ -57,9 +58,40 @@ function playBingo(calledNumbers: number[], bingoBoards: BingoBoard[]): number {
   return 0;
 }
 
+function playBingoToLose(
+  calledNumbers: number[],
+  bingoBoards: BingoBoard[],
+): number {
+  const wonBoardIdxs = new Set<number>();
+  let lastBoardIdx: number | null = null;
+  let lastCalledNumber: number | null = null;
+  for (const calledNumber of calledNumbers) {
+    for (
+      let bingoBoardIdx = 0;
+      bingoBoardIdx < bingoBoards.length;
+      bingoBoardIdx++
+    ) {
+      if (wonBoardIdxs.has(bingoBoardIdx)) {
+        continue;
+      }
+      const bingoBoard = bingoBoards[bingoBoardIdx];
+      updateBingoBoard(bingoBoard, calledNumber);
+      if (isWinningBingoBoard(bingoBoard)) {
+        wonBoardIdxs.add(bingoBoardIdx);
+        lastBoardIdx = bingoBoardIdx;
+        lastCalledNumber = calledNumber;
+      }
+    }
+  }
+  if (lastBoardIdx == null || lastCalledNumber == null) {
+    throw new Error("none of the bingo boards won");
+  }
+  return scoreBingoBoard(bingoBoards[lastBoardIdx], lastCalledNumber);
+}
+
 function scoreBingoBoard(
   bingoBoard: BingoBoard,
-  lastCalledNumber: number
+  lastCalledNumber: number,
 ): number {
   const unmarkedSum = chain(bingoBoard)
     .then(map(filter((bingoSquare) => !bingoSquare.marked)))
@@ -84,7 +116,7 @@ function isWinningBingoBoard(bingoBoard: BingoBoard): boolean {
   const rows = bingoBoard;
   const columns = generate(
     (columnIndex) => rows.map((row) => row[columnIndex]),
-    rows[0].length
+    rows[0].length,
   );
   return chain([...rows, ...columns])
     .then(anyMatch(allMatch((x) => x.marked)))
