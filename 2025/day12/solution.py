@@ -125,16 +125,21 @@ def presents_fit_in_region(region: Region, presents: list[PresentShape]):
 
 def part1():
     present_shapes, region_specs = parse_input()
-    for region_spec in region_specs:
-        shapes_to_fit = sum(
-            (
-                [present_shapes[shape_idx]] * num
-                for shape_idx, num in enumerate(region_spec.num_presents_by_shape)
-            ),
-            [],
-        )
-        region = create_empty_region(region_spec.dimensions)
-        print(presents_fit_in_region(region, shapes_to_fit))
+    return sum(
+        sum(region_spec.num_presents_by_shape)
+        <= ((region_spec.dimensions[0] // 3) * (region_spec.dimensions[1] // 3))
+        for region_spec in region_specs
+    )
+    # for region_spec in region_specs:
+    #     shapes_to_fit = sum(
+    #         (
+    #             [present_shapes[shape_idx]] * num
+    #             for shape_idx, num in enumerate(region_spec.num_presents_by_shape)
+    #         ),
+    #         [],
+    #     )
+    #     region = create_empty_region(region_spec.dimensions)
+    #     print(presents_fit_in_region(region, shapes_to_fit))
 
 
-part1()
+print(part1())
